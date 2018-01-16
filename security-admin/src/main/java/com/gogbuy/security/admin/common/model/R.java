@@ -1,5 +1,7 @@
 package com.gogbuy.security.admin.common.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 
 /**
@@ -7,6 +9,7 @@ import java.io.Serializable;
  * Time:14:32
  * ProjectName:gogbuy-security
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class R<T> implements Serializable{
     private static final long serialVersionUID = -500083595227338621L;
     private Integer code;

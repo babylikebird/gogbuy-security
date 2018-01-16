@@ -20,7 +20,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Set<GrantedAuthority> grantedAuthoritySet = new HashSet<>();
-        User user = new User(username,"user",grantedAuthoritySet);
+        User user = new User(username,"e10adc3949ba59abbe56e057f20f883e",grantedAuthoritySet);
         return user;
     }
 }

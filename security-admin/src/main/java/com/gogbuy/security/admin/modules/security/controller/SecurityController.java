@@ -9,7 +9,6 @@ import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -45,19 +44,23 @@ public class SecurityController {
         if (savedRequest != null) {
             targetUrl = savedRequest.getRedirectUrl();
         }
-        Map<String, Object> result = new HashMap<String, Object>();
+        Map<String, Object> result = new HashMap<>();
         result.put("success", true);
+        result.put("code","200");
+        result.put("msg","登录成功");
         result.put("targetUrl", targetUrl);
         return result;
     }
 
     @RequestMapping(value = "/login/failure", method = RequestMethod.GET)
-    public  R loginFailure(HttpServletRequest request, HttpServletResponse response) {
+    public  R loginFailure(HttpServletRequest request) {
         AuthenticationException ae = (AuthenticationException) request.getSession().getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
         R r = new R();
         r.setCode(4003);
         r.setMsg("登录失败");
-        r.setDescription(ae.getMessage());
+        if (ae != null){
+            r.setDescription(ae.getMessage());
+        }
         return r;
     }
 
@@ -68,42 +71,6 @@ public class SecurityController {
         r.setMsg("你需要登录");
         return r;
     }
-
-//    @RequestMapping(value = "/security/user", method = RequestMethod.GET)
-//    public Map<String, Object> securityUser(HttpServletRequest request) {
-//        MyUserDetails user = UserUtil.getCurrentUser();
-//        Map<String, Object> result = new HashMap<String, Object>();
-//        StringBuilder userRole = new StringBuilder();
-//        if (user != null) {
-//            result.put("userId", user.getUserId());
-//            result.put("userName", user.getUsername());
-//            Collection<? extends GrantedAuthority> roleLst = user.getAuthorities();
-//            for (GrantedAuthority sga : roleLst) {
-//                userRole.append(sga.toString() + "; ");
-//            }
-//        }
-//        result.put("userRole", userRole.toString());
-//        result.put("message", "This message is only visible to the user");
-//        return result;
-//    }
-//
-//    @RequestMapping(value = "/security/admin", method = RequestMethod.GET)
-//    public Map<String, Object> securityAdmin(HttpServletRequest request) {
-//        MyUserDetails user = UserUtil.getCurrentUser();
-//        Map<String, Object> result = new HashMap<String, Object>();
-//        StringBuilder userRole = new StringBuilder();
-//        if (user != null) {
-//            result.put("userId", user.getUserId());
-//            result.put("userName", user.getUsername());
-//            Collection<? extends GrantedAuthority> roleLst = user.getAuthorities();
-//            for (GrantedAuthority sga : roleLst) {
-//                userRole.append(sga.toString() + "; ");
-//            }
-//        }
-//        result.put("userRole", userRole.toString());
-//        result.put("message", "This message is only visible to the admin");
-//        return result;
-//    }
 
     @RequestMapping(value = "/user/account", method = RequestMethod.GET)
     public Map<String, Object> getUserAcctunt(HttpServletRequest request) {
