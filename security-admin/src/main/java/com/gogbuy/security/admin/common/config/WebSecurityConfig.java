@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.*;
+import org.springframework.web.cors.CorsUtils;
 
 /**
  * Created by Mr.Yangxiufeng on 2018/1/16.
@@ -61,9 +62,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         //忽略静态文件
-        web.ignoring().antMatchers("/img/**")
-                .antMatchers("/css/**")
-                .antMatchers("/js/**");
+//        web.ignoring().antMatchers("/img/**")
+//                .antMatchers("/css/**")
+//                .antMatchers("/js/**");
+        //忽略文件
+        web.ignoring().antMatchers("/v2/api-docs",
+                "/swagger-resources/configuration/ui",
+                "/swagger-resources",
+                "/swagger-resources/configuration/security",
+                "/swagger-ui.html",
+                "/doc.html",
+                "/webjars/**");
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.gogbuy.security.admin.common.utils;
+package com.gogbuy.security.admin.common.toolkit;
 
 import javax.servlet.http.HttpServletRequest;
 

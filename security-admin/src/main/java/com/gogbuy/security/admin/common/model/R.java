@@ -1,5 +1,6 @@
 package com.gogbuy.security.admin.common.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
@@ -12,15 +13,17 @@ import java.util.Map;
  * ProjectName:gogbuy-security
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class R<T> extends HashMap<String,Object> implements Serializable{
+public class R<T> implements Serializable{
     private static final long serialVersionUID = -500083595227338621L;
     private static final String CODE = "code";
     private static final String MSG = "msg";
 
     private Integer code=200;
-    private String msg;
+    private String msg="操作成功";
     private String description;
     private T data;
+
+    private HashMap<String,Object> exend;
 
     public Integer getCode() {
         return code;
@@ -54,6 +57,18 @@ public class R<T> extends HashMap<String,Object> implements Serializable{
         this.description = description;
     }
 
+    @JsonIgnore
+    public HashMap<String, Object> getExend() {
+        return exend;
+    }
+
+    public void setExend(HashMap<String, Object> exend) {
+        this.exend = exend;
+    }
+
+    public R() {
+        exend = new HashMap<>();
+    }
 
     public static R failure(int code, String msg) {
         R r = new R();
@@ -70,7 +85,7 @@ public class R<T> extends HashMap<String,Object> implements Serializable{
 
     public static R ok(Map<String, Object> map) {
         R r = new R();
-        r.putAll(map);
+        r.exend.putAll(map);
         return r;
     }
 
@@ -79,7 +94,7 @@ public class R<T> extends HashMap<String,Object> implements Serializable{
     }
 
     public R put(String key, Object value) {
-        super.put(key, value);
+        exend.put(key, value);
         return this;
     }
 }

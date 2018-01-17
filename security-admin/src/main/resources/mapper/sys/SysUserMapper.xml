@@ -7,8 +7,8 @@
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="mobile" jdbcType="VARCHAR" property="mobile" />
-    <result column="status" jdbcType="TINYINT" property="status" />
-    <result column="dept_id" jdbcType="BIGINT" property="deptId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="dept_id" jdbcType="VARCHAR" property="deptId" />
     <result column="avatar" jdbcType="VARCHAR" property="avatar" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
@@ -32,8 +32,8 @@
       dept_id, avatar, create_time, 
       update_time)
     values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{email,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
-      #{deptId,jdbcType=BIGINT}, #{avatar,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{email,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{deptId,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.gogbuy.security.admin.modules.sys.entity.SysUser">
@@ -87,10 +87,10 @@
         #{mobile,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
-        #{status,jdbcType=TINYINT},
+        #{status,jdbcType=INTEGER},
       </if>
       <if test="deptId != null">
-        #{deptId,jdbcType=BIGINT},
+        #{deptId,jdbcType=VARCHAR},
       </if>
       <if test="avatar != null">
         #{avatar,jdbcType=VARCHAR},
@@ -119,10 +119,10 @@
         mobile = #{mobile,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
-        status = #{status,jdbcType=TINYINT},
+        status = #{status,jdbcType=INTEGER},
       </if>
       <if test="deptId != null">
-        dept_id = #{deptId,jdbcType=BIGINT},
+        dept_id = #{deptId,jdbcType=VARCHAR},
       </if>
       <if test="avatar != null">
         avatar = #{avatar,jdbcType=VARCHAR},
@@ -142,8 +142,8 @@
       password = #{password,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
       mobile = #{mobile,jdbcType=VARCHAR},
-      status = #{status,jdbcType=TINYINT},
-      dept_id = #{deptId,jdbcType=BIGINT},
+      status = #{status,jdbcType=INTEGER},
+      dept_id = #{deptId,jdbcType=VARCHAR},
       avatar = #{avatar,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}

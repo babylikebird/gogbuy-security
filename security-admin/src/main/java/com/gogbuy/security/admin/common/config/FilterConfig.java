@@ -5,7 +5,6 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.servlet.DispatcherType;
 
 /**
  * Created by Mr.Yangxiufeng on 2018/1/16.
@@ -14,14 +13,15 @@ import javax.servlet.DispatcherType;
  */
 @Configuration
 public class FilterConfig {
+    /**
+     * <p>这个xss过滤</p>
+     */
     @Bean
     public FilterRegistrationBean xssFilterRegistration() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
-        registration.setDispatcherTypes(DispatcherType.REQUEST);
-        registration.setFilter(new XssFilter());
+        XssFilter xssFilter = new XssFilter();
+        registration.setFilter(xssFilter);
         registration.addUrlPatterns("/*");
-        registration.setName("xssFilter");
-        registration.setOrder(Integer.MAX_VALUE);
         return registration;
     }
 }

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class SysUser implements Serializable{
-    private static final long serialVersionUID = 3112349299835962904L;
+    private static final long serialVersionUID = 678962124497601350L;
     private String id;
 
     private String username;
@@ -15,9 +15,9 @@ public class SysUser implements Serializable{
 
     private String mobile;
 
-    private Byte status;
+    private Integer status;
 
-    private Long deptId;
+    private String deptId;
 
     private String avatar;
 
@@ -65,20 +65,20 @@ public class SysUser implements Serializable{
         this.mobile = mobile == null ? null : mobile.trim();
     }
 
-    public Byte getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Byte status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
-    public Long getDeptId() {
+    public String getDeptId() {
         return deptId;
     }
 
-    public void setDeptId(Long deptId) {
-        this.deptId = deptId;
+    public void setDeptId(String deptId) {
+        this.deptId = deptId == null ? null : deptId.trim();
     }
 
     public String getAvatar() {

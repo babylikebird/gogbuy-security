@@ -1,8 +1,10 @@
 package com.gogbuy.security.admin.modules.security.controller;
 
 import com.gogbuy.security.admin.common.model.R;
-import com.gogbuy.security.admin.common.utils.HttpHelper;
+import com.gogbuy.security.admin.common.toolkit.HttpHelper;
+import com.gogbuy.security.admin.common.utils.StatusCode;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
@@ -34,7 +36,6 @@ public class SecurityController {
         } else {
             return new ModelAndView("login");
         }
-
     }
 
     @RequestMapping(value = "/login/success", method = RequestMethod.GET)
@@ -45,8 +46,7 @@ public class SecurityController {
             targetUrl = savedRequest.getRedirectUrl();
         }
         Map<String, Object> result = new HashMap<>();
-        result.put("success", true);
-        result.put("code","200");
+        result.put("code",StatusCode.SUCCESS);
         result.put("msg","登录成功");
         result.put("targetUrl", targetUrl);
         return result;
@@ -56,7 +56,7 @@ public class SecurityController {
     public  R loginFailure(HttpServletRequest request) {
         AuthenticationException ae = (AuthenticationException) request.getSession().getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
         R r = new R();
-        r.setCode(4003);
+        r.setCode(StatusCode.LOGIN_FAILURE);
         r.setMsg("登录失败");
         if (ae != null){
             r.setDescription(ae.getMessage());
@@ -67,7 +67,7 @@ public class SecurityController {
     @RequestMapping(value = "/login/ajax", method = RequestMethod.GET)
     public R loginAjax() {
         R r = new R();
-        r.setCode(4003);
+        r.setCode(StatusCode.UNAUTHORIZED);
         r.setMsg("你需要登录");
         return r;
     }
