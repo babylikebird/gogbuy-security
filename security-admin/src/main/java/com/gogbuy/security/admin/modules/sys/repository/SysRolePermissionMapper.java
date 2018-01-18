@@ -1,6 +1,5 @@
 package com.gogbuy.security.admin.modules.sys.repository;
 
-import com.gogbuy.security.admin.modules.sys.entity.SysPermission;
 import com.gogbuy.security.admin.modules.sys.entity.SysRolePermission;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -18,6 +17,4 @@ public interface SysRolePermissionMapper {
     int deleteByPermissionId(@Param("permissionId") String permissionId);
 
     List<SysRolePermission> selectByRoleId(@Param("roleId") String roleId);
-
-    List<SysPermission> getPermissionByRoleId(@Param("roleId") String roleId);
 }

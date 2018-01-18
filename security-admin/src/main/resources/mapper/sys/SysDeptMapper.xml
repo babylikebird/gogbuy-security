@@ -125,4 +125,7 @@
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="getDeptByUserId" parameterType="string" resultMap="BaseResultMap">
+    SELECT d.* FROM sys_dept d,sys_user_dept ud WHERE d.id=ud.dept_id AND ud.user_id=#{userId}
+  </select>
 </mapper>

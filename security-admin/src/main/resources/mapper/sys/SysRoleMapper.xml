@@ -90,4 +90,7 @@
       role_value = #{roleValue,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="findRoleByUserId" parameterType="string" resultMap="BaseResultMap">
+    SELECT sr.* FROM sys_role sr,sys_user_role ur WHERE sr.id=ur.role_id AND ur.user_id=#{userId}
+  </select>
 </mapper>

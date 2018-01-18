@@ -6,6 +6,8 @@ import com.gogbuy.security.admin.modules.sys.service.SysDeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by Mr.Yangxiufeng on 2018/1/17.
  * Time:9:37
@@ -26,7 +28,7 @@ public class SysDeptServiceImpl implements SysDeptService {
     }
 
     @Override
-    public SysDept selectById(String id) {
+    public SysDept findById(String id) {
         return deptMapper.selectByPrimaryKey(id);
     }
 
@@ -38,5 +40,10 @@ public class SysDeptServiceImpl implements SysDeptService {
     @Override
     public int updateById(SysDept record) {
         return deptMapper.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public List<SysDept> getDeptByUserId(String userId) {
+        return deptMapper.getDeptByUserId(userId);
     }
 }

@@ -6,6 +6,8 @@ import com.gogbuy.security.admin.modules.sys.service.SysRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by Mr.Yangxiufeng on 2018/1/17.
  * Time:9:38
@@ -26,7 +28,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public SysRole selectById(String id) {
+    public SysRole findById(String id) {
         return roleMapper.selectByPrimaryKey(id);
     }
 
@@ -38,5 +40,10 @@ public class SysRoleServiceImpl implements SysRoleService {
     @Override
     public int updateById(SysRole record) {
         return roleMapper.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public List<SysRole> findRoleByUserId(String userId) {
+        return roleMapper.findRoleByUserId(userId);
     }
 }
