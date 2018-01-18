@@ -1,5 +1,6 @@
 package com.gogbuy.security.admin.common.config;
 
+import com.gogbuy.security.admin.modules.security.authentication.GogLoginUrlAuthenticationEntryPoint;
 import com.gogbuy.security.admin.modules.security.authentication.GogUrlAuthenticationFailureHandler;
 import com.gogbuy.security.admin.modules.security.authentication.GogUrlAuthenticationSuccessHandler;
 import com.gogbuy.security.admin.modules.security.filter.GogUsernamePasswordAuthenticationFilter;
@@ -42,9 +43,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated().and()
                 // 添加验证码验证
                 .addFilterAt(gogUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class).exceptionHandling()
-                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login_page")).and()
+                .authenticationEntryPoint(new GogLoginUrlAuthenticationEntryPoint()).and()
                 // 指定登录页面的请求路径
-                .formLogin().loginPage("/login_page")
+                .formLogin()
                 // 登陆处理路径
                 .loginProcessingUrl("/login").permitAll().and()
                 // 退出请求的默认路径为logout，下面改为signout，
