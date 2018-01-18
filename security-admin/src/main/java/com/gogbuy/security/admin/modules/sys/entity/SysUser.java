@@ -1,5 +1,6 @@
 package com.gogbuy.security.admin.modules.sys.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
@@ -10,7 +11,7 @@ public class SysUser implements Serializable{
     private String id;
 
     private String username;
-
+    @JsonIgnore
     private String password;
 
     private String email;

@@ -9,11 +9,9 @@ public interface SysUserRoleMapper {
 
     int insert(SysUserRole record);
 
-    int insertSelective(SysUserRole record);
-
     SysUserRole selectByPrimaryKey(String id);
 
-    int updateByPrimaryKeySelective(SysUserRole record);
+    int deleteByUserId(String userId);
 
-    int updateByPrimaryKey(SysUserRole record);
+    int deleteByRoleId(String roleId);
 }

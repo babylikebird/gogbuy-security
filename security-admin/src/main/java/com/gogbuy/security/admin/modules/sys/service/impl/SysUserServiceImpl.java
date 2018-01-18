@@ -26,7 +26,6 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public int save(SysUser record) {
         record.setId(IdWorker.getIdStr());
-        record.setPassword(new Md5PasswordEncoder().encodePassword(record.getPassword(),null));
         return userMapper.insert(record);
     }
 

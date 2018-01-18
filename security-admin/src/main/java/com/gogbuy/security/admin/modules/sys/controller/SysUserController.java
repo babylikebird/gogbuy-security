@@ -21,7 +21,7 @@ public class SysUserController {
     private SysUserService userService;
 
     @RequestMapping(value = "get/{id}",method = RequestMethod.GET)
-    public R getUserById(@PathVariable String id){
+    public R getUserById(@PathVariable("id") String id){
         R r = R.ok();
         r.setData(userService.findById(id));
         return r;

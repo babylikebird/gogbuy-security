@@ -22,12 +22,3 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
-/mvnw
-/mvnw.cmd
-/.mvn
-/security-admin/.mvn
-/security-admin/mvnw.cmd
-/security-admin/mvnw
-/security-oauth2.0/mvnw
-/security-oauth2.0/mvnw.cmd
-/security-oauth2.0/.mvn
