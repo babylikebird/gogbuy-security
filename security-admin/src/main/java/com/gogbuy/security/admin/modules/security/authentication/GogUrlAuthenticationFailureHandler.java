@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by Mr.Yangxiufeng on 2018/1/18.
@@ -26,6 +27,7 @@ public class GogUrlAuthenticationFailureHandler implements AuthenticationFailure
     private ObjectMapper objectMapper = new ObjectMapper();
 
     public GogUrlAuthenticationFailureHandler() {
+        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
     }
 
     /**

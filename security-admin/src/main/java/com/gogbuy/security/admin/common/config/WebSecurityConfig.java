@@ -3,7 +3,7 @@ package com.gogbuy.security.admin.common.config;
 import com.gogbuy.security.admin.modules.security.authentication.GogUrlAuthenticationFailureHandler;
 import com.gogbuy.security.admin.modules.security.authentication.GogUrlAuthenticationSuccessHandler;
 import com.gogbuy.security.admin.modules.security.filter.GogUsernamePasswordAuthenticationFilter;
-import com.gogbuy.security.admin.modules.security.service.UserDetailsServiceImpl;
+import com.gogbuy.security.admin.modules.security.userdetails.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

@@ -1,5 +1,6 @@
-package com.gogbuy.security.admin.modules.security.model;
+package com.gogbuy.security.admin.modules.security.userdetails;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.gogbuy.security.admin.modules.sys.entity.SysUser;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,6 +18,7 @@ import java.util.*;
  * Time:11:07
  * ProjectName:gogbuy-security
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class GogUserDetails implements UserDetails,CredentialsContainer {
 
     private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;

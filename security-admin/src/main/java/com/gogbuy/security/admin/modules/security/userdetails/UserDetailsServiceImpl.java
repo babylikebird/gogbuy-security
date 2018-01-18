@@ -1,11 +1,9 @@
-package com.gogbuy.security.admin.modules.security.service;
+package com.gogbuy.security.admin.modules.security.userdetails;
 
-import com.gogbuy.security.admin.modules.security.model.GogUserDetails;
 import com.gogbuy.security.admin.modules.sys.entity.SysUser;
 import com.gogbuy.security.admin.modules.sys.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

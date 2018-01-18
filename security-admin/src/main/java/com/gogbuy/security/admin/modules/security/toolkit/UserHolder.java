@@ -1,6 +1,6 @@
 package com.gogbuy.security.admin.modules.security.toolkit;
 
-import com.gogbuy.security.admin.modules.security.model.GogUserDetails;
+import com.gogbuy.security.admin.modules.security.userdetails.GogUserDetails;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
