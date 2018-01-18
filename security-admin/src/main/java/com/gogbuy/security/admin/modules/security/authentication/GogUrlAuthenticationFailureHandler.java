@@ -42,7 +42,7 @@ public class GogUrlAuthenticationFailureHandler implements AuthenticationFailure
 
 //            response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
 //                    "Authentication Failed: " + exception.getMessage());
-        R r = R.failure(StatusCode.UNAUTHORIZED,"登录失败");
+        R r = R.failure(StatusCode.UNAUTHORIZED,"用户名或密码错误");
         r.setDescription(exception.getMessage());
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json; charset=utf-8");

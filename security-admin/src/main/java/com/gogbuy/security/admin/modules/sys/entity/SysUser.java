@@ -1,8 +1,10 @@
 package com.gogbuy.security.admin.modules.sys.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 import java.util.Date;
-
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class SysUser implements Serializable{
     private static final long serialVersionUID = 678962124497601350L;
     private String id;

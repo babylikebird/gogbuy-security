@@ -14,6 +14,8 @@ public interface SysUserService {
 
     SysUser findById(String id);
 
+    SysUser findByUsername(String name);
+
     int updateByIdSelective(SysUser record);
 
     int updateById(SysUser record);

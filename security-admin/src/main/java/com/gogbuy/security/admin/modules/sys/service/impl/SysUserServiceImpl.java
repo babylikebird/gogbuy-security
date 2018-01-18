@@ -36,6 +36,11 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
+    public SysUser findByUsername(String name) {
+        return userMapper.findByUsername(name);
+    }
+
+    @Override
     public int updateByIdSelective(SysUser record) {
         return userMapper.updateByPrimaryKeySelective(record);
     }

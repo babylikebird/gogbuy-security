@@ -14,7 +14,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.*;
-import org.springframework.web.cors.CorsUtils;
 
 /**
  * Created by Mr.Yangxiufeng on 2018/1/16.
@@ -39,12 +38,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers("/login","/login/**").permitAll()
-                // user权限可以访问的请求
-                .antMatchers("/security/user").hasRole("user")
-                // admin权限可以访问的请求
-                .antMatchers("/security/admin").hasRole("admin")
-                // SpEL表达式:需要拥有user权限，且进行了完全认证
-                .antMatchers("/user/account").access("hasRole('user') and isFullyAuthenticated()")
                 // 其他地址的访问均需验证权限（需要登录）
                 .anyRequest().authenticated().and()
                 // 添加验证码验证
@@ -79,10 +72,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("user").password("123456").roles("USER")
-                .and()
-                .withUser("admin").password("123456").roles("ADMIN");
         auth.userDetailsService(userDetailsServiceImpl()).passwordEncoder(new Md5PasswordEncoder());
     }
     @Bean
