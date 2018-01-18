@@ -1,6 +1,7 @@
 package com.gogbuy.security.admin.common.config;
 
 import com.gogbuy.security.admin.modules.security.authentication.GogLoginUrlAuthenticationEntryPoint;
+import com.gogbuy.security.admin.modules.security.authentication.GogLogoutSuccessHandler;
 import com.gogbuy.security.admin.modules.security.authentication.GogUrlAuthenticationFailureHandler;
 import com.gogbuy.security.admin.modules.security.authentication.GogUrlAuthenticationSuccessHandler;
 import com.gogbuy.security.admin.modules.security.filter.GogUsernamePasswordAuthenticationFilter;
@@ -38,19 +39,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/login","/login/**").permitAll()
+        http.authorizeRequests().antMatchers("/login/**").permitAll()
                 // 其他地址的访问均需验证权限（需要登录）
                 .anyRequest().authenticated().and()
                 // 添加验证码验证
                 .addFilterAt(gogUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class).exceptionHandling()
                 .authenticationEntryPoint(new GogLoginUrlAuthenticationEntryPoint()).and()
-                // 指定登录页面的请求路径
                 .formLogin()
                 // 登陆处理路径
                 .loginProcessingUrl("/login").permitAll().and()
-                // 退出请求的默认路径为logout，下面改为signout，
-                // 成功退出登录后的url可以用logoutSuccessUrl设置
-                .logout().logoutUrl("/logout").logoutSuccessUrl("/login_page").permitAll().and()
+                // 成功退出登录后的返回退出成功
+                .logout().logoutSuccessHandler(new GogLogoutSuccessHandler())
+                .and()
                 // 关闭csrf
                 .csrf().disable();
     }

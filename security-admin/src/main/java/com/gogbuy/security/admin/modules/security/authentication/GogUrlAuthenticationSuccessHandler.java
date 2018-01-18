@@ -54,4 +54,9 @@ public class GogUrlAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             }
         }
     }
+
+    @Override
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        super.onAuthenticationSuccess(request, response, authentication);
+    }
 }
