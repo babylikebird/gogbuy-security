@@ -72,8 +72,8 @@ public class R<T> implements Serializable{
 
     public static R failure(int code, String msg) {
         R r = new R();
-        r.put(CODE, code);
-        r.put(MSG, msg);
+        r.setCode(code);
+        r.setMsg(msg);
         return r;
     }
 

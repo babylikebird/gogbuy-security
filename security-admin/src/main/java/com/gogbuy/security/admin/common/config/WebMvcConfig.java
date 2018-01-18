@@ -2,7 +2,6 @@ package com.gogbuy.security.admin.common.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
@@ -25,7 +24,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
                 .allowedHeaders("*")
                 .allowedMethods("*")
                 .allowedOrigins("*")
-                .allowCredentials(false);
+                .allowCredentials(true);
     }
 
     @Override

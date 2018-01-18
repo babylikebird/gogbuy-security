@@ -1,5 +1,7 @@
 package com.gogbuy.security.admin.common.config;
 
+import com.gogbuy.security.admin.modules.security.authentication.GogUrlAuthenticationFailureHandler;
+import com.gogbuy.security.admin.modules.security.authentication.GogUrlAuthenticationSuccessHandler;
 import com.gogbuy.security.admin.modules.security.filter.GogUsernamePasswordAuthenticationFilter;
 import com.gogbuy.security.admin.modules.security.service.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
@@ -93,11 +95,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
-        return new SimpleUrlAuthenticationSuccessHandler("/login/success");
+        return new GogUrlAuthenticationSuccessHandler();
     }
 
     @Bean
     public AuthenticationFailureHandler authenticationFailureHandler() {
-        return new SimpleUrlAuthenticationFailureHandler("/login/failure");
+        return new GogUrlAuthenticationFailureHandler();
     }
 }
