@@ -6,6 +6,8 @@ import com.gogbuy.security.admin.modules.sys.service.SysPermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by Mr.Yangxiufeng on 2018/1/17.
  * Time:9:37
@@ -38,5 +40,10 @@ public class SysPermissionServiceImpl implements SysPermissionService {
     @Override
     public int updateById(SysPermission record) {
         return permissionMapper.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public List<SysPermission> findPermissionByRoleId(String roleId) {
+        return permissionMapper.findPermissionByRoleId(roleId);
     }
 }

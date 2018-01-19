@@ -6,6 +6,8 @@ import com.gogbuy.security.admin.modules.sys.service.SysDeptRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by Mr.Yangxiufeng on 2018/1/18.
  * Time:16:18
@@ -23,17 +25,17 @@ public class SysDeptRoleServiceImpl implements SysDeptRoleService {
 
     @Override
     public int deleteByDeptId(String deptId) {
-        return 0;
+        return deptRoleMapper.deleteByDeptId(deptId);
     }
 
     @Override
     public int deleteByRoleId(String roleId) {
-        return 0;
+        return deptRoleMapper.deleteByRoleId(roleId);
     }
 
     @Override
     public int save(SysDeptRole record) {
-        return 0;
+        return deptRoleMapper.insert(record);
     }
 
     @Override
@@ -42,7 +44,7 @@ public class SysDeptRoleServiceImpl implements SysDeptRoleService {
     }
 
     @Override
-    public SysDeptRole findByEntity(SysDeptRole entity) {
-        return null;
+    public List<SysDeptRole> findByEntity(SysDeptRole entity) {
+        return deptRoleMapper.findByEntity(entity);
     }
 }

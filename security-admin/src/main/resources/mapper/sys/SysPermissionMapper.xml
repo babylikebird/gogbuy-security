@@ -149,4 +149,7 @@
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="findPermissionByRoleId" parameterType="string" resultMap="BaseResultMap">
+    SELECT p.* FROM sys_permission p ,sys_role_permission r WHERE p.id=r.permission_id AND r.role_id=#{roleId}
+  </select>
 </mapper>

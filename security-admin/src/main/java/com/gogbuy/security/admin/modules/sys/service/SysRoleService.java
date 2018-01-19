@@ -21,4 +21,6 @@ public interface SysRoleService {
     int updateById(SysRole record);
 
     List<SysRole> findRoleByUserId(String userId);
+
+    List<SysRole> findRoleByDeptId(String deptId);
 }

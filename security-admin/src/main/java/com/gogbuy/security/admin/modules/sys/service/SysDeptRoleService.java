@@ -2,6 +2,8 @@ package com.gogbuy.security.admin.modules.sys.service;
 
 import com.gogbuy.security.admin.modules.sys.entity.SysDeptRole;
 
+import java.util.List;
+
 /**
  * Created by Mr.Yangxiufeng on 2018/1/18.
  * Time:16:12
@@ -18,5 +20,5 @@ public interface SysDeptRoleService {
 
     SysDeptRole findById(String id);
 
-    SysDeptRole findByEntity(SysDeptRole entity);
+    List<SysDeptRole> findByEntity(SysDeptRole entity);
 }

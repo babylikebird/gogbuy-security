@@ -16,4 +16,8 @@ public interface SysUserDeptMapper {
     int updateByPrimaryKeySelective(SysUserDept record);
 
     int updateByPrimaryKey(SysUserDept record);
+
+    int deleteByUserId(String userId);
+
+    int deleteByDeptId(String deptId);
 }

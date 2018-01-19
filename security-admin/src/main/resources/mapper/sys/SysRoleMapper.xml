@@ -93,4 +93,7 @@
   <select id="findRoleByUserId" parameterType="string" resultMap="BaseResultMap">
     SELECT sr.* FROM sys_role sr,sys_user_role ur WHERE sr.id=ur.role_id AND ur.user_id=#{userId}
   </select>
+  <select id="findRoleByDeptId" parameterType="string" resultMap="BaseResultMap">
+    SELECT r.* FROM sys_role r,sys_dept_role d WHERE r.role_id=d.role_id AND d.dept_id=#{deptId}
+  </select>
 </mapper>

@@ -2,6 +2,9 @@ package com.gogbuy.security.admin.modules.sys.repository;
 
 import com.gogbuy.security.admin.modules.sys.entity.SysPermission;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 @Mapper
 public interface SysPermissionMapper {
@@ -16,4 +19,6 @@ public interface SysPermissionMapper {
     int updateByPrimaryKeySelective(SysPermission record);
 
     int updateByPrimaryKey(SysPermission record);
+
+    List<SysPermission> findPermissionByRoleId(@Param("roleId") String roleId);
 }

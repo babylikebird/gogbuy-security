@@ -68,4 +68,23 @@
       dept_id = #{deptId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+  <delete id="deleteByDeptId" parameterType="string">
+    DELETE FROM sys_dept_role WHERE  dept_id = #{deptId}
+  </delete>
+  <delete id="deleteByRoleId" parameterType="string">
+    DELETE FROM sys_dept_role WHERE role_id = #{roleId}
+  </delete>
+  <select id="findByEntity" parameterType="com.gogbuy.security.admin.modules.sys.entity.SysDeptRole" resultMap="BaseResultMap">
+    SELECT * FROM sys_dept_role
+    WHERE
+    <if test="id != null">
+      id = #{id,jdbcType=VARCHAR},
+    </if>
+    <if test="roleId != null">
+      AND role_id = #{roleId,jdbcType=VARCHAR},
+    </if>
+    <if test="deptId != null">
+      AND dept_id = #{deptId,jdbcType=VARCHAR},
+    </if>
+  </select>
 </mapper>

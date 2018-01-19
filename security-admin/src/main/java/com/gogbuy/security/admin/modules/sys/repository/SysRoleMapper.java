@@ -21,4 +21,6 @@ public interface SysRoleMapper {
     int updateByPrimaryKey(SysRole record);
 
     List<SysRole> findRoleByUserId(@Param("userId") String userId);
+
+    List<SysRole> findRoleByDeptId(@Param("deptId") String deptId);
 }

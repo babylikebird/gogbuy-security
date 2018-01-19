@@ -68,4 +68,10 @@
       dept_id = #{deptId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+  <delete id="deleteByUserId" parameterType="string">
+    DELETE FROM sys_user_dept WHERE user_id = #{userId}
+  </delete>
+  <delete id="deleteByDeptId" parameterType="string">
+    DELETE FROM sys_user_dept WHERE dept_id = #{deptId,jdbcType=VARCHAR}
+  </delete>
 </mapper>

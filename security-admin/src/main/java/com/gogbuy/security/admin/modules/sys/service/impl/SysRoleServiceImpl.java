@@ -46,4 +46,9 @@ public class SysRoleServiceImpl implements SysRoleService {
     public List<SysRole> findRoleByUserId(String userId) {
         return roleMapper.findRoleByUserId(userId);
     }
+
+    @Override
+    public List<SysRole> findRoleByDeptId(String deptId) {
+        return roleMapper.findRoleByDeptId(deptId);
+    }
 }
