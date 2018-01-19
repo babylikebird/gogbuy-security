@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Mr.Yangxiufeng on 2018/1/17.
@@ -45,5 +46,10 @@ public class SysDeptServiceImpl implements SysDeptService {
     @Override
     public List<SysDept> getDeptByUserId(String userId) {
         return deptMapper.getDeptByUserId(userId);
+    }
+
+    @Override
+    public List<SysDept> findList(Map<String, Object> map) {
+        return null;
     }
 }

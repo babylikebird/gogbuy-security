@@ -21,4 +21,6 @@ public interface SysPermissionMapper {
     int updateByPrimaryKey(SysPermission record);
 
     List<SysPermission> findPermissionByRoleId(@Param("roleId") String roleId);
+
+    List<SysPermission> findListByParentId(@Param("parentId") String parentId);
 }

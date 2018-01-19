@@ -128,4 +128,9 @@
   <select id="getDeptByUserId" parameterType="string" resultMap="BaseResultMap">
     SELECT d.* FROM sys_dept d,sys_user_dept ud WHERE d.id=ud.dept_id AND ud.user_id=#{userId}
   </select>
+  <select id="findList" parameterType="hashmap" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM sys_dept
+    ORDER BY order_num ASC
+  </select>
 </mapper>

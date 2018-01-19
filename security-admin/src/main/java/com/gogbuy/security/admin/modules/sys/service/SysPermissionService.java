@@ -21,4 +21,8 @@ public interface SysPermissionService {
     int updateById(SysPermission record);
 
     List<SysPermission> findPermissionByRoleId(String roleId);
+
+    List<SysPermission> findListByParentId(String parentId);
+
+    List<SysPermission> findUserMenuList(String userId);
 }

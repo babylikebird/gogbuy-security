@@ -46,4 +46,14 @@ public class SysPermissionServiceImpl implements SysPermissionService {
     public List<SysPermission> findPermissionByRoleId(String roleId) {
         return permissionMapper.findPermissionByRoleId(roleId);
     }
+
+    @Override
+    public List<SysPermission> findListByParentId(String parentId) {
+        return permissionMapper.findListByParentId(parentId);
+    }
+
+    @Override
+    public List<SysPermission> findUserMenuList(String userId) {
+        return null;
+    }
 }

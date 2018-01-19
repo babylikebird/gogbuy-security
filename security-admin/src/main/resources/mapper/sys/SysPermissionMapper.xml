@@ -152,4 +152,7 @@
   <select id="findPermissionByRoleId" parameterType="string" resultMap="BaseResultMap">
     SELECT p.* FROM sys_permission p ,sys_role_permission r WHERE p.id=r.permission_id AND r.role_id=#{roleId}
   </select>
+  <select id="findListByParentId" parameterType="string" resultMap="BaseResultMap">
+    SELECT * FROM sys_permission WHERE parent_id = #{parentId} ORDER BY order_num asc
+  </select>
 </mapper>
