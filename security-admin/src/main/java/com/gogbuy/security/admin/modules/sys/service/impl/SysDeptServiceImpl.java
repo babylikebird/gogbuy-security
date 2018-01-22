@@ -50,6 +50,6 @@ public class SysDeptServiceImpl implements SysDeptService {
 
     @Override
     public List<SysDept> findList(Map<String, Object> map) {
-        return null;
+        return deptMapper.findList(map);
     }
 }

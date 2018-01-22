@@ -5,8 +5,11 @@ import com.gogbuy.security.admin.modules.sys.entity.SysUser;
 import com.gogbuy.security.admin.modules.sys.repository.SysUserMapper;
 import com.gogbuy.security.admin.modules.sys.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
 
 /**
  * Created by Mr.Yangxiufeng on 2018/1/17.
@@ -28,7 +31,6 @@ public class SysUserServiceImpl implements SysUserService {
         record.setId(IdWorker.getIdStr());
         return userMapper.insert(record);
     }
-
     @Override
     public SysUser findById(String id) {
         return userMapper.selectByPrimaryKey(id);
@@ -47,5 +49,10 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public int updateById(SysUser record) {
         return userMapper.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public Set<String> getUserMenuId(String userId) {
+        return null;
     }
 }
