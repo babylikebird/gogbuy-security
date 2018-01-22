@@ -3,6 +3,8 @@ package com.gogbuy.security.admin.modules.sys.service.impl;
 import com.gogbuy.security.admin.common.toolkit.IdWorker;
 import com.gogbuy.security.admin.modules.sys.entity.SysUser;
 import com.gogbuy.security.admin.modules.sys.repository.SysUserMapper;
+import com.gogbuy.security.admin.modules.sys.service.SysUserDeptService;
+import com.gogbuy.security.admin.modules.sys.service.SysUserRoleService;
 import com.gogbuy.security.admin.modules.sys.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,10 +22,19 @@ import java.util.Set;
 public class SysUserServiceImpl implements SysUserService {
     @Autowired
     private SysUserMapper userMapper;
+    @Autowired
+    private SysUserRoleService userRoleService;
+    @Autowired
+    private SysUserDeptService userDeptService;
 
     @Override
     public int deleteById(String id) {
-        return userMapper.deleteByPrimaryKey(id);
+        userMapper.deleteByPrimaryKey(id);
+        //删除用户角色
+        userRoleService.deleteByUserId(id);
+        //删除用户部门
+        userDeptService.deleteByUserId(id);
+        return 1;
     }
 
     @Override

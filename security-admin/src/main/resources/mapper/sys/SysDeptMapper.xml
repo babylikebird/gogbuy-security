@@ -133,4 +133,9 @@
     FROM sys_dept
     ORDER BY order_num ASC
   </select>
+  <select id="findByParentId" parameterType="string" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM sys_dept
+    WHERE parent_id = #{parentId} ORDER BY order_num ASC
+  </select>
 </mapper>

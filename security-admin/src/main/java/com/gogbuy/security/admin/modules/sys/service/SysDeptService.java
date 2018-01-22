@@ -24,4 +24,6 @@ public interface SysDeptService {
     List<SysDept> getDeptByUserId(String userId);
 
     List<SysDept> findList(Map<String, Object> map);
+
+    List<SysDept> findByParentId(String parentId);
 }

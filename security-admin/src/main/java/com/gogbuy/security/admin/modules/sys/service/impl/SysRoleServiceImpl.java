@@ -2,7 +2,10 @@ package com.gogbuy.security.admin.modules.sys.service.impl;
 
 import com.gogbuy.security.admin.modules.sys.entity.SysRole;
 import com.gogbuy.security.admin.modules.sys.repository.SysRoleMapper;
+import com.gogbuy.security.admin.modules.sys.service.SysDeptRoleService;
+import com.gogbuy.security.admin.modules.sys.service.SysRolePermissionService;
 import com.gogbuy.security.admin.modules.sys.service.SysRoleService;
+import com.gogbuy.security.admin.modules.sys.service.SysUserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +20,24 @@ import java.util.List;
 public class SysRoleServiceImpl implements SysRoleService {
     @Autowired
     private SysRoleMapper roleMapper;
+    @Autowired
+    private SysUserRoleService userRoleService;
+    @Autowired
+    private SysDeptRoleService deptRoleService;
+    @Autowired
+    private SysRolePermissionService rolePermissionService;
+
     @Override
     public int deleteById(String id) {
-        return roleMapper.deleteByPrimaryKey(id);
+        //1.删除角色
+        roleMapper.deleteByPrimaryKey(id);
+        //2.删除用户角色
+        userRoleService.deleteByRoleId(id);
+        //3.删除部门角色
+        deptRoleService.deleteByRoleId(id);
+        //4.删除角色权限
+        rolePermissionService.deleteByRoleId(id);
+        return 1;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.gogbuy.security.admin.modules.sys.repository;
 
 import com.gogbuy.security.admin.modules.sys.entity.SysDept;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -23,4 +24,6 @@ public interface SysDeptMapper {
     List<SysDept> getDeptByUserId(String userId);
 
     List<SysDept> findList(Map<String, Object> map);
+
+    List<SysDept> findByParentId(@Param("parentId") String parentId);
 }
