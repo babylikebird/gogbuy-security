@@ -4,7 +4,7 @@ import com.gogbuy.security.admin.modules.sys.entity.SysMenu;
 import com.gogbuy.security.admin.modules.sys.repository.SysMenuMapper;
 import com.gogbuy.security.admin.modules.sys.service.SysElementService;
 import com.gogbuy.security.admin.modules.sys.service.SysMenuService;
-import com.gogbuy.security.admin.modules.sys.service.SysRolePermissionService;
+import com.gogbuy.security.admin.modules.sys.service.SysPrivilegeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ public class SysMenuServiceImpl implements SysMenuService{
     @Autowired
     private SysMenuMapper menuMapper;
     @Autowired
-    private SysRolePermissionService rolePermissionService;
+    private SysPrivilegeService rolePermissionService;
     @Autowired
     private SysElementService elementService;
 
@@ -35,7 +35,7 @@ public class SysMenuServiceImpl implements SysMenuService{
         //删除菜单
         menuMapper.deleteByPrimaryKey(id);
         //删除角色权限
-        rolePermissionService.deleteByPermissionId(id);
+        rolePermissionService.deleteByResourceId(id);
         //删除menu element
         elementService.deleteByMenuId(id);
         return 1;

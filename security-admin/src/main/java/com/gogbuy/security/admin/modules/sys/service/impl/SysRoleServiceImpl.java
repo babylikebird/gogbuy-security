@@ -3,7 +3,7 @@ package com.gogbuy.security.admin.modules.sys.service.impl;
 import com.gogbuy.security.admin.modules.sys.entity.SysRole;
 import com.gogbuy.security.admin.modules.sys.repository.SysRoleMapper;
 import com.gogbuy.security.admin.modules.sys.service.SysDeptRoleService;
-import com.gogbuy.security.admin.modules.sys.service.SysRolePermissionService;
+import com.gogbuy.security.admin.modules.sys.service.SysPrivilegeService;
 import com.gogbuy.security.admin.modules.sys.service.SysRoleService;
 import com.gogbuy.security.admin.modules.sys.service.SysUserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     @Autowired
     private SysDeptRoleService deptRoleService;
     @Autowired
-    private SysRolePermissionService rolePermissionService;
+    private SysPrivilegeService privilegeService;
 
     @Override
     public int deleteById(String id) {
@@ -36,7 +36,7 @@ public class SysRoleServiceImpl implements SysRoleService {
         //3.删除部门角色
         deptRoleService.deleteByRoleId(id);
         //4.删除角色权限
-        rolePermissionService.deleteByRoleId(id);
+        privilegeService.deleteByRoleId(id);
         return 1;
     }
 

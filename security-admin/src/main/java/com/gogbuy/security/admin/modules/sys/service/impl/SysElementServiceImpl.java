@@ -3,7 +3,7 @@ package com.gogbuy.security.admin.modules.sys.service.impl;
 import com.gogbuy.security.admin.modules.sys.entity.SysElement;
 import com.gogbuy.security.admin.modules.sys.repository.SysElementMapper;
 import com.gogbuy.security.admin.modules.sys.service.SysElementService;
-import com.gogbuy.security.admin.modules.sys.service.SysRolePermissionService;
+import com.gogbuy.security.admin.modules.sys.service.SysPrivilegeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,14 +19,14 @@ public class SysElementServiceImpl implements SysElementService {
     @Autowired
     private SysElementMapper elementMapper;
     @Autowired
-    private SysRolePermissionService rolePermissionService;
+    private SysPrivilegeService rolePermissionService;
 
     @Override
     public int deleteById(String id) {
         //1.删除菜单
         elementMapper.deleteByPrimaryKey(id);
         //2.删除角色权限
-        rolePermissionService.deleteByPermissionId(id);
+        rolePermissionService.deleteByResourceId(id);
         return 1;
     }
 

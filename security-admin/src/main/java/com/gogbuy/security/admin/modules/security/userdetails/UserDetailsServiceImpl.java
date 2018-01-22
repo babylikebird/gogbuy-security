@@ -1,9 +1,7 @@
 package com.gogbuy.security.admin.modules.security.userdetails;
 
-import com.gogbuy.security.admin.modules.sys.entity.SysDept;
-import com.gogbuy.security.admin.modules.sys.entity.SysPermission;
-import com.gogbuy.security.admin.modules.sys.entity.SysRole;
-import com.gogbuy.security.admin.modules.sys.entity.SysUser;
+import com.gogbuy.security.admin.common.utils.Constant;
+import com.gogbuy.security.admin.modules.sys.entity.*;
 import com.gogbuy.security.admin.modules.sys.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -32,7 +30,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private SysDeptService deptService;
     @Autowired
-    private SysPermissionService permissionService;
+    private SysPrivilegeService privilegeService;
+    @Autowired
+    private SysMenuService menuService;
+    @Autowired
+    private SysElementService elementService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -70,16 +72,28 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 /**
                  * <p>设置权限</p>
                  */
-                List<SysPermission> permissionList = permissionService.findPermissionByRoleId(role.getId());
-                if (permissionList != null && permissionList.size() > 0){
-                    for (SysPermission p : permissionList){
-                        GrantedAuthority g = new SimpleGrantedAuthority(p.getPerms());
-                        grantedAuthoritySet.add(g);
+                List<SysPrivilege> privilegeList = privilegeService.findByRoleId(role.getId());
+                if (privilegeList != null && privilegeList.size() > 0){
+                    for (SysPrivilege privilege : privilegeList){
+                        String resourceId = privilege.getResourceId();
+                        String resourceType = privilege.getResourceType();
+                        if (Constant.RESOURCE_TYPE_DIRECT.equals(resourceType) || Constant.RESOURCE_TYPE_MENU.equals(resourceType)){
+                            SysMenu menu = menuService.selectId(resourceId);
+                            if (menu != null && menu.getCode() != null){
+                                GrantedAuthority e1 = new SimpleGrantedAuthority(menu.getCode());
+                                grantedAuthoritySet.add(e1);
+                            }
+                        }else {
+                            SysElement element = elementService.selectById(resourceId);
+                            if (element != null && element.getCode() != null){
+                                GrantedAuthority e2 = new SimpleGrantedAuthority(element.getCode());
+                                grantedAuthoritySet.add(e2);
+                            }
+                        }
                     }
                 }
             }
         }
-
         GogUserDetails user = new GogUserDetails(username,sysUser.getPassword(),grantedAuthoritySet);
         user.setUser(sysUser);
         return user;
