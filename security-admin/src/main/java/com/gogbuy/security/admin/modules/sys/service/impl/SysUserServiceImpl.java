@@ -1,5 +1,8 @@
 package com.gogbuy.security.admin.modules.sys.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.gogbuy.security.admin.common.model.R;
 import com.gogbuy.security.admin.common.toolkit.IdWorker;
 import com.gogbuy.security.admin.modules.sys.entity.SysUser;
 import com.gogbuy.security.admin.modules.sys.repository.SysUserMapper;
@@ -7,11 +10,9 @@ import com.gogbuy.security.admin.modules.sys.service.SysUserDeptService;
 import com.gogbuy.security.admin.modules.sys.service.SysUserRoleService;
 import com.gogbuy.security.admin.modules.sys.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by Mr.Yangxiufeng on 2018/1/17.
@@ -42,6 +43,7 @@ public class SysUserServiceImpl implements SysUserService {
         record.setId(IdWorker.getIdStr());
         return userMapper.insert(record);
     }
+
     @Override
     public SysUser findById(String id) {
         return userMapper.selectByPrimaryKey(id);
@@ -63,7 +65,10 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public Set<String> getUserMenuId(String userId) {
-        return null;
+    public List<SysUser> list(Integer pageNum, Integer pageSize, SysUser user) {
+        if (pageNum != null && pageSize != null){
+            PageHelper.startPage(pageNum,pageSize);
+        }
+        return userMapper.list(user);
     }
 }

@@ -13,6 +13,11 @@ public class StatusCode {
     public static final int SUCCESS = 200;
 
     /**
+     * <p>失败</p>
+     */
+    public static final int FAILURE = 100;
+
+    /**
      * 认证相关
      */
     public static final int BAD_REQUEST = 400;

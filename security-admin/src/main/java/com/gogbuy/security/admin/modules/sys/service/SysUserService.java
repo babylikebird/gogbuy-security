@@ -1,7 +1,9 @@
 package com.gogbuy.security.admin.modules.sys.service;
 
+import com.gogbuy.security.admin.common.model.R;
 import com.gogbuy.security.admin.modules.sys.entity.SysUser;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -22,10 +24,5 @@ public interface SysUserService {
 
     int updateById(SysUser record);
 
-    /**
-     *
-     * @param userId
-     * @return
-     */
-    Set<String> getUserMenuId(String userId);
+    List<SysUser> list(Integer pageNum, Integer pageSize, SysUser user);
 }
