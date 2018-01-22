@@ -15,8 +15,10 @@ public class StatusCode {
     /**
      * 认证相关
      */
+    public static final int BAD_REQUEST = 400;
     public static final int NOT_FOUND = 404;
     public static final int UNAUTHORIZED = 401;
+    public static final int FORBIDDEN = 403;
     public static final int LOGIN_FAILURE = 40101;//用户名密码错误
     public static final int LOGIN_FAILURE_CODE_ERROR = 40102;//验证码错误
     public static final int LOGIN_FAILURE_USER_NOT_EXIST=40401;//登录失败，用户不存在

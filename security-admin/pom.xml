@@ -15,7 +15,9 @@
 		<artifactId>com.gogbuy.security</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
+	<properties>
 
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -47,6 +49,11 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		<!--pagehelper-->
+		<dependency>
+			<groupId>com.github.pagehelper</groupId>
+			<artifactId>pagehelper-spring-boot-starter</artifactId>
+		</dependency>
 		<!--数据库连接池-->
 		<dependency>
 			<groupId>com.alibaba</groupId>
@@ -59,10 +66,6 @@
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.github.pagehelper</groupId>
-			<artifactId>pagehelper-spring-boot-starter</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>io.springfox</groupId>

@@ -20,7 +20,7 @@ public class SysUserController {
     @Autowired
     private SysUserService userService;
 
-    @RequestMapping(value = "get/{id}",method = RequestMethod.GET)
+    @RequestMapping(value = "get/{id}")
     public R getUserById(@PathVariable("id") String id){
         R r = R.ok();
         r.setData(userService.findById(id));
