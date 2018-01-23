@@ -45,8 +45,9 @@ public class R<T> implements Serializable{
         return data;
     }
 
-    public void setData(T data) {
+    public R setData(T data) {
         this.data = data;
+        return this;
     }
 
     public String getDescription() {

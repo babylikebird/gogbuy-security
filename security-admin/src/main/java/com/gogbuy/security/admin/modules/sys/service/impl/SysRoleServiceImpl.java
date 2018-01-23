@@ -1,5 +1,6 @@
 package com.gogbuy.security.admin.modules.sys.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.gogbuy.security.admin.modules.sys.entity.SysRole;
 import com.gogbuy.security.admin.modules.sys.repository.SysRoleMapper;
 import com.gogbuy.security.admin.modules.sys.service.SysDeptRoleService;
@@ -68,5 +69,41 @@ public class SysRoleServiceImpl implements SysRoleService {
     @Override
     public List<SysRole> findRoleByDeptId(String deptId) {
         return roleMapper.findRoleByDeptId(deptId);
+    }
+
+    @Override
+    public List<SysRole> list(Integer pageNum, Integer pageSize, SysRole role) {
+        if (pageNum != null && pageSize != null){
+            PageHelper.startPage(pageNum,pageSize);
+        }
+        return roleMapper.list(role);
+    }
+
+    @Override
+    public SysRole findOneByEntity(SysRole role) {
+        List<SysRole> list = findByEntity(role);
+        if (list != null && list.size() > 0){
+            return list.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public List<SysRole> findByEntity(SysRole role) {
+        return roleMapper.list(role);
+    }
+
+    @Override
+    public SysRole findByRoleName(String roleName) {
+        SysRole role = new SysRole();
+        role.setRoleName(roleName);
+        return findOneByEntity(role);
+    }
+
+    @Override
+    public SysRole findByRoleValue(String roleValue) {
+        SysRole role = new SysRole();
+        role.setRoleName(roleValue);
+        return findOneByEntity(role);
     }
 }

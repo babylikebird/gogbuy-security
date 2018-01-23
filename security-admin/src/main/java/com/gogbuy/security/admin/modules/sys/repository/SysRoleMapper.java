@@ -23,4 +23,8 @@ public interface SysRoleMapper {
     List<SysRole> findRoleByUserId(@Param("userId") String userId);
 
     List<SysRole> findRoleByDeptId(@Param("deptId") String deptId);
+
+    List<SysRole> list(SysRole role);
+
+    SysRole findOneByEntity(SysRole role);
 }

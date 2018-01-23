@@ -38,6 +38,11 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
+
+    /**
+     * <P>注意：想要在Controller验证非实体，需要如下实例化Bean</P>
+     * @return
+     */
     @Bean
     public MethodValidationPostProcessor methodValidationPostProcessor(){
         return new MethodValidationPostProcessor();

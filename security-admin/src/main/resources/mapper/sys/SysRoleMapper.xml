@@ -96,4 +96,40 @@
   <select id="findRoleByDeptId" parameterType="string" resultMap="BaseResultMap">
     SELECT r.* FROM sys_role r,sys_dept_role d WHERE r.role_id=d.role_id AND d.dept_id=#{deptId}
   </select>
+  <select id="list" parameterType="com.gogbuy.security.admin.modules.sys.entity.SysRole" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM sys_role
+    <where>
+      <if test="roleName != null">
+        role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roleValue != null">
+        role_value = #{roleValue,jdbcType=VARCHAR},
+      </if>
+    </where>
+  </select>
+  <select id="findOneByEntity" parameterType="com.gogbuy.security.admin.modules.sys.entity.SysRole" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM sys_role
+    <where>
+      <if test="roleName != null">
+        role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roleValue != null">
+        role_value = #{roleValue,jdbcType=VARCHAR},
+      </if>
+    </where>
+  </select>
 </mapper>

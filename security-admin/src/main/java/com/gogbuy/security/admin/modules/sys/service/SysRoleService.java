@@ -16,6 +16,14 @@ public interface SysRoleService {
 
     SysRole findById(String id);
 
+    SysRole findByRoleName(String roleName);
+
+    SysRole findByRoleValue(String roleValue);
+
+    SysRole findOneByEntity(SysRole role);
+
+    List<SysRole> findByEntity(SysRole role);
+
     int updateByIdSelective(SysRole record);
 
     int updateById(SysRole record);
@@ -23,4 +31,6 @@ public interface SysRoleService {
     List<SysRole> findRoleByUserId(String userId);
 
     List<SysRole> findRoleByDeptId(String deptId);
+
+    List<SysRole> list(Integer pageNum,Integer pageSize,SysRole role);
 }

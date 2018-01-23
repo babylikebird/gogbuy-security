@@ -4,7 +4,6 @@ import com.github.pagehelper.PageInfo;
 import com.gogbuy.security.admin.common.model.R;
 import com.gogbuy.security.admin.common.toolkit.IdWorker;
 import com.gogbuy.security.admin.common.toolkit.PasswordEncodeUtil;
-import com.gogbuy.security.admin.common.utils.Constant;
 import com.gogbuy.security.admin.common.utils.StatusCode;
 import com.gogbuy.security.admin.modules.security.toolkit.UserHolder;
 import com.gogbuy.security.admin.modules.sys.entity.SysUser;
@@ -44,13 +43,17 @@ public class SysUserController {
         r.setData(pageInfo);
         return r;
     }
-    @RequestMapping(value = "add",method = RequestMethod.POST)
-    public R list(SysUser user){
+    @RequestMapping(value = "save",method = RequestMethod.POST)
+    public R save(SysUser user){
         if (StringUtils.isEmpty(user.getUsername())){
             return R.failure(StatusCode.FAILURE,"用户名不能为空");
         }
         if (StringUtils.isEmpty(user.getPassword())){
             return R.failure(StatusCode.FAILURE,"密码不能为空");
+        }
+        SysUser sysUser = userService.findByUsername(user.getUsername());
+        if (sysUser != null){
+            return R.failure(StatusCode.FAILURE,"用户名已存在");
         }
         user.setId(IdWorker.getIdStr());
         user.setPassword(PasswordEncodeUtil.standEncode(user.getPassword()));
@@ -123,7 +126,7 @@ public class SysUserController {
         return R.ok();
     }
 
-    @RequestMapping(value = "{id}",method = RequestMethod.POST)
+    @RequestMapping(value = "{id}",method = RequestMethod.GET)
     public R getUserById(@PathVariable("id") String id){
         R r = R.ok();
         r.setData(userService.findById(id));
