@@ -4,7 +4,6 @@ import com.gogbuy.security.admin.common.model.R;
 import com.gogbuy.security.admin.modules.sys.entity.SysUser;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Mr.Yangxiufeng on 2018/1/17.
@@ -12,7 +11,7 @@ import java.util.Set;
  * ProjectName:gogbuy-security
  */
 public interface SysUserService {
-    int deleteById(String id);
+    R deleteById(String id);
 
     int save(SysUser record);
 

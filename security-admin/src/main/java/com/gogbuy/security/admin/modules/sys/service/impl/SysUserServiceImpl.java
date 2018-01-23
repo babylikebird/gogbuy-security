@@ -1,9 +1,10 @@
 package com.gogbuy.security.admin.modules.sys.service.impl;
 
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.gogbuy.security.admin.common.model.R;
 import com.gogbuy.security.admin.common.toolkit.IdWorker;
+import com.gogbuy.security.admin.common.utils.StatusCode;
+import com.gogbuy.security.admin.modules.sys.constant.IdConstant;
 import com.gogbuy.security.admin.modules.sys.entity.SysUser;
 import com.gogbuy.security.admin.modules.sys.repository.SysUserMapper;
 import com.gogbuy.security.admin.modules.sys.service.SysUserDeptService;
@@ -29,13 +30,16 @@ public class SysUserServiceImpl implements SysUserService {
     private SysUserDeptService userDeptService;
 
     @Override
-    public int deleteById(String id) {
+    public R deleteById(String id) {
+        if (IdConstant.SYS_ADMIN_ID.equals(id)){
+            return R.failure(StatusCode.FAILURE,"不能删除系统管理员");
+        }
         userMapper.deleteByPrimaryKey(id);
         //删除用户角色
         userRoleService.deleteByUserId(id);
         //删除用户部门
         userDeptService.deleteByUserId(id);
-        return 1;
+        return R.ok();
     }
 
     @Override

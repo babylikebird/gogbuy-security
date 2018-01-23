@@ -1,6 +1,8 @@
 package com.gogbuy.security.admin.common.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -35,5 +37,9 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
                 .addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
+    }
+    @Bean
+    public MethodValidationPostProcessor methodValidationPostProcessor(){
+        return new MethodValidationPostProcessor();
     }
 }

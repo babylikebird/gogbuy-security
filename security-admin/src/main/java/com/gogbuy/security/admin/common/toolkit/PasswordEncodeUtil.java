@@ -9,6 +9,10 @@ import org.springframework.security.crypto.password.StandardPasswordEncoder;
  * ProjectName:gogbuy-security
  */
 public class PasswordEncodeUtil {
+    /**
+     * 初始密码
+     */
+    public static final String ORIGIN_PASSWORD = "88668866";
 
     public static String standEncode(String rawPass){
         StandardPasswordEncoder standardPasswordEncoder = new StandardPasswordEncoder();
