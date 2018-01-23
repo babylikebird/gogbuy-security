@@ -39,10 +39,10 @@
         id = #{id},
       </if>
       <if test="userId != null">
-        user_id = #{user_id},
+        AND user_id = #{user_id},
       </if>
       <if test="roleId != null">
-        role_id = #{roleId}
+        AND role_id = #{roleId}
       </if>
     </where>
   </select>

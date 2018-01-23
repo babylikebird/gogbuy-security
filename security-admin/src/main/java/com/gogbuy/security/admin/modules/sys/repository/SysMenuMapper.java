@@ -21,4 +21,6 @@ public interface SysMenuMapper {
     int updateByPrimaryKey(SysMenu record);
 
     List<SysMenu> findByParentId(@Param("parentId") String parentId);
+
+    List<SysMenu> findByEntity(SysMenu menu);
 }

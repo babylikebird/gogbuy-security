@@ -162,22 +162,22 @@
         username = #{username,jdbcType=VARCHAR},
       </if>
       <if test="email != null">
-        email = #{email,jdbcType=VARCHAR},
+        AND email = #{email,jdbcType=VARCHAR},
       </if>
       <if test="mobile != null">
-        mobile = #{mobile,jdbcType=VARCHAR},
+        AND mobile = #{mobile,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
-        status = #{status,jdbcType=INTEGER},
+        AND status = #{status,jdbcType=INTEGER},
       </if>
       <if test="deptId != null">
-        dept_id = #{deptId,jdbcType=VARCHAR},
+        AND dept_id = #{deptId,jdbcType=VARCHAR},
       </if>
       <if test="avatar != null">
-        avatar = #{avatar,jdbcType=VARCHAR},
+        AND avatar = #{avatar,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
+        AND create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
     </where>
   </select>

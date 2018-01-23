@@ -122,13 +122,13 @@
         role_name = #{roleName,jdbcType=VARCHAR},
       </if>
       <if test="remark != null">
-        remark = #{remark,jdbcType=VARCHAR},
+        AND remark = #{remark,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
+        AND create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="roleValue != null">
-        role_value = #{roleValue,jdbcType=VARCHAR},
+        AND role_value = #{roleValue,jdbcType=VARCHAR},
       </if>
     </where>
   </select>

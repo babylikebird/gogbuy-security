@@ -1,5 +1,6 @@
 package com.gogbuy.security.admin.modules.sys.service;
 
+import com.gogbuy.security.admin.common.model.R;
 import com.gogbuy.security.admin.modules.sys.entity.SysMenu;
 
 import java.util.List;
@@ -10,11 +11,15 @@ import java.util.List;
  * ProjectName:gogbuy-security
  */
 public interface SysMenuService {
-    int deleteById(String id);
+    R deleteById(String id);
 
     int insert(SysMenu record);
 
     SysMenu selectId(String id);
+
+    List<SysMenu> findByEntity(SysMenu menu);
+
+    SysMenu findByCode(String code);
 
     List<SysMenu> findByParentId(String parentId);
 

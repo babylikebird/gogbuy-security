@@ -20,7 +20,11 @@ public interface SysElementService {
 
     List<SysElement> findByMenuId(String menuId);
 
+    SysElement findByCode(String code);
+
     int updateByIdSelective(SysElement record);
 
     int updateById(SysElement record);
+
+    List<SysElement> list(String menuId,Integer pageNum,Integer pageSize);
 }

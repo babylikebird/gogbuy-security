@@ -1,12 +1,14 @@
 package com.gogbuy.security.admin.modules.sys.entity;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import java.util.Date;
 
 public class SysMenu {
     private String id;
-
+    @NotEmpty(message = "菜单名不能为空")
     private String name;
-
+    @NotEmpty(message = "菜单编码不能为空")
     private String code;
 
     private String uri;

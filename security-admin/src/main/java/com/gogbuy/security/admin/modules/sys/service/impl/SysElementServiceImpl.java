@@ -1,5 +1,6 @@
 package com.gogbuy.security.admin.modules.sys.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.gogbuy.security.admin.modules.sys.entity.SysElement;
 import com.gogbuy.security.admin.modules.sys.repository.SysElementMapper;
 import com.gogbuy.security.admin.modules.sys.service.SysElementService;
@@ -67,5 +68,19 @@ public class SysElementServiceImpl implements SysElementService {
     @Override
     public int updateById(SysElement record) {
         return elementMapper.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public List<SysElement> list(String menuId, Integer pageNum, Integer pageSize) {
+        if (pageNum != null && pageSize != null){
+            PageHelper.startPage(pageNum,pageSize);
+        }
+        return findByMenuId(menuId);
+    }
+
+    @Override
+    public SysElement findByCode(String code) {
+
+        return null;
     }
 }

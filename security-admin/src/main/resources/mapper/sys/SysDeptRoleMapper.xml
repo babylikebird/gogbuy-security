@@ -76,15 +76,17 @@
   </delete>
   <select id="findByEntity" parameterType="com.gogbuy.security.admin.modules.sys.entity.SysDeptRole" resultMap="BaseResultMap">
     SELECT * FROM sys_dept_role
-    WHERE
-    <if test="id != null">
-      id = #{id,jdbcType=VARCHAR},
-    </if>
-    <if test="roleId != null">
-      AND role_id = #{roleId,jdbcType=VARCHAR},
-    </if>
-    <if test="deptId != null">
-      AND dept_id = #{deptId,jdbcType=VARCHAR},
-    </if>
+    <where>
+      <if test="id != null">
+        id = #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null">
+        AND role_id = #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="deptId != null">
+        AND dept_id = #{deptId,jdbcType=VARCHAR},
+      </if>
+    </where>
+
   </select>
 </mapper>

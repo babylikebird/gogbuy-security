@@ -1,14 +1,21 @@
 package com.gogbuy.security.admin.modules.sys.entity;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import java.io.Serializable;
 import java.util.Date;
 
-public class SysElement {
+public class SysElement implements Serializable{
+    private static final long serialVersionUID = 6378065397772456492L;
     private String id;
-
+    @NotEmpty(message = "页面元素code不能为空")
     private String code;
-
+    @Max(value = 3,message = "页面元素类型值2-3")
+    @Min(value = 2,message = "页面元素类型值2-3")
     private Integer type;
-
+    @NotEmpty(message = "页面元素名称不能为空")
     private String name;
 
     private String uri;

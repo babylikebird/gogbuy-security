@@ -1,5 +1,7 @@
 package com.gogbuy.security.admin.modules.sys.service.impl;
 
+import com.gogbuy.security.admin.common.model.R;
+import com.gogbuy.security.admin.common.utils.StatusCode;
 import com.gogbuy.security.admin.modules.sys.entity.SysMenu;
 import com.gogbuy.security.admin.modules.sys.repository.SysMenuMapper;
 import com.gogbuy.security.admin.modules.sys.service.SysElementService;
@@ -25,12 +27,12 @@ public class SysMenuServiceImpl implements SysMenuService{
     private SysElementService elementService;
 
     @Override
-    public int deleteById(String id) {
+    public R deleteById(String id) {
 
         //有子菜单的时候，不能删除，需要先删除子菜单
         List<SysMenu> menuList = findByParentId(id);
         if (menuList != null && menuList.size() > 0){
-            return -1;
+            return R.failure(StatusCode.FAILURE,"需要先删除子菜单");
         }
         //删除菜单
         menuMapper.deleteByPrimaryKey(id);
@@ -38,12 +40,12 @@ public class SysMenuServiceImpl implements SysMenuService{
         rolePermissionService.deleteByResourceId(id);
         //删除menu element
         elementService.deleteByMenuId(id);
-        return 1;
+        return R.ok();
     }
 
     @Override
     public int insert(SysMenu record) {
-        return menuMapper.insert(record);
+        return menuMapper.insertSelective(record);
     }
 
     @Override
@@ -64,5 +66,21 @@ public class SysMenuServiceImpl implements SysMenuService{
     @Override
     public List<SysMenu> findByParentId(String parentId) {
         return menuMapper.findByParentId(parentId);
+    }
+
+    @Override
+    public List<SysMenu> findByEntity(SysMenu menu) {
+        return menuMapper.findByEntity(menu);
+    }
+
+    @Override
+    public SysMenu findByCode(String code) {
+        SysMenu menu = new SysMenu();
+        menu.setCode(code);
+        List<SysMenu> list = findByEntity(menu);
+        if (list != null && list.size() > 0){
+            return list.get(0);
+        }
+        return null;
     }
 }

@@ -7,6 +7,8 @@ import com.gogbuy.security.admin.common.toolkit.PasswordEncodeUtil;
 import com.gogbuy.security.admin.common.utils.StatusCode;
 import com.gogbuy.security.admin.modules.security.toolkit.UserHolder;
 import com.gogbuy.security.admin.modules.sys.entity.SysUser;
+import com.gogbuy.security.admin.modules.sys.entity.SysUserRole;
+import com.gogbuy.security.admin.modules.sys.service.SysUserRoleService;
 import com.gogbuy.security.admin.modules.sys.service.SysUserService;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,8 @@ import java.util.List;
 public class SysUserController {
     @Autowired
     private SysUserService userService;
+    @Autowired
+    private SysUserRoleService userRoleService;
 
     @RequestMapping(value = "list",method = RequestMethod.POST)
     public R list(Integer pageNum, Integer pageSize, SysUser user){
@@ -143,7 +147,22 @@ public class SysUserController {
      * @return
      */
     @RequestMapping(value = "setRole",method = RequestMethod.POST)
-    public R setRole(String userId,@RequestParam(value = "roleIds[]")String roleIds){
+    public R setRole(String userId,@RequestParam(value = "roleIds[]")String[] roleIds){
+        if (userService.findById(userId) == null){
+            return R.failure(StatusCode.FAILURE,"用户不存在");
+        }
+        //删除之前的记录
+        userRoleService.deleteByUserId(userId);
+        //插入记录
+        if (roleIds != null && roleIds.length > 0){
+            for (String roleId:roleIds){
+                SysUserRole userRole = new SysUserRole();
+                userRole.setId(IdWorker.getIdStr());
+                userRole.setUserId(userId);
+                userRole.setRoleId(roleId);
+                userRoleService.save(userRole);
+            }
+        }
         return R.ok();
     }
 }
