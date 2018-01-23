@@ -12,10 +12,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -137,5 +134,16 @@ public class SysUserController {
         R r = R.ok();
         r.setData(UserHolder.getCurrentUser());
         return r;
+    }
+
+    /**
+     * <p>设置角色，应该做适当的权限控制，如管理员才能设置</p>
+     * @param userId
+     * @param roleIds
+     * @return
+     */
+    @RequestMapping(value = "setRole",method = RequestMethod.POST)
+    public R setRole(String userId,@RequestParam(value = "roleIds[]")String roleIds){
+        return R.ok();
     }
 }

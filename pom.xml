@@ -33,10 +33,13 @@
 		<commons.io.version>2.6</commons.io.version>
 		<swagger.ui.version>2.7.0</swagger.ui.version>
 		<org.aspectj.version>1.8.13</org.aspectj.version>
+		<!--用于自动生成代码-->
+		<velocity.version>1.7</velocity.version>
 	</properties>
 	<modules>
 		<module>security-admin</module>
 		<module>security-oauth2.0</module>
+		<module>security-generator</module>
 	</modules>
 	<dependencies>
 

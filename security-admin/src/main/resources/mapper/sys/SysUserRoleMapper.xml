@@ -31,4 +31,19 @@
   <delete id="deleteByRoleId" parameterType="string">
     DELETE FROM sys_user_role WHERE role_id = #{roleId}
   </delete>
+  <select id="findByEntity" parameterType="com.gogbuy.security.admin.modules.sys.entity.SysUserRole" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM sys_user_role
+    <where>
+      <if test="id != null">
+        id = #{id},
+      </if>
+      <if test="userId != null">
+        user_id = #{user_id},
+      </if>
+      <if test="roleId != null">
+        role_id = #{roleId}
+      </if>
+    </where>
+  </select>
 </mapper>

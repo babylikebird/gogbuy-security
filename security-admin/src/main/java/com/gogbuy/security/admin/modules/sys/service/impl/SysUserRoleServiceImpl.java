@@ -6,6 +6,8 @@ import com.gogbuy.security.admin.modules.sys.service.SysUserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by Mr.Yangxiufeng on 2018/1/18.
  * Time:17:02
@@ -34,5 +36,24 @@ public class SysUserRoleServiceImpl implements SysUserRoleService {
     @Override
     public int save(SysUserRole record) {
         return userRoleMapper.insert(record);
+    }
+
+    @Override
+    public List<SysUserRole> findByUserId(String userId) {
+        SysUserRole userRole = new SysUserRole();
+        userRole.setUserId(userId);
+        return findByEntity(userRole);
+    }
+
+    @Override
+    public List<SysUserRole> findByRoleId(String roleId) {
+        SysUserRole userRole = new SysUserRole();
+        userRole.setRoleId(roleId);
+        return findByEntity(userRole);
+    }
+
+    @Override
+    public List<SysUserRole> findByEntity(SysUserRole userRole) {
+        return userRoleMapper.findByEntity(userRole);
     }
 }
