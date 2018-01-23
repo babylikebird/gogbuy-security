@@ -149,7 +149,7 @@ public class SysUserController {
      */
     @ApiOperation(value = "设置用户角色")
     @RequestMapping(value = "setRole",method = RequestMethod.POST)
-    public R setRole(String userId,@RequestParam(value = "roleIds[]")String[] roleIds){
+    public R setRole(String userId,@RequestParam(value = "roleIds")String[] roleIds){
         if (userService.findById(userId) == null){
             return R.failure(StatusCode.FAILURE,"用户不存在");
         }
