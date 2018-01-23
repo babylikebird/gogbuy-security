@@ -1,9 +1,6 @@
 package com.gogbuy.security.admin.common.config;
 
-import com.gogbuy.security.admin.modules.security.authentication.GogLoginUrlAuthenticationEntryPoint;
-import com.gogbuy.security.admin.modules.security.authentication.GogLogoutSuccessHandler;
-import com.gogbuy.security.admin.modules.security.authentication.GogUrlAuthenticationFailureHandler;
-import com.gogbuy.security.admin.modules.security.authentication.GogUrlAuthenticationSuccessHandler;
+import com.gogbuy.security.admin.modules.security.authentication.*;
 import com.gogbuy.security.admin.modules.security.filter.GogUsernamePasswordAuthenticationFilter;
 import com.gogbuy.security.admin.modules.security.userdetails.UserDetailsServiceImpl;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
@@ -48,7 +45,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated().and()
                 // 添加验证码验证
                 .addFilterAt(gogUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class).exceptionHandling()
-                .authenticationEntryPoint(new GogLoginUrlAuthenticationEntryPoint()).and()
+                .authenticationEntryPoint(new GogLoginUrlAuthenticationEntryPoint())//自定义没等来返回
+                .accessDeniedHandler(new GogAccessDeniedHandler())//自定义权限不够失败返回
+                .and()
                 .formLogin()
                 // 登陆处理路径
                 .loginProcessingUrl("/login").permitAll().and()
