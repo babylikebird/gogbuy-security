@@ -16,11 +16,15 @@ public interface SysElementService {
 
     int insert(SysElement record);
 
+    int insertSelective(SysElement record);
+
     SysElement selectById(String id);
 
     List<SysElement> findByMenuId(String menuId);
 
     SysElement findByCode(String code);
+
+    List<SysElement> findByEntity(SysElement entity);
 
     int updateByIdSelective(SysElement record);
 

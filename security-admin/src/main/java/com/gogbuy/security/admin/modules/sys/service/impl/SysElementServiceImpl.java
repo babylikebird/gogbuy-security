@@ -51,6 +51,11 @@ public class SysElementServiceImpl implements SysElementService {
     }
 
     @Override
+    public int insertSelective(SysElement record) {
+        return elementMapper.insertSelective(record);
+    }
+
+    @Override
     public SysElement selectById(String id) {
         return elementMapper.selectByPrimaryKey(id);
     }
@@ -80,7 +85,17 @@ public class SysElementServiceImpl implements SysElementService {
 
     @Override
     public SysElement findByCode(String code) {
-
+        SysElement element = new SysElement();
+        element.setCode(code);
+        List<SysElement> list = findByEntity(element);
+        if (list != null && list.size() > 0){
+            return list.get(0);
+        }
         return null;
+    }
+
+    @Override
+    public List<SysElement> findByEntity(SysElement entity) {
+        return elementMapper.findByEntity(entity);
     }
 }

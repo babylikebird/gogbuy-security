@@ -10,6 +10,7 @@ import com.gogbuy.security.admin.modules.sys.entity.SysUser;
 import com.gogbuy.security.admin.modules.sys.entity.SysUserRole;
 import com.gogbuy.security.admin.modules.sys.service.SysUserRoleService;
 import com.gogbuy.security.admin.modules.sys.service.SysUserService;
+import io.swagger.annotations.ApiOperation;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -146,6 +147,7 @@ public class SysUserController {
      * @param roleIds
      * @return
      */
+    @ApiOperation(value = "设置用户角色")
     @RequestMapping(value = "setRole",method = RequestMethod.POST)
     public R setRole(String userId,@RequestParam(value = "roleIds[]")String[] roleIds){
         if (userService.findById(userId) == null){
@@ -163,6 +165,11 @@ public class SysUserController {
                 userRoleService.save(userRole);
             }
         }
+        return R.ok();
+    }
+    @ApiOperation(value = "获取用户菜单")
+    @RequestMapping(value = "{id}/menu",method = RequestMethod.POST)
+    public R getUserMenu(@PathVariable("id") String id){
         return R.ok();
     }
 }

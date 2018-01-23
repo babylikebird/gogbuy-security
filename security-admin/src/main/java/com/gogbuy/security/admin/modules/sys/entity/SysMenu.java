@@ -2,6 +2,8 @@ package com.gogbuy.security.admin.modules.sys.entity;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.Date;
 
 public class SysMenu {
@@ -18,7 +20,8 @@ public class SysMenu {
     private String icon;
 
     private String parentId;
-
+    @Max(value = 1,message = "菜单类型值0-1")
+    @Min(value = 0,message = "菜单类型值0-1")
     private Integer type;
 
     private Integer orderNum;

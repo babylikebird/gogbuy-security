@@ -23,4 +23,6 @@ public interface SysElementMapper {
     int deleteByMenuId(@Param("menuId") String menuId);
 
     List<SysElement> findByMenuId(@Param("menuId") String menuId);
+
+    List<SysElement> findByEntity(SysElement entity);
 }
