@@ -7,10 +7,9 @@ import com.gogbuy.security.admin.common.toolkit.PasswordEncodeUtil;
 import com.gogbuy.security.admin.common.utils.StatusCode;
 import com.gogbuy.security.admin.modules.sys.entity.SysMenu;
 import com.gogbuy.security.admin.modules.sys.entity.SysUser;
+import com.gogbuy.security.admin.modules.sys.entity.SysUserDept;
 import com.gogbuy.security.admin.modules.sys.entity.SysUserRole;
-import com.gogbuy.security.admin.modules.sys.service.SysMenuService;
-import com.gogbuy.security.admin.modules.sys.service.SysUserRoleService;
-import com.gogbuy.security.admin.modules.sys.service.SysUserService;
+import com.gogbuy.security.admin.modules.sys.service.*;
 import io.swagger.annotations.ApiOperation;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +38,10 @@ public class SysUserController {
     private SysUserRoleService userRoleService;
     @Autowired
     private SysMenuService menuService;
+    @Autowired
+    private SysDeptService deptService;
+    @Autowired
+    private SysUserDeptService userDeptService;
 
     @ApiOperation("获取用户列表")
     @RequestMapping(value = "list",method = RequestMethod.POST)
@@ -176,6 +179,24 @@ public class SysUserController {
         }
         return R.ok();
     }
+    @ApiOperation("设置用户所在的部门")
+    @RequestMapping(value = "setDept",method = RequestMethod.POST)
+    public R setDept(String userId,String deptId){
+        //一个用户属于一个部门
+        if (userService.findById(userId) == null){
+            return R.failure(StatusCode.FAILURE,"用户不存在");
+        }
+        if (deptService.findById(deptId) == null){
+            return R.failure(StatusCode.FAILURE,"部门不存在");
+        }
+        userDeptService.deleteByUserId(userId);
+        SysUserDept userDept = new SysUserDept();
+        userDept.setDeptId(deptId);
+        userDept.setUserId(userId);
+        userDeptService.save(userDept);
+        return R.ok();
+    }
+    
     @ApiOperation(value = "获取用户菜单")
     @RequestMapping(value = "menu/{id}",method = RequestMethod.POST)
     public R getUserMenu(@PathVariable("id") String id){
