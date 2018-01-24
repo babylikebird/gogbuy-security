@@ -17,6 +17,8 @@ public interface SysMenuService {
 
     SysMenu selectId(String id);
 
+    List<SysMenu> list(Integer pageNum,Integer pageSize,SysMenu menu);
+
     List<SysMenu> findByEntity(SysMenu menu);
 
     SysMenu findByCode(String code);

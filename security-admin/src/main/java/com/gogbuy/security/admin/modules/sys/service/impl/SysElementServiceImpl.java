@@ -76,11 +76,11 @@ public class SysElementServiceImpl implements SysElementService {
     }
 
     @Override
-    public List<SysElement> list(String menuId, Integer pageNum, Integer pageSize) {
+    public List<SysElement> list(Integer pageNum, Integer pageSize,SysElement element) {
         if (pageNum != null && pageSize != null){
             PageHelper.startPage(pageNum,pageSize);
         }
-        return findByMenuId(menuId);
+        return findByEntity(element);
     }
 
     @Override

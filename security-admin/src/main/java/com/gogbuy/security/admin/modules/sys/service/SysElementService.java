@@ -30,5 +30,5 @@ public interface SysElementService {
 
     int updateById(SysElement record);
 
-    List<SysElement> list(String menuId,Integer pageNum,Integer pageSize);
+    List<SysElement> list(Integer pageNum, Integer pageSize, SysElement element);
 }

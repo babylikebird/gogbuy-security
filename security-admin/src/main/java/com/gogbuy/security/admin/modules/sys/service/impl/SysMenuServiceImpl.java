@@ -1,5 +1,6 @@
 package com.gogbuy.security.admin.modules.sys.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.gogbuy.security.admin.common.model.R;
 import com.gogbuy.security.admin.common.utils.StatusCode;
 import com.gogbuy.security.admin.modules.sys.constant.IdConstant;
@@ -85,5 +86,13 @@ public class SysMenuServiceImpl implements SysMenuService{
             return list.get(0);
         }
         return null;
+    }
+
+    @Override
+    public List<SysMenu> list(Integer pageNum, Integer pageSize, SysMenu menu) {
+        if (pageNum != null && pageSize != null){
+            PageHelper.startPage(pageNum,pageSize);
+        }
+        return findByEntity(menu);
     }
 }

@@ -46,11 +46,12 @@ public class SysElementController {
         return R.ok();
     }
     @RequestMapping(value = "list",method = RequestMethod.POST)
-    public R list(String menuId,Integer pageNum,Integer pageSize){
-        List<SysElement> list = elementService.list(menuId,pageNum,pageSize);
+    public R list(Integer pageNum,Integer pageSize,SysElement element){
+        List<SysElement> list = elementService.list(pageNum,pageSize,element);
         PageInfo pageInfo = new PageInfo(list);
         return R.ok().setData(pageInfo);
     }
+
     @RequestMapping(value = "delete/{id}",method = RequestMethod.POST)
     public R delete(@PathVariable("id") String id){
         elementService.deleteById(id);

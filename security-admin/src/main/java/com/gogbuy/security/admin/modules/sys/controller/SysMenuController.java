@@ -1,5 +1,6 @@
 package com.gogbuy.security.admin.modules.sys.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.gogbuy.security.admin.common.model.R;
 import com.gogbuy.security.admin.common.toolkit.FieldErrorBuilder;
 import com.gogbuy.security.admin.common.toolkit.IdWorker;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Mr.Yangxiufeng on 2018/1/22.
@@ -28,12 +30,17 @@ public class SysMenuController {
     @Autowired
     private SysMenuService menuService;
 
-    @RequestMapping(value = "menuTree",method = RequestMethod.POST)
+    @RequestMapping(value = "tree",method = RequestMethod.POST)
     public R menuTree(){
         //TODO 获取树形结构
         return R.ok();
     }
-
+    @RequestMapping(value = "list",method = RequestMethod.POST)
+    public R list(Integer pageNum,Integer pageSize,SysMenu menu){
+        List<SysMenu> list = menuService.list(pageNum,pageSize,menu);
+        PageInfo info = new PageInfo(list);
+        return R.ok().setData(info);
+    }
     /**
      * <p>管理员以上才能创建菜单</p>
      * @param menu
