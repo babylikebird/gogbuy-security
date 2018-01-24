@@ -15,10 +15,11 @@
     <result column="level" jdbcType="INTEGER" property="level" />
     <result column="create_by" jdbcType="VARCHAR" property="createBy" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="path" jdbcType="VARCHAR" property="path"/>
   </resultMap>
   <sql id="Base_Column_List">
     id, name, code, uri, method, icon, parent_id, type, order_num, description, level, 
-    create_by, create_time
+    create_by, create_time,path
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -35,12 +36,12 @@
       uri, method, icon, 
       parent_id, type, order_num, 
       description, level, create_by, 
-      create_time)
+      create_time,path)
     values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
       #{uri,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, 
       #{parentId,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{orderNum,jdbcType=INTEGER}, 
       #{description,jdbcType=VARCHAR}, #{level,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP})
+      #{createTime,jdbcType=TIMESTAMP},#{path,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.gogbuy.security.admin.modules.sys.entity.SysMenu">
     insert into sys_menu
@@ -84,6 +85,9 @@
       <if test="createTime != null">
         create_time,
       </if>
+      <if test="path != null">
+        path,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -124,6 +128,9 @@
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="path != null">
+        #{path,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -166,6 +173,9 @@
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="path != null">
+        path = #{path,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -182,7 +192,8 @@
       description = #{description,jdbcType=VARCHAR},
       level = #{level,jdbcType=INTEGER},
       create_by = #{createBy,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      path = #{path,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <select id="findByParentId" parameterType="string" resultMap="BaseResultMap">
@@ -232,6 +243,9 @@
       </if>
       <if test="createTime != null">
         AND create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="path != null">
+        AND path = #{path,jdbcType=VARCHAR}
       </if>
     </where>
   </select>
