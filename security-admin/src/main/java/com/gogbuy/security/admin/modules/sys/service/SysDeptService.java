@@ -3,7 +3,6 @@ package com.gogbuy.security.admin.modules.sys.service;
 import com.gogbuy.security.admin.modules.sys.entity.SysDept;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Mr.Yangxiufeng on 2018/1/17.
@@ -23,7 +22,9 @@ public interface SysDeptService {
 
     List<SysDept> getDeptByUserId(String userId);
 
-    List<SysDept> findList(Map<String, Object> map);
+    List<SysDept> list(Integer pageNum,Integer pageSize,SysDept dept);
 
     List<SysDept> findByParentId(String parentId);
+
+    List<SysDept> findByEntity(SysDept dept);
 }

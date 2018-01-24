@@ -21,9 +21,9 @@ public interface SysDeptMapper {
 
     int updateByPrimaryKey(SysDept record);
 
-    List<SysDept> getDeptByUserId(String userId);
+    List<SysDept> getDeptByUserId(@Param("userId") String userId);
 
-    List<SysDept> findList(Map<String, Object> map);
+    List<SysDept> findByEntity(SysDept dept);
 
     List<SysDept> findByParentId(@Param("parentId") String parentId);
 }

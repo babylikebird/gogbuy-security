@@ -121,19 +121,19 @@
         id = #{id}
       </if>
       <if test="roleId != null">
-        AND role_id = #{roleId,jdbcType=VARCHAR},
+        AND role_id = #{roleId,jdbcType=VARCHAR}
       </if>
       <if test="resourceId != null">
-        AND resource_id = #{resourceId,jdbcType=VARCHAR},
+        AND resource_id = #{resourceId,jdbcType=VARCHAR}
       </if>
       <if test="resourceType != null">
-        AND resource_type = #{resourceType,jdbcType=VARCHAR},
+        AND resource_type = #{resourceType,jdbcType=VARCHAR}
       </if>
       <if test="createBy != null">
-        AND create_by = #{createBy,jdbcType=VARCHAR},
+        AND create_by = #{createBy,jdbcType=VARCHAR}
       </if>
       <if test="createTime != null">
-        AND create_time = #{createTime,jdbcType=TIMESTAMP},
+        AND create_time = #{createTime,jdbcType=TIMESTAMP}
       </if>
     </where>
   </select>

@@ -36,10 +36,10 @@
     FROM sys_user_role
     <where>
       <if test="id != null">
-        id = #{id},
+        id = #{id}
       </if>
       <if test="userId != null">
-        AND user_id = #{user_id},
+        AND user_id = #{user_id}
       </if>
       <if test="roleId != null">
         AND role_id = #{roleId}

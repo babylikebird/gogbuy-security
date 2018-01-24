@@ -119,16 +119,16 @@
     FROM sys_role
     <where>
       <if test="roleName != null">
-        role_name = #{roleName,jdbcType=VARCHAR},
+        role_name = #{roleName,jdbcType=VARCHAR}
       </if>
       <if test="remark != null">
-        AND remark = #{remark,jdbcType=VARCHAR},
+        AND remark = #{remark,jdbcType=VARCHAR}
       </if>
       <if test="createTime != null">
-        AND create_time = #{createTime,jdbcType=TIMESTAMP},
+        AND create_time = #{createTime,jdbcType=TIMESTAMP}
       </if>
       <if test="roleValue != null">
-        AND role_value = #{roleValue,jdbcType=VARCHAR},
+        AND role_value = #{roleValue,jdbcType=VARCHAR}
       </if>
     </where>
   </select>

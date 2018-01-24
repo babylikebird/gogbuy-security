@@ -1,5 +1,6 @@
 package com.gogbuy.security.admin.modules.sys.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.gogbuy.security.admin.modules.sys.entity.SysDept;
 import com.gogbuy.security.admin.modules.sys.repository.SysDeptMapper;
 import com.gogbuy.security.admin.modules.sys.service.SysDeptRoleService;
@@ -67,12 +68,20 @@ public class SysDeptServiceImpl implements SysDeptService {
     }
 
     @Override
-    public List<SysDept> findList(Map<String, Object> map) {
-        return deptMapper.findList(map);
+    public List<SysDept> list(Integer pageNum, Integer pageSize, SysDept dept) {
+        if (pageNum != null && pageSize != null){
+            PageHelper.startPage(pageNum,pageSize);
+        }
+        return findByEntity(dept);
     }
 
     @Override
     public List<SysDept> findByParentId(String parentId) {
         return deptMapper.findByParentId(parentId);
+    }
+
+    @Override
+    public List<SysDept> findByEntity(SysDept dept) {
+        return deptMapper.findByEntity(dept);
     }
 }
