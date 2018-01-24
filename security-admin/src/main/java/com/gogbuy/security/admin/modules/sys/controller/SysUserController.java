@@ -5,8 +5,10 @@ import com.gogbuy.security.admin.common.model.R;
 import com.gogbuy.security.admin.common.toolkit.IdWorker;
 import com.gogbuy.security.admin.common.toolkit.PasswordEncodeUtil;
 import com.gogbuy.security.admin.common.utils.StatusCode;
+import com.gogbuy.security.admin.modules.sys.entity.SysMenu;
 import com.gogbuy.security.admin.modules.sys.entity.SysUser;
 import com.gogbuy.security.admin.modules.sys.entity.SysUserRole;
+import com.gogbuy.security.admin.modules.sys.service.SysMenuService;
 import com.gogbuy.security.admin.modules.sys.service.SysUserRoleService;
 import com.gogbuy.security.admin.modules.sys.service.SysUserService;
 import io.swagger.annotations.ApiOperation;
@@ -35,6 +37,8 @@ public class SysUserController {
     private SysUserService userService;
     @Autowired
     private SysUserRoleService userRoleService;
+    @Autowired
+    private SysMenuService menuService;
 
     @ApiOperation("获取用户列表")
     @RequestMapping(value = "list",method = RequestMethod.POST)
@@ -175,7 +179,10 @@ public class SysUserController {
     @ApiOperation(value = "获取用户菜单")
     @RequestMapping(value = "menu/{id}",method = RequestMethod.POST)
     public R getUserMenu(@PathVariable("id") String id){
-
-        return R.ok();
+        if (StringUtils.isEmpty(id)){
+            return R.failure(StatusCode.FAILURE,"ID不能为空");
+        }
+        List<SysMenu> menuList = userService.getUserMenu(id);
+        return R.ok().setData(menuList);
     }
 }

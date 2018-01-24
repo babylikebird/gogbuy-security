@@ -66,4 +66,9 @@ public class SysPrivilegeServiceImpl implements SysPrivilegeService {
         }
         return privilegeMapper.findByEntity(privilege);
     }
+
+    @Override
+    public List<SysPrivilege> findByEntity(SysPrivilege privilege) {
+        return privilegeMapper.findByEntity(privilege);
+    }
 }

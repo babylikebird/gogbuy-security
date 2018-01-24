@@ -27,4 +27,6 @@ public interface SysPrivilegeService {
     List<SysPrivilege> findByRoleId(String roleId);
 
     List<SysPrivilege> list(Integer pageNum,Integer pageSize,SysPrivilege privilege);
+
+    List<SysPrivilege> findByEntity(SysPrivilege privilege);
 }
