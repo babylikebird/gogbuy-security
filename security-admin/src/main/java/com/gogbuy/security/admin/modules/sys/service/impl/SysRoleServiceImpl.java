@@ -1,6 +1,9 @@
 package com.gogbuy.security.admin.modules.sys.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.gogbuy.security.admin.common.model.R;
+import com.gogbuy.security.admin.common.utils.StatusCode;
+import com.gogbuy.security.admin.modules.sys.constant.IdConstant;
 import com.gogbuy.security.admin.modules.sys.entity.SysRole;
 import com.gogbuy.security.admin.modules.sys.repository.SysRoleMapper;
 import com.gogbuy.security.admin.modules.sys.service.SysDeptRoleService;
@@ -29,7 +32,10 @@ public class SysRoleServiceImpl implements SysRoleService {
     private SysPrivilegeService privilegeService;
 
     @Override
-    public int deleteById(String id) {
+    public R deleteById(String id) {
+        if (IdConstant.SYS_ROLE_ID.equals(id)){
+            return R.failure(StatusCode.FAILURE,"系统管理员角色不能删除");
+        }
         //1.删除角色
         roleMapper.deleteByPrimaryKey(id);
         //2.删除用户角色
@@ -38,7 +44,7 @@ public class SysRoleServiceImpl implements SysRoleService {
         deptRoleService.deleteByRoleId(id);
         //4.删除角色权限
         privilegeService.deleteByRoleId(id);
-        return 1;
+        return R.ok();
     }
 
     @Override

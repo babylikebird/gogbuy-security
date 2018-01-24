@@ -71,8 +71,7 @@ public class SysUserController {
 
     @RequestMapping(value = "delete/{id}",method = RequestMethod.POST)
     public R delete(@PathVariable("id") String id){
-        userService.deleteById(id);
-        return R.ok();
+        return userService.deleteById(id);
     }
     @RequestMapping(value = "update",method = RequestMethod.POST)
     public R update(@NotNull(message = "id不能为空") String id, @NotEmpty(message = "用户名不能为空") String username, String email, String mobile,

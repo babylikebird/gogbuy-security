@@ -1,5 +1,6 @@
 package com.gogbuy.security.admin.modules.sys.service;
 
+import com.gogbuy.security.admin.common.model.R;
 import com.gogbuy.security.admin.modules.sys.entity.SysRole;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  * ProjectName:gogbuy-security
  */
 public interface SysRoleService {
-    int deleteById(String id);
+    R deleteById(String id);
 
     int save(SysRole record);
 

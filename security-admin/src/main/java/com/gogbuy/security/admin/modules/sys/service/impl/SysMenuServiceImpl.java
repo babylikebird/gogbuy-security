@@ -2,6 +2,7 @@ package com.gogbuy.security.admin.modules.sys.service.impl;
 
 import com.gogbuy.security.admin.common.model.R;
 import com.gogbuy.security.admin.common.utils.StatusCode;
+import com.gogbuy.security.admin.modules.sys.constant.IdConstant;
 import com.gogbuy.security.admin.modules.sys.entity.SysMenu;
 import com.gogbuy.security.admin.modules.sys.repository.SysMenuMapper;
 import com.gogbuy.security.admin.modules.sys.service.SysElementService;
@@ -28,7 +29,9 @@ public class SysMenuServiceImpl implements SysMenuService{
 
     @Override
     public R deleteById(String id) {
-
+        if (IdConstant.sysMenuId.contains(id)){
+            return R.failure(StatusCode.FAILURE,"系统菜单不能删除");
+        }
         //有子菜单的时候，不能删除，需要先删除子菜单
         List<SysMenu> menuList = findByParentId(id);
         if (menuList != null && menuList.size() > 0){

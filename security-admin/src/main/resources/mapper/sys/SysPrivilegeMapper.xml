@@ -113,4 +113,28 @@
     SELECT <include refid="Base_Column_List"/>
     FROM sys_privilege WHERE role_id = #{roleId,jdbcType=VARCHAR}
   </select>
+  <select id="findByEntity" parameterType="com.gogbuy.security.admin.modules.sys.entity.SysPrivilege" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM sys_privilege
+    <where>
+      <if test="id != null">
+        id = #{id}
+      </if>
+      <if test="roleId != null">
+        AND role_id = #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceId != null">
+        AND resource_id = #{resourceId,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceType != null">
+        AND resource_type = #{resourceType,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        AND create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        AND create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </where>
+  </select>
 </mapper>

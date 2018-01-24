@@ -1,5 +1,6 @@
 package com.gogbuy.security.admin.modules.sys.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.gogbuy.security.admin.modules.sys.entity.SysPrivilege;
 import com.gogbuy.security.admin.modules.sys.repository.SysPrivilegeMapper;
 import com.gogbuy.security.admin.modules.sys.service.SysPrivilegeService;
@@ -56,5 +57,13 @@ public class SysPrivilegeServiceImpl implements SysPrivilegeService {
     @Override
     public List<SysPrivilege> findByRoleId(String roleId) {
         return privilegeMapper.findByRoleId(roleId);
+    }
+
+    @Override
+    public List<SysPrivilege> list(Integer pageNum, Integer pageSize, SysPrivilege privilege) {
+        if (pageNum != null && pageSize != null){
+            PageHelper.startPage(pageNum,pageSize);
+        }
+        return privilegeMapper.findByEntity(privilege);
     }
 }

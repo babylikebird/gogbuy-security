@@ -25,4 +25,6 @@ public interface SysPrivilegeService {
     int updateById(SysPrivilege record);
 
     List<SysPrivilege> findByRoleId(String roleId);
+
+    List<SysPrivilege> list(Integer pageNum,Integer pageSize,SysPrivilege privilege);
 }
