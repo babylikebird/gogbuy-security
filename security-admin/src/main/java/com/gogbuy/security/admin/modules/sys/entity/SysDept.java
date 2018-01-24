@@ -1,12 +1,14 @@
 package com.gogbuy.security.admin.modules.sys.entity;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import java.util.Date;
 
 public class SysDept {
     private String id;
 
     private String parentId;
-
+    @NotEmpty(message = "部门名称不能为空")
     private String deptName;
 
     private Integer orderNum;
@@ -14,7 +16,7 @@ public class SysDept {
     private String description;
 
     private Integer delFlag;
-
+    @NotEmpty(message = "部门编码不能为空")
     private String orgCode;
 
     private Date createTime;

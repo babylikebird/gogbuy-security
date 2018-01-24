@@ -1,5 +1,6 @@
 package com.gogbuy.security.admin.modules.sys.service;
 
+import com.gogbuy.security.admin.common.model.R;
 import com.gogbuy.security.admin.modules.sys.entity.SysDept;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  * ProjectName:gogbuy-security
  */
 public interface SysDeptService {
-    int deleteById(String id);
+    R deleteById(String id);
 
     int save(SysDept record);
 
@@ -27,4 +28,8 @@ public interface SysDeptService {
     List<SysDept> findByParentId(String parentId);
 
     List<SysDept> findByEntity(SysDept dept);
+
+    SysDept findByOrgCode(String orgCode);
+
+    SysDept findByName(String name);
 }

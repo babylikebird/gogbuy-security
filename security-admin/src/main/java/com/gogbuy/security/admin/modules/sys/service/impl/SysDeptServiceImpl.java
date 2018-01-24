@@ -1,6 +1,8 @@
 package com.gogbuy.security.admin.modules.sys.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.gogbuy.security.admin.common.model.R;
+import com.gogbuy.security.admin.common.utils.StatusCode;
 import com.gogbuy.security.admin.modules.sys.entity.SysDept;
 import com.gogbuy.security.admin.modules.sys.repository.SysDeptMapper;
 import com.gogbuy.security.admin.modules.sys.service.SysDeptRoleService;
@@ -27,11 +29,11 @@ public class SysDeptServiceImpl implements SysDeptService {
     private SysDeptRoleService deptRoleService;
 
     @Override
-    public int deleteById(String deptId) {
+    public R deleteById(String deptId) {
         //当有子部门的时候，需要删除子部门，否则不允许删除
         List<SysDept> deptList = findByParentId(deptId);
         if (deptList != null && deptList.size() > 0){
-            return -1;
+            return R.failure(StatusCode.FAILURE,"需要先删除下属部门");
         }
         //1.删除部门
         deptMapper.deleteByPrimaryKey(deptId);
@@ -39,12 +41,12 @@ public class SysDeptServiceImpl implements SysDeptService {
         userDeptService.deleteByDeptId(deptId);
         //3.删除部门权限
         deptRoleService.deleteByDeptId(deptId);
-        return 1;
+        return R.ok();
     }
 
     @Override
     public int save(SysDept record) {
-        return deptMapper.insert(record);
+        return deptMapper.insertSelective(record);
     }
 
     @Override
@@ -83,5 +85,27 @@ public class SysDeptServiceImpl implements SysDeptService {
     @Override
     public List<SysDept> findByEntity(SysDept dept) {
         return deptMapper.findByEntity(dept);
+    }
+
+    @Override
+    public SysDept findByOrgCode(String orgCode) {
+        SysDept dept = new SysDept();
+        dept.setOrgCode(orgCode);
+        List<SysDept> list = deptMapper.findByEntity(dept);
+        if (list != null && list.size() > 0){
+            return list.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public SysDept findByName(String name) {
+        SysDept dept = new SysDept();
+        dept.setDeptName(name);
+        List<SysDept> list = deptMapper.findByEntity(dept);
+        if (list != null && list.size() > 0){
+            return list.get(0);
+        }
+        return null;
     }
 }

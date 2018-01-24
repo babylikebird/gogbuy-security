@@ -5,7 +5,6 @@ import com.gogbuy.security.admin.common.model.R;
 import com.gogbuy.security.admin.common.toolkit.IdWorker;
 import com.gogbuy.security.admin.common.toolkit.PasswordEncodeUtil;
 import com.gogbuy.security.admin.common.utils.StatusCode;
-import com.gogbuy.security.admin.modules.security.toolkit.UserHolder;
 import com.gogbuy.security.admin.modules.sys.entity.SysUser;
 import com.gogbuy.security.admin.modules.sys.entity.SysUserRole;
 import com.gogbuy.security.admin.modules.sys.service.SysUserRoleService;
@@ -37,6 +36,7 @@ public class SysUserController {
     @Autowired
     private SysUserRoleService userRoleService;
 
+    @ApiOperation("获取用户列表")
     @RequestMapping(value = "list",method = RequestMethod.POST)
     public R list(Integer pageNum, Integer pageSize, SysUser user){
         List<SysUser> userList = userService.list(pageNum,pageSize,user);
@@ -45,6 +45,7 @@ public class SysUserController {
         r.setData(pageInfo);
         return r;
     }
+    @ApiOperation("新增用户")
     @RequestMapping(value = "save",method = RequestMethod.POST)
     public R save(SysUser user){
         if (StringUtils.isEmpty(user.getUsername())){
@@ -68,11 +69,13 @@ public class SysUserController {
         userService.save(user);
         return R.ok();
     }
-
+    @ApiOperation("删除用户")
     @RequestMapping(value = "delete/{id}",method = RequestMethod.POST)
     public R delete(@PathVariable("id") String id){
         return userService.deleteById(id);
     }
+
+    @ApiOperation("更新用户")
     @RequestMapping(value = "update",method = RequestMethod.POST)
     public R update(@NotNull(message = "id不能为空") String id, @NotEmpty(message = "用户名不能为空") String username, String email, String mobile,
                     @Min(value = 0,message = "status 0-1之间") @Max(value = 1,message = "status 0-1之间")Integer status,
@@ -92,6 +95,7 @@ public class SysUserController {
         userService.updateByIdSelective(user);
         return R.ok();
     }
+    @ApiOperation("修改密码")
     @RequestMapping(value = "modifyPassword",method = RequestMethod.POST)
     public R modifyPassword(@NotNull(message = "id不能为空") String id,@NotEmpty(message = "密码不能为空")String newPass,String originPass){
         SysUser sysUser = userService.findById(id);
@@ -115,6 +119,7 @@ public class SysUserController {
      * @param id
      * @return
      */
+    @ApiOperation("重置密码")
     @RequestMapping(value = "resetPassword",method = RequestMethod.POST)
     public R resetPassword(@NotNull(message = "id不能为空") String id){
         SysUser sysUser = userService.findById(id);
@@ -126,19 +131,20 @@ public class SysUserController {
         userService.updateByIdSelective(sysUser);
         return R.ok();
     }
-
+    @ApiOperation("通过ID获取用户")
     @RequestMapping(value = "{id}",method = RequestMethod.GET)
     public R getUserById(@PathVariable("id") String id){
         R r = R.ok();
         r.setData(userService.findById(id));
         return r;
     }
-    @RequestMapping(value = "getCurrentUser",method = RequestMethod.GET)
-    public R getCurrentUser(){
-        R r = R.ok();
-        r.setData(UserHolder.getCurrentUser());
-        return r;
-    }
+//    @ApiOperation("获取当前登录用户")
+//    @RequestMapping(value = "getCurrentUser",method = RequestMethod.GET)
+//    public R getCurrentUser(){
+//        R r = R.ok();
+//        r.setData(UserHolder.getCurrentUser());
+//        return r;
+//    }
 
     /**
      * <p>设置角色，应该做适当的权限控制，如管理员才能设置</p>
@@ -167,8 +173,9 @@ public class SysUserController {
         return R.ok();
     }
     @ApiOperation(value = "获取用户菜单")
-    @RequestMapping(value = "{id}/menu",method = RequestMethod.POST)
+    @RequestMapping(value = "menu/{id}",method = RequestMethod.POST)
     public R getUserMenu(@PathVariable("id") String id){
+
         return R.ok();
     }
 }

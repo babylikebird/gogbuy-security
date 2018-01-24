@@ -7,6 +7,7 @@ import com.gogbuy.security.admin.common.toolkit.IdWorker;
 import com.gogbuy.security.admin.common.utils.StatusCode;
 import com.gogbuy.security.admin.modules.sys.entity.SysRole;
 import com.gogbuy.security.admin.modules.sys.service.SysRoleService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
@@ -30,12 +31,14 @@ public class SysRoleController {
     @Autowired
     private SysRoleService roleService;
 
+    @ApiOperation("获取角色列表")
     @RequestMapping(value = "list",method = RequestMethod.POST)
     public R list(Integer pageNum, Integer pageSize, SysRole role){
         List<SysRole> roleList = roleService.list(pageNum,pageSize,role);
         PageInfo info = new PageInfo(roleList);
         return R.ok().setData(info);
     }
+    @ApiOperation("新增角色")
     @RequestMapping(value = "save",method = RequestMethod.POST)
     public R save(@Valid SysRole role, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
@@ -56,11 +59,13 @@ public class SysRoleController {
         roleService.save(role);
         return R.ok();
     }
+    @ApiOperation("删除角色")
     @RequestMapping(value = "delete/{id}",method = RequestMethod.POST)
     public R delete(@PathVariable(value = "id") String id){
         roleService.deleteById(id);
         return R.ok();
     }
+    @ApiOperation("更新角色")
     @RequestMapping(value = "update",method = RequestMethod.POST)
     public R update(SysRole role){
         if (role.getId() == null){
@@ -80,6 +85,7 @@ public class SysRoleController {
         roleService.updateByIdSelective(role);
         return R.ok();
     }
+    @ApiOperation("获取角色")
     @RequestMapping(value = "{id}",method = RequestMethod.GET)
     public R get(@PathVariable("id") String id){
         SysRole role = roleService.findById(id);

@@ -7,6 +7,7 @@ import com.gogbuy.security.admin.common.toolkit.IdWorker;
 import com.gogbuy.security.admin.common.utils.StatusCode;
 import com.gogbuy.security.admin.modules.sys.entity.SysElement;
 import com.gogbuy.security.admin.modules.sys.service.SysElementService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
@@ -29,7 +30,7 @@ import java.util.List;
 public class SysElementController {
     @Autowired
     private SysElementService elementService;
-
+    @ApiOperation("添加页面元素")
     @RequestMapping(value = "save",method = RequestMethod.POST)
     public R save(@Valid SysElement element,BindingResult bindingResult){
         if (bindingResult.hasErrors()){
@@ -45,18 +46,20 @@ public class SysElementController {
         elementService.insertSelective(element);
         return R.ok();
     }
+    @ApiOperation("获取页面元素列表")
     @RequestMapping(value = "list",method = RequestMethod.POST)
     public R list(Integer pageNum,Integer pageSize,SysElement element){
         List<SysElement> list = elementService.list(pageNum,pageSize,element);
         PageInfo pageInfo = new PageInfo(list);
         return R.ok().setData(pageInfo);
     }
-
+    @ApiOperation("删除页面元素")
     @RequestMapping(value = "delete/{id}",method = RequestMethod.POST)
     public R delete(@PathVariable("id") String id){
         elementService.deleteById(id);
         return R.ok();
     }
+    @ApiOperation("更新页面元素")
     @RequestMapping(value = "update",method = RequestMethod.POST)
     public R update(SysElement element){
         if (StringUtils.isEmpty(element.getName())){
