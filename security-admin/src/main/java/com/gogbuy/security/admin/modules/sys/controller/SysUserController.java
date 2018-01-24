@@ -196,7 +196,7 @@ public class SysUserController {
         userDeptService.save(userDept);
         return R.ok();
     }
-    
+
     @ApiOperation(value = "获取用户菜单")
     @RequestMapping(value = "menu/{id}",method = RequestMethod.POST)
     public R getUserMenu(@PathVariable("id") String id){
