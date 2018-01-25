@@ -3,6 +3,7 @@ package com.gogbuy.security.admin.modules.sys.service;
 import com.gogbuy.security.admin.common.model.R;
 import com.gogbuy.security.admin.modules.sys.entity.SysMenu;
 import com.gogbuy.security.admin.modules.sys.entity.SysUser;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public interface SysUserService {
     int updateByIdSelective(SysUser record);
 
     int updateById(SysUser record);
-
+    @PreAuthorize("hasRole('AAA')")
     List<SysUser> list(Integer pageNum, Integer pageSize, SysUser user);
 
     List<SysMenu> getUserMenu(String userId);

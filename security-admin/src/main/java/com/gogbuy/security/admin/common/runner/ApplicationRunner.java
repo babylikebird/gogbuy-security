@@ -27,10 +27,10 @@ public class ApplicationRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
-        for (RequestMappingInfo info : map.keySet()){
-            LOG.info(info.getMethodsCondition().getMethods().toString());
-            LOG.info(info.getPatternsCondition().toString());
-        }
+//        Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
+//        for (RequestMappingInfo info : map.keySet()){
+//            LOG.info(info.getMethodsCondition().getMethods().toString());
+//            LOG.info(info.getPatternsCondition().toString());
+//        }
     }
 }

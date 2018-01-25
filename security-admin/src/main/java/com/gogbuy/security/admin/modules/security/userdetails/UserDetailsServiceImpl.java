@@ -1,6 +1,7 @@
 package com.gogbuy.security.admin.modules.security.userdetails;
 
 import com.gogbuy.security.admin.common.utils.Constant;
+import com.gogbuy.security.admin.modules.security.core.UrlGrantedAuthority;
 import com.gogbuy.security.admin.modules.sys.entity.*;
 import com.gogbuy.security.admin.modules.sys.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,8 +68,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 /**
                  * 设置角色
                  */
-                GrantedAuthority grant = new SimpleGrantedAuthority("ROLE_"+role.getRoleValue());
-                grantedAuthoritySet.add(grant);
+//                GrantedAuthority grant = new SimpleGrantedAuthority("ROLE_"+role.getRoleValue());
+//                grantedAuthoritySet.add(grant);
                 /**
                  * <p>设置权限</p>
                  */
@@ -80,14 +81,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                         if (Constant.RESOURCE_TYPE_DIRECT.equals(resourceType) || Constant.RESOURCE_TYPE_MENU.equals(resourceType)){
                             SysMenu menu = menuService.selectId(resourceId);
                             if (menu != null && menu.getCode() != null){
-                                GrantedAuthority e1 = new SimpleGrantedAuthority(menu.getCode());
-                                grantedAuthoritySet.add(e1);
+                                UrlGrantedAuthority u = new UrlGrantedAuthority(menu.getMethod(),menu.getUri());
+                                grantedAuthoritySet.add(u);
                             }
                         }else {
                             SysElement element = elementService.selectById(resourceId);
                             if (element != null && element.getCode() != null){
-                                GrantedAuthority e2 = new SimpleGrantedAuthority(element.getCode());
-                                grantedAuthoritySet.add(e2);
+                                UrlGrantedAuthority u2 = new UrlGrantedAuthority(element.getMethod(),element.getUri());
+                                grantedAuthoritySet.add(u2);
                             }
                         }
                     }

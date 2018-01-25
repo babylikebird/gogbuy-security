@@ -37,13 +37,16 @@ public class GlobalControllerExceptionHandler {
         ex.printStackTrace();
         return R.failure(StatusCode.BAD_REQUEST,strBuilder.toString());
     }
+    /**
+     * 注意：拦截500，会导致AccessDeniedHandler不执行
+     */
     // 通用异常的处理，返回500
-    @ResponseStatus(value=HttpStatus.INTERNAL_SERVER_ERROR)  // 500
-    @ExceptionHandler(Exception.class)
-    @ResponseBody
-    public R handleException(Exception ex) {
-        ex.printStackTrace();
-        return R.failure(StatusCode.ERROR, ex.getMessage());
-    }
+//    @ResponseStatus(value=HttpStatus.INTERNAL_SERVER_ERROR)  // 500
+//    @ExceptionHandler(Exception.class)
+//    @ResponseBody
+//    public R handleException(Exception ex) {
+//        ex.printStackTrace();
+//        return R.failure(StatusCode.ERROR, ex.getMessage());
+//    }
 
 }

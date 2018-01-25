@@ -2,11 +2,19 @@ package com.gogbuy.security.admin.common.config;
 
 import com.gogbuy.security.admin.modules.security.authentication.*;
 import com.gogbuy.security.admin.modules.security.filter.GogUsernamePasswordAuthenticationFilter;
+import com.gogbuy.security.admin.modules.security.intercept.GogFilterInvocationSecurityMetadataSource;
+import com.gogbuy.security.admin.modules.security.intercept.GogSecurityInterceptor;
 import com.gogbuy.security.admin.modules.security.userdetails.UserDetailsServiceImpl;
+import com.gogbuy.security.admin.modules.security.voter.UrlMatchVoter;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.security.access.AccessDecisionVoter;
+import org.springframework.security.access.vote.AffirmativeBased;
+import org.springframework.security.access.vote.AuthenticatedVoter;
+import org.springframework.security.access.vote.RoleVoter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -15,7 +23,13 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import org.springframework.security.web.access.expression.WebExpressionVoter;
+import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Mr.Yangxiufeng on 2018/1/16.
@@ -24,8 +38,8 @@ import org.springframework.security.web.authentication.*;
  */
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true,proxyTargetClass = true)
-@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
@@ -40,11 +54,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/login/**").permitAll()
+        http.authorizeRequests().anyRequest().permitAll()
                 // 其他地址的访问均需验证权限（需要登录）
-                .anyRequest().authenticated().and()
+                .anyRequest().authenticated()
+                .and()
                 // 添加验证码验证
-                .addFilterAt(gogUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class).exceptionHandling()
+                .addFilterAt(gogUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(filterSecurityInterceptor(),FilterSecurityInterceptor.class)
+                .exceptionHandling()
                 .authenticationEntryPoint(new GogLoginUrlAuthenticationEntryPoint())//自定义没等来返回
                 .accessDeniedHandler(new GogAccessDeniedHandler())//自定义权限不够失败返回
                 .and()
@@ -74,6 +91,31 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsServiceImpl()).passwordEncoder(new StandardPasswordEncoder());
     }
+    @Bean
+    public FilterSecurityInterceptor filterSecurityInterceptor() throws Exception{
+        GogSecurityInterceptor securityInterceptor = new GogSecurityInterceptor(filterInvocationSecurityMetadataSource(),accessDecisionManager(),authenticationManagerBean());
+        return securityInterceptor;
+    }
+    //资源拦截
+    @Bean
+    public FilterInvocationSecurityMetadataSource filterInvocationSecurityMetadataSource(){
+        GogFilterInvocationSecurityMetadataSource securityMetadataSource = new GogFilterInvocationSecurityMetadataSource();
+        return securityMetadataSource;
+    }
+    //决策器
+    @Bean
+    public AccessDecisionManager accessDecisionManager(){
+        RoleVoter roleVoter = new RoleVoter();//角色决策器
+        AuthenticatedVoter authenticatedVoter = new AuthenticatedVoter();//认证决策器
+        UrlMatchVoter urlMatchVoter = new UrlMatchVoter();
+        List<AccessDecisionVoter<? extends Object>> list = new ArrayList<>();
+        list.add(roleVoter);
+        list.add(authenticatedVoter);
+        list.add(urlMatchVoter);
+        AccessDecisionManager accessDecisionManager = new AffirmativeBased(list);
+        return accessDecisionManager;
+    }
+
 
     @Bean
     public GogUsernamePasswordAuthenticationFilter gogUsernamePasswordAuthenticationFilter() throws Exception {
