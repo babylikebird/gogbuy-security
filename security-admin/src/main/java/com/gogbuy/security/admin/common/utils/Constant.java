@@ -6,6 +6,17 @@ package com.gogbuy.security.admin.common.utils;
  * ProjectName:gogbuy-security
  */
 public class Constant {
+
+    /***
+     * <p>restfull  AntPathMatcher匹配规则</p>
+     * <p>http://blog.csdn.net/qq_21251983/article/details/53034425</p>
+     * <p>?:匹配1个字符<p>
+     * <p>*:匹配0个或多个字符</p>
+     * <p>**:匹配路径中的0个或多个目录</p>
+     */
+
+    public static final String CONTEXTPATH="/security";
+
     public final static String RESOURCE_REQUEST_METHOD_GET = "GET";
     public final static String RESOURCE_REQUEST_METHOD_PUT = "PUT";
     public final static String RESOURCE_REQUEST_METHOD_DELETE = "DELETE";

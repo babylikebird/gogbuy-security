@@ -1,6 +1,7 @@
 package com.gogbuy.security.admin.modules.security.intercept;
 
 import com.gogbuy.security.admin.modules.security.core.UrlConfigAttribute;
+import com.gogbuy.security.admin.modules.security.core.UrlGrantedAuthority;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.access.ConfigAttribute;
@@ -9,6 +10,7 @@ import org.springframework.security.web.access.intercept.DefaultFilterInvocation
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -21,13 +23,8 @@ import java.util.*;
 public class GogFilterInvocationSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
     protected final Log logger = LogFactory.getLog(getClass());
 
-    /**
-     * Sets the internal request map from the supplied map. The key elements should be of
-     * type {@link RequestMatcher}, which. The path stored in the key will depend on the
-     * type of the supplied UrlMatcher.
-     *
-     * @param requestMap order-preserving map of request definitions to attribute lists
-     */
+    private Set<UrlGrantedAuthority> authoritySet = new HashSet<>();
+
     public GogFilterInvocationSecurityMetadataSource() {
     }
 
@@ -38,12 +35,6 @@ public class GogFilterInvocationSecurityMetadataSource implements FilterInvocati
     @Override
     public Collection<ConfigAttribute> getAllConfigAttributes() {
         Set<ConfigAttribute> allAttributes = new HashSet<ConfigAttribute>();
-//
-//        for (Map.Entry<RequestMatcher, Collection<ConfigAttribute>> entry : requestMap
-//                .entrySet()) {
-//            allAttributes.addAll(entry.getValue());
-//        }
-
         return allAttributes;
     }
 
@@ -55,15 +46,40 @@ public class GogFilterInvocationSecurityMetadataSource implements FilterInvocati
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object) {
         final HttpServletRequest request = ((FilterInvocation) object).getRequest();
+        String contextPath = request.getContextPath();
+
         Set<ConfigAttribute> allAttributes = new HashSet<>();
-        ConfigAttribute configAttribute = new UrlConfigAttribute(request);
-        allAttributes.add(configAttribute);
-        return allAttributes;
+        /**
+         * 在这里判断URL是否是在资源池中，不在返回null，那么就不过滤权限
+         */
+        boolean isSource = false;
+        Iterator<UrlGrantedAuthority> it = authoritySet.iterator();
+        while (it.hasNext()){
+            UrlGrantedAuthority authority = it.next();
+            if (StringUtils.isEmpty(authority.getUrl()))
+                continue;
+            //如果数据库的method字段为null，则默认为所有方法都支持
+            String httpMethod = org.apache.commons.lang.StringUtils.isNotBlank(authority.getHttpMethod()) ? authority.getHttpMethod()
+                    : request.getMethod();
+            //用Spring已经实现的AntPathRequestMatcher进行匹配，这样我们数据库中的url也就支持ant风格的配置了（例如：/xxx/user/**）
+            AntPathRequestMatcher antPathRequestMatcher = new AntPathRequestMatcher(contextPath+authority.getAuthority(), httpMethod);
+            if (antPathRequestMatcher.matches(request)){
+                ConfigAttribute configAttribute = new UrlConfigAttribute(request);
+                allAttributes.add(configAttribute);
+                isSource = true;
+            }
+        }
+        if (isSource){
+            return allAttributes;
+        }
+        return null;
     }
 
     public boolean supports(Class<?> clazz) {
         return FilterInvocation.class.isAssignableFrom(clazz);
     }
 
-
+    public void setAuthoritySet(Set<UrlGrantedAuthority> authoritySet) {
+        this.authoritySet = authoritySet;
+    }
 }

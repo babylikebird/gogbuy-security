@@ -3,14 +3,14 @@ package com.gogbuy.security.admin.common.annotation;
 import java.lang.annotation.*;
 
 /**
- * Created by Mr.Yangxiufeng on 2018/1/22.
- * Time:16:49
+ * Created by Mr.Yangxiufeng on 2018/1/25.
+ * Time:16:48
  * ProjectName:gogbuy-security
  */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface AclResc {
+public @interface AclMenu {
     /**
      * <p>唯一编码</p>
      * @return
@@ -29,13 +29,13 @@ public @interface AclResc {
      */
     String uri();
     /**
-     * <p>2:按钮</p>
-     * <p>3：请求资源</p>
+     * <p>0：目录</p>
+     * <p>1：菜单</p>
      * @return
      */
-    int type() default 2;
+    int type() default 0;
 
-    String menuId() default "";
+    String parentId() default "";
 
     String descript() default "";
 }

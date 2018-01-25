@@ -7,8 +7,10 @@ import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 
 /**
@@ -34,21 +36,23 @@ public class UrlMatchVoter implements AccessDecisionVoter<Object> {
         if (authentication == null) {
             return ACCESS_DENIED;
         }
-        //等到登录用户的权限
+        //得到登录用户的权限
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-
         for (ConfigAttribute attribute : attributes) {
             if (!(attribute instanceof UrlConfigAttribute)) continue;
             UrlConfigAttribute urlConfigAttribute = (UrlConfigAttribute) attribute;
+            HttpServletRequest request = urlConfigAttribute.getHttpServletRequest();
+            String contextPath = request.getContextPath();
             for (GrantedAuthority authority : authorities) {
-                if (!(authority instanceof UrlGrantedAuthority)) continue;
+                if (!(authority instanceof UrlGrantedAuthority))
+                    continue;
                 UrlGrantedAuthority urlGrantedAuthority = (UrlGrantedAuthority) authority;
                 if (StringUtils.isBlank(urlGrantedAuthority.getAuthority())) continue;
                 //如果数据库的method字段为null，则默认为所有方法都支持
                 String httpMethod = StringUtils.isNotBlank(urlGrantedAuthority.getHttpMethod()) ? urlGrantedAuthority.getHttpMethod()
                         : urlConfigAttribute.getHttpServletRequest().getMethod();
                 //用Spring已经实现的AntPathRequestMatcher进行匹配，这样我们数据库中的url也就支持ant风格的配置了（例如：/xxx/user/**）
-                AntPathRequestMatcher antPathRequestMatcher = new AntPathRequestMatcher(urlGrantedAuthority.getAuthority(), httpMethod);
+                AntPathRequestMatcher antPathRequestMatcher = new AntPathRequestMatcher(contextPath + urlGrantedAuthority.getAuthority(), httpMethod);
                 if (antPathRequestMatcher.matches(urlConfigAttribute.getHttpServletRequest()))
                     return ACCESS_GRANTED;
             }

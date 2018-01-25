@@ -1,6 +1,7 @@
 package com.gogbuy.security.admin.modules.sys.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.gogbuy.security.admin.common.annotation.AclResc;
 import com.gogbuy.security.admin.common.model.R;
 import com.gogbuy.security.admin.common.toolkit.IdWorker;
 import com.gogbuy.security.admin.common.toolkit.PasswordEncodeUtil;
@@ -53,6 +54,7 @@ public class SysUserController {
         return r;
     }
     @ApiOperation("新增用户")
+    @AclResc(code = "user:save",name = "保存用户",uri = "/user/save")
     @RequestMapping(value = "save",method = RequestMethod.POST)
     public R save(SysUser user){
         if (StringUtils.isEmpty(user.getUsername())){
@@ -77,12 +79,14 @@ public class SysUserController {
         return R.ok();
     }
     @ApiOperation("删除用户")
+    @AclResc(code = "user:delete",name = "删除",uri = "/user/delete/*",descript = "删除用户")
     @RequestMapping(value = "delete/{id}",method = RequestMethod.POST)
     public R delete(@PathVariable("id") String id){
         return userService.deleteById(id);
     }
 
     @ApiOperation("更新用户")
+    @AclResc(code = "user:update",name = "更新",uri = "/user/update",descript = "更新用户")
     @RequestMapping(value = "update",method = RequestMethod.POST)
     public R update(@NotNull(message = "id不能为空") String id, @NotEmpty(message = "用户名不能为空") String username, String email, String mobile,
                     @Min(value = 0,message = "status 0-1之间") @Max(value = 1,message = "status 0-1之间")Integer status,
@@ -103,6 +107,7 @@ public class SysUserController {
         return R.ok();
     }
     @ApiOperation("修改密码")
+    @AclResc(code = "user:modifyPassword",name = "修改密码",uri = "/user/modifyPassword")
     @RequestMapping(value = "modifyPassword",method = RequestMethod.POST)
     public R modifyPassword(@NotNull(message = "id不能为空") String id,@NotEmpty(message = "密码不能为空")String newPass,String originPass){
         SysUser sysUser = userService.findById(id);
@@ -127,6 +132,7 @@ public class SysUserController {
      * @return
      */
     @ApiOperation("重置密码")
+    @AclResc(code = "user:resetPassword",name = "重置密码",uri = "/user/resetPassword")
     @RequestMapping(value = "resetPassword",method = RequestMethod.POST)
     public R resetPassword(@NotNull(message = "id不能为空") String id){
         SysUser sysUser = userService.findById(id);
@@ -139,20 +145,13 @@ public class SysUserController {
         return R.ok();
     }
     @ApiOperation("通过ID获取用户")
+    @AclResc(code = "user:resetPassword",name = "获取用户信息",uri = "/user/*")
     @RequestMapping(value = "{id}",method = RequestMethod.GET)
     public R getUserById(@PathVariable("id") String id){
         R r = R.ok();
         r.setData(userService.findById(id));
         return r;
     }
-//    @ApiOperation("获取当前登录用户")
-//    @RequestMapping(value = "getCurrentUser",method = RequestMethod.GET)
-//    public R getCurrentUser(){
-//        R r = R.ok();
-//        r.setData(UserHolder.getCurrentUser());
-//        return r;
-//    }
-
     /**
      * <p>设置角色，应该做适当的权限控制，如管理员才能设置</p>
      * @param userId
@@ -160,6 +159,7 @@ public class SysUserController {
      * @return
      */
     @ApiOperation(value = "设置用户角色")
+    @AclResc(code = "user:setRole",name = "设置角色",uri = "/user/setRole",descript = "设置用户角色")
     @RequestMapping(value = "setRole",method = RequestMethod.POST)
     public R setRole(String userId,@RequestParam(value = "roleIds")String[] roleIds){
         if (userService.findById(userId) == null){
@@ -180,6 +180,7 @@ public class SysUserController {
         return R.ok();
     }
     @ApiOperation("设置用户所在的部门")
+    @AclResc(code = "user:setDept",name = "设置部门",uri = "/user/setDept",descript = "设置用户所在的部门")
     @RequestMapping(value = "setDept",method = RequestMethod.POST)
     public R setDept(String userId,String deptId){
         //一个用户属于一个部门
@@ -198,6 +199,7 @@ public class SysUserController {
     }
 
     @ApiOperation(value = "获取用户菜单")
+    @AclResc(code = "user:menu",name = "用户菜单",uri = "/user/menu/*",descript = "获取用户菜单")
     @RequestMapping(value = "menu/{id}",method = RequestMethod.POST)
     public R getUserMenu(@PathVariable("id") String id){
         if (StringUtils.isEmpty(id)){
