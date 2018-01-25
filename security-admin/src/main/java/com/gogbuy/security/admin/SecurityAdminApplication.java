@@ -6,7 +6,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @SpringBootApplication
-@EnableAspectJAutoProxy
 public class SecurityAdminApplication {
 
 	public static void main(String[] args) {
