@@ -1,9 +1,11 @@
 package com.gogbuy.security.admin;
 
 import com.gogbuy.security.admin.common.toolkit.IdWorker;
+import com.gogbuy.security.admin.modules.sys.entity.SysElement;
 import com.gogbuy.security.admin.modules.sys.entity.SysMenu;
 import com.gogbuy.security.admin.modules.sys.entity.SysPrivilege;
 import com.gogbuy.security.admin.modules.sys.entity.SysRole;
+import com.gogbuy.security.admin.modules.sys.service.SysElementService;
 import com.gogbuy.security.admin.modules.sys.service.SysMenuService;
 import com.gogbuy.security.admin.modules.sys.service.SysPrivilegeService;
 import com.gogbuy.security.admin.modules.sys.service.SysRoleService;
@@ -30,6 +32,8 @@ public class RoleTests {
     SysPrivilegeService privilegeService;
     @Autowired
     private SysMenuService menuService;
+    @Autowired
+    private SysElementService elementService;
 
     @Test
     public void addRole(){
@@ -42,13 +46,24 @@ public class RoleTests {
     }
     @Test
     public void setPermission(){
-       List<SysMenu> menuList = menuService.findByEntity(new SysMenu());
-        for (SysMenu m: menuList
+//       List<SysMenu> menuList = menuService.findByEntity(new SysMenu());
+//        for (SysMenu m: menuList
+//             ) {
+//            SysPrivilege p = new SysPrivilege();
+//            p.setRoleId("954227154406969344");
+//            p.setResourceId(m.getId());
+//            p.setResourceType("menu");
+//            p.setCreateTime(new Date());
+//            p.setId(IdWorker.getIdStr());
+//            privilegeService.insert(p);
+//        }
+        List<SysElement> elementList = elementService.findByEntity(new SysElement());
+        for (SysElement e:elementList
              ) {
             SysPrivilege p = new SysPrivilege();
             p.setRoleId("954227154406969344");
-            p.setResourceId(m.getId());
-            p.setResourceType("menu");
+            p.setResourceId(e.getId());
+            p.setResourceType("button");
             p.setCreateTime(new Date());
             p.setId(IdWorker.getIdStr());
             privilegeService.insert(p);

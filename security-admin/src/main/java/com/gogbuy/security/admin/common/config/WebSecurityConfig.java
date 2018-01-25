@@ -6,6 +6,7 @@ import com.gogbuy.security.admin.modules.security.intercept.GogFilterInvocationS
 import com.gogbuy.security.admin.modules.security.intercept.GogSecurityInterceptor;
 import com.gogbuy.security.admin.modules.security.userdetails.UserDetailsServiceImpl;
 import com.gogbuy.security.admin.modules.security.voter.UrlMatchVoter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -52,6 +53,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+    @Autowired
+    private GogFilterInvocationSecurityMetadataSource securityMetadataSource;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().anyRequest().permitAll()
@@ -93,15 +97,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
     @Bean
     public FilterSecurityInterceptor filterSecurityInterceptor() throws Exception{
-        GogSecurityInterceptor securityInterceptor = new GogSecurityInterceptor(filterInvocationSecurityMetadataSource(),accessDecisionManager(),authenticationManagerBean());
+        GogSecurityInterceptor securityInterceptor = new GogSecurityInterceptor(securityMetadataSource,accessDecisionManager(),authenticationManagerBean());
         return securityInterceptor;
     }
     //资源拦截
-    @Bean
-    public FilterInvocationSecurityMetadataSource filterInvocationSecurityMetadataSource(){
-        GogFilterInvocationSecurityMetadataSource securityMetadataSource = new GogFilterInvocationSecurityMetadataSource();
-        return securityMetadataSource;
-    }
+//    @Bean("filterInvocationSecurityMetadataSource")
+//    public FilterInvocationSecurityMetadataSource filterInvocationSecurityMetadataSource(){
+//        GogFilterInvocationSecurityMetadataSource securityMetadataSource = new GogFilterInvocationSecurityMetadataSource();
+//        return securityMetadataSource;
+//    }
     //决策器
     @Bean
     public AccessDecisionManager accessDecisionManager(){

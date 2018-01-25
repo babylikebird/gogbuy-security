@@ -10,6 +10,7 @@ import org.springframework.security.web.access.intercept.DefaultFilterInvocation
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +21,7 @@ import java.util.*;
  * Time:19:39
  * ProjectName:gogbuy-security
  */
+@Component
 public class GogFilterInvocationSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
     protected final Log logger = LogFactory.getLog(getClass());
 
