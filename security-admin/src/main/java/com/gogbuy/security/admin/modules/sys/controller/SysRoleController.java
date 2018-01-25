@@ -1,6 +1,7 @@
 package com.gogbuy.security.admin.modules.sys.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.gogbuy.security.admin.common.annotation.AclResc;
 import com.gogbuy.security.admin.common.model.R;
 import com.gogbuy.security.admin.common.toolkit.FieldErrorBuilder;
 import com.gogbuy.security.admin.common.toolkit.IdWorker;
@@ -39,6 +40,7 @@ public class SysRoleController {
         return R.ok().setData(info);
     }
     @ApiOperation("新增角色")
+    @AclResc(code = "role:save",name = "新增",uri = "/role/save",descript = "新增角色")
     @RequestMapping(value = "save",method = RequestMethod.POST)
     public R save(@Valid SysRole role, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
@@ -60,12 +62,14 @@ public class SysRoleController {
         return R.ok();
     }
     @ApiOperation("删除角色")
+    @AclResc(code = "role:delete",name = "删除",uri = "/role/delete/*",descript = "删除角色")
     @RequestMapping(value = "delete/{id}",method = RequestMethod.POST)
     public R delete(@PathVariable(value = "id") String id){
         roleService.deleteById(id);
         return R.ok();
     }
     @ApiOperation("更新角色")
+    @AclResc(code = "role:update",name = "更新",uri = "/role/update",descript = "更新角色")
     @RequestMapping(value = "update",method = RequestMethod.POST)
     public R update(SysRole role){
         if (role.getId() == null){
@@ -86,6 +90,7 @@ public class SysRoleController {
         return R.ok();
     }
     @ApiOperation("获取角色")
+    @AclResc(code = "role:get",name = "获取角色",uri = "/role/*",descript = "获取角色")
     @RequestMapping(value = "{id}",method = RequestMethod.GET)
     public R get(@PathVariable("id") String id){
         SysRole role = roleService.findById(id);

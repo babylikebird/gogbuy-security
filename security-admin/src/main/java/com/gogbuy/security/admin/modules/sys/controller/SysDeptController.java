@@ -1,6 +1,7 @@
 package com.gogbuy.security.admin.modules.sys.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.gogbuy.security.admin.common.annotation.AclResc;
 import com.gogbuy.security.admin.common.model.R;
 import com.gogbuy.security.admin.common.toolkit.FieldErrorBuilder;
 import com.gogbuy.security.admin.common.toolkit.IdWorker;
@@ -33,18 +34,21 @@ public class SysDeptController {
     private SysDeptRoleService deptRoleService;
 
     @ApiOperation("部门树形列表")
+    @AclResc(code = "dept:tree",name = "部门列表",uri = "/dept/tree",descript = "部门树形列表")
     @RequestMapping(value = "tree",method = RequestMethod.POST)
     public R tree(){
         return R.ok();
     }
     @ApiOperation("部门列表")
     @RequestMapping(value = "list",method = RequestMethod.POST)
+    @AclResc(code = "dept:list",name = "部门列表",uri = "/dept/list",descript = "部门列表")
     public R list(Integer pageNum, Integer pageSize, SysDept dept){
         List<SysDept> deptList = deptService.list(pageNum,pageSize,dept);
         PageInfo info = new PageInfo(deptList);
         return R.ok().setData(info);
     }
     @ApiOperation("新增部门")
+    @AclResc(code = "dept:save",name = "新增",uri = "/dept/save",descript = "新增")
     @RequestMapping(value = "save",method = RequestMethod.POST)
     public R save(@Valid SysDept dept, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
@@ -62,11 +66,13 @@ public class SysDeptController {
         return R.ok();
     }
     @ApiOperation("删除部门")
+    @AclResc(code = "dept:delete",name = "删除",uri = "/dept/delete/*",descript = "删除")
     @RequestMapping(value = "delete/{id}",method = RequestMethod.POST)
     public R delete(@PathVariable("id") String id){
         return deptService.deleteById(id);
     }
     @ApiOperation("修改部门")
+    @AclResc(code = "dept:update",name = "更新",uri = "/dept/update",descript = "更新部门")
     @RequestMapping(value = "update",method = RequestMethod.POST)
     public R update(SysDept dept){
         if (StringUtils.isEmpty(dept.getDeptName())){
@@ -87,6 +93,7 @@ public class SysDeptController {
         return R.ok();
     }
     @ApiOperation("设置部门拥有的角色")
+    @AclResc(code = "dept:setRole",name = "设置部门角色",uri = "/dept/setRole",descript = "设置部门角色")
     @RequestMapping(value = "setRole",method = RequestMethod.POST)
     public R setRole(String deptId,@RequestParam(value = "roleIds") String[] roleIds){
         if (StringUtils.isEmpty(deptId)){
@@ -111,6 +118,7 @@ public class SysDeptController {
         return R.ok();
     }
     @ApiOperation("添加部门角色")
+    @AclResc(code = "dept:addRole",name = "添加部门角色",uri = "/dept/addRole",descript = "添加部门角色")
     @RequestMapping(value = "addRole",method = RequestMethod.POST)
     public R addRole(String deptId,String roleId){
         if (StringUtils.isEmpty(deptId) || StringUtils.isEmpty(roleId)){

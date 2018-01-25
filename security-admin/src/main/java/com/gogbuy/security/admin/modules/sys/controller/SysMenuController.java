@@ -1,6 +1,7 @@
 package com.gogbuy.security.admin.modules.sys.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.gogbuy.security.admin.common.annotation.AclResc;
 import com.gogbuy.security.admin.common.model.R;
 import com.gogbuy.security.admin.common.toolkit.FieldErrorBuilder;
 import com.gogbuy.security.admin.common.toolkit.IdWorker;
@@ -32,12 +33,14 @@ public class SysMenuController {
     private SysMenuService menuService;
 
     @ApiOperation("获取菜单树形列表")
+    @AclResc(code = "menu:tree",name = "树形列表",uri = "/menu/tree",descript = "获取菜单树形列表")
     @RequestMapping(value = "tree",method = RequestMethod.POST)
     public R menuTree(){
         //TODO 获取树形结构
         return R.ok();
     }
     @ApiOperation("获取菜单列表")
+    @AclResc(code = "menu:list",name = "列表",uri = "/menu/list",descript = "获取菜单列表")
     @RequestMapping(value = "list",method = RequestMethod.POST)
     public R list(Integer pageNum,Integer pageSize,SysMenu menu){
         List<SysMenu> list = menuService.list(pageNum,pageSize,menu);
@@ -50,6 +53,7 @@ public class SysMenuController {
      * @return
      */
     @ApiOperation("新增菜单")
+    @AclResc(code = "menu:save",name = "新增",uri = "/menu/save",descript = "新增菜单")
     @RequestMapping(value = "save",method = RequestMethod.POST)
     public R save(@Valid SysMenu menu, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
@@ -72,6 +76,7 @@ public class SysMenuController {
      * @return
      */
     @ApiOperation("更新菜单")
+    @AclResc(code = "menu:update",name = "更新",uri = "/menu/update",descript = "更新菜单")
     @RequestMapping(value = "update",method = RequestMethod.POST)
     public R update(SysMenu menu){
         if (StringUtils.isEmpty(menu.getCode())){
@@ -94,6 +99,7 @@ public class SysMenuController {
      * @return
      */
     @ApiOperation("删除菜单")
+    @AclResc(code = "menu:delete",name = "列表",uri = "/menu/delete/*",descript = "删除菜单")
     @RequestMapping(value = "delete/{id}",method = RequestMethod.POST)
     public R delete(@PathVariable("id") String id){
         return menuService.deleteById(id);

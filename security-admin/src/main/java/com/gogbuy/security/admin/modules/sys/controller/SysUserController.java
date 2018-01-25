@@ -145,7 +145,7 @@ public class SysUserController {
         return R.ok();
     }
     @ApiOperation("通过ID获取用户")
-    @AclResc(code = "user:resetPassword",name = "获取用户信息",uri = "/user/*")
+    @AclResc(code = "user:get",name = "获取用户信息",uri = "/user/*")
     @RequestMapping(value = "{id}",method = RequestMethod.GET)
     public R getUserById(@PathVariable("id") String id){
         R r = R.ok();

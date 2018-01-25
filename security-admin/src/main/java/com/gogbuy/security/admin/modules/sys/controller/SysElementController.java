@@ -1,6 +1,7 @@
 package com.gogbuy.security.admin.modules.sys.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.gogbuy.security.admin.common.annotation.AclResc;
 import com.gogbuy.security.admin.common.model.R;
 import com.gogbuy.security.admin.common.toolkit.FieldErrorBuilder;
 import com.gogbuy.security.admin.common.toolkit.IdWorker;
@@ -31,6 +32,7 @@ public class SysElementController {
     @Autowired
     private SysElementService elementService;
     @ApiOperation("添加页面元素")
+    @AclResc(code = "element:save",name = "新增",uri = "/element/save",descript = "新增")
     @RequestMapping(value = "save",method = RequestMethod.POST)
     public R save(@Valid SysElement element,BindingResult bindingResult){
         if (bindingResult.hasErrors()){
@@ -47,6 +49,7 @@ public class SysElementController {
         return R.ok();
     }
     @ApiOperation("获取页面元素列表")
+    @AclResc(code = "element:list",name = "列表",uri = "/element/list",descript = "列表")
     @RequestMapping(value = "list",method = RequestMethod.POST)
     public R list(Integer pageNum,Integer pageSize,SysElement element){
         List<SysElement> list = elementService.list(pageNum,pageSize,element);
@@ -54,12 +57,14 @@ public class SysElementController {
         return R.ok().setData(pageInfo);
     }
     @ApiOperation("删除页面元素")
+    @AclResc(code = "element:delete",name = "删除",uri = "/element/delete/*",descript = "删除")
     @RequestMapping(value = "delete/{id}",method = RequestMethod.POST)
     public R delete(@PathVariable("id") String id){
         elementService.deleteById(id);
         return R.ok();
     }
     @ApiOperation("更新页面元素")
+    @AclResc(code = "element:update",name = "更新",uri = "/element/update",descript = "更新")
     @RequestMapping(value = "update",method = RequestMethod.POST)
     public R update(SysElement element){
         if (StringUtils.isEmpty(element.getName())){

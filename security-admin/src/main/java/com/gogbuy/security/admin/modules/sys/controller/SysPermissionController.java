@@ -1,5 +1,6 @@
 package com.gogbuy.security.admin.modules.sys.controller;
 
+import com.gogbuy.security.admin.common.annotation.AclResc;
 import com.gogbuy.security.admin.common.model.R;
 import com.gogbuy.security.admin.common.toolkit.IdWorker;
 import com.gogbuy.security.admin.common.utils.Constant;
@@ -38,6 +39,7 @@ public class SysPermissionController {
      * @return
      */
     @ApiOperation(value = "设置角色菜单权限")
+    @AclResc(code = "permission:setRoleMenu",name = "设置菜单",uri = "/permission/setRoleMenu",descript = "设置角色菜单权限")
     @RequestMapping(value = "setRoleMenu",method = RequestMethod.POST)
     public R setRoleMenu(String roleId,@RequestParam(value = "menuIds") String[] menuIds){
         if (roleService.findById(roleId) == null){
@@ -59,6 +61,7 @@ public class SysPermissionController {
         return R.ok();
     }
     @ApiOperation(value = "设置角色页面元素权限")
+    @AclResc(code = "permission:setRoleElement",name = "设置页面元素",uri = "/permission/setRoleElement",descript = "设置角色页面权限")
     @RequestMapping(value = "setRoleElement",method = RequestMethod.POST)
     public R setRoleElement(String roleId,@RequestParam(value = "elementIds") String[] elementIds){
         if (roleService.findById(roleId) == null){
