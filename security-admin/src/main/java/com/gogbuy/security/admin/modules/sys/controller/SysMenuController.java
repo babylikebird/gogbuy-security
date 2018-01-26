@@ -6,16 +6,15 @@ import com.gogbuy.security.admin.common.model.R;
 import com.gogbuy.security.admin.common.toolkit.FieldErrorBuilder;
 import com.gogbuy.security.admin.common.toolkit.IdWorker;
 import com.gogbuy.security.admin.common.utils.StatusCode;
+import com.gogbuy.security.admin.modules.sys.entity.SysElement;
 import com.gogbuy.security.admin.modules.sys.entity.SysMenu;
+import com.gogbuy.security.admin.modules.sys.service.SysElementService;
 import com.gogbuy.security.admin.modules.sys.service.SysMenuService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Date;
@@ -31,6 +30,8 @@ import java.util.List;
 public class SysMenuController {
     @Autowired
     private SysMenuService menuService;
+    @Autowired
+    private SysElementService elementService;
 
     @ApiOperation("获取菜单树形列表")
     @AclResc(code = "menu:tree",name = "树形列表",uri = "/menu/tree",descript = "获取菜单树形列表")
@@ -103,5 +104,24 @@ public class SysMenuController {
     @RequestMapping(value = "delete/{id}",method = RequestMethod.POST)
     public R delete(@PathVariable("id") String id){
         return menuService.deleteById(id);
+    }
+
+    @ApiOperation("设置菜单页面元素")
+    @AclResc(code = "menu:setElement",name = "设置元素",uri = "/menu/setElement",descript = "设置菜单元素")
+    @RequestMapping(value = "setElement",method = RequestMethod.POST)
+    public R setElement(String menuId,@RequestParam(value = "elementIds") String[] elementIds){
+        if (menuService.selectId(menuId) == null){
+            return R.failure(StatusCode.FAILURE,"菜单不存在，ID="+menuId);
+        }
+        if (elementIds != null && elementIds.length > 0){
+            for (String eId:elementIds
+                 ) {
+                SysElement e = new SysElement();
+                e.setId(eId);
+                e.setMenuId(menuId);
+                elementService.updateByIdSelective(e);
+            }
+        }
+        return R.ok();
     }
 }
