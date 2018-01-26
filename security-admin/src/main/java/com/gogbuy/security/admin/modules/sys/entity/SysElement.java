@@ -30,6 +30,8 @@ public class SysElement implements Serializable{
 
     private Date createTime;
 
+    private String path;
+
     public String getId() {
         return id;
     }
@@ -108,5 +110,13 @@ public class SysElement implements Serializable{
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }
