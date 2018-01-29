@@ -42,7 +42,6 @@ public class UrlMatchVoter implements AccessDecisionVoter<Object> {
             if (!(attribute instanceof UrlConfigAttribute)) continue;
             UrlConfigAttribute urlConfigAttribute = (UrlConfigAttribute) attribute;
             HttpServletRequest request = urlConfigAttribute.getHttpServletRequest();
-            String contextPath = request.getContextPath();
             for (GrantedAuthority authority : authorities) {
                 if (!(authority instanceof UrlGrantedAuthority))
                     continue;
@@ -50,10 +49,10 @@ public class UrlMatchVoter implements AccessDecisionVoter<Object> {
                 if (StringUtils.isBlank(urlGrantedAuthority.getAuthority())) continue;
                 //如果数据库的method字段为null，则默认为所有方法都支持
                 String httpMethod = StringUtils.isNotBlank(urlGrantedAuthority.getHttpMethod()) ? urlGrantedAuthority.getHttpMethod()
-                        : urlConfigAttribute.getHttpServletRequest().getMethod();
+                        : request.getMethod();
                 //用Spring已经实现的AntPathRequestMatcher进行匹配，这样我们数据库中的url也就支持ant风格的配置了（例如：/xxx/user/**）
-                AntPathRequestMatcher antPathRequestMatcher = new AntPathRequestMatcher(contextPath + urlGrantedAuthority.getAuthority(), httpMethod);
-                if (antPathRequestMatcher.matches(urlConfigAttribute.getHttpServletRequest()))
+                AntPathRequestMatcher antPathRequestMatcher = new AntPathRequestMatcher(urlGrantedAuthority.getAuthority(), httpMethod);
+                if (antPathRequestMatcher.matches(request))
                     return ACCESS_GRANTED;
             }
         }
