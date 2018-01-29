@@ -24,7 +24,8 @@ public class SecurityAdminApplicationTests {
 //			System.out.println(IdWorker.getIdStr());
 //		}
 		SysUser user = new SysUser();
-		user.setUsername("sysAdmin");
+//		user.setId(IdWorker.getIdStr());
+		user.setUsername("user11222");
 		user.setPassword("123456");
 		user.setStatus(1);
 		user.setCreateTime(new Date());

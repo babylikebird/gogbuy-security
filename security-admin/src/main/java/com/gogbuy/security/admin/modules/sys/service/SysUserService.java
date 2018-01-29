@@ -24,7 +24,7 @@ public interface SysUserService {
     int updateByIdSelective(SysUser record);
 
     int updateById(SysUser record);
-    @PreAuthorize("hasRole('AAA')")
+
     List<SysUser> list(Integer pageNum, Integer pageSize, SysUser user);
 
     List<SysMenu> getUserMenu(String userId);

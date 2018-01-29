@@ -20,6 +20,11 @@ import java.util.*;
  * Created by Mr.Yangxiufeng on 2018/1/24.
  * Time:19:39
  * ProjectName:gogbuy-security
+ * <p>restfull  AntPathMatcher匹配规则</p>
+ * <p>http://blog.csdn.net/qq_21251983/article/details/53034425</p>
+ * <p>?:匹配1个字符<p>
+ * <p>*:匹配0个或多个字符</p>
+ * <p>**:匹配路径中的0个或多个目录</p>
  */
 @Component
 public class GogFilterInvocationSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
@@ -48,7 +53,6 @@ public class GogFilterInvocationSecurityMetadataSource implements FilterInvocati
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object) {
         final HttpServletRequest request = ((FilterInvocation) object).getRequest();
-        String contextPath = request.getContextPath();
 
         Set<ConfigAttribute> allAttributes = new HashSet<>();
         /**
@@ -64,7 +68,8 @@ public class GogFilterInvocationSecurityMetadataSource implements FilterInvocati
             String httpMethod = org.apache.commons.lang.StringUtils.isNotBlank(authority.getHttpMethod()) ? authority.getHttpMethod()
                     : request.getMethod();
             //用Spring已经实现的AntPathRequestMatcher进行匹配，这样我们数据库中的url也就支持ant风格的配置了（例如：/xxx/user/**）
-            AntPathRequestMatcher antPathRequestMatcher = new AntPathRequestMatcher(contextPath+authority.getAuthority(), httpMethod);
+            String pattern = authority.getAuthority();
+            AntPathRequestMatcher antPathRequestMatcher = new AntPathRequestMatcher(pattern, httpMethod);
             if (antPathRequestMatcher.matches(request)){
                 ConfigAttribute configAttribute = new UrlConfigAttribute(request);
                 allAttributes.add(configAttribute);
