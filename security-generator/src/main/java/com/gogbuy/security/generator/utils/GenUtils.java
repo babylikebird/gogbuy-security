@@ -38,8 +38,8 @@ public class GenUtils {
 		templates.add("template/ServiceImpl.java.vm");
 		templates.add("template/Controller.java.vm");
 		templates.add("template/list.html.vm");
-		templates.add("template/list.js.vm");
-		templates.add("template/menu.sql.vm");
+//		templates.add("template/list.js.vm");
+//		templates.add("template/menu.sql.vm");
 		return templates;
 	}
 	
@@ -194,18 +194,18 @@ public class GenUtils {
 			return packagePath + "controller" + File.separator + className + "Controller.java";
 		}
 		
-		if(template.contains("list.html.vm")){
-			return "main" + File.separator + "webapp" + File.separator + "WEB-INF" + File.separator + "views"
-					+ File.separator + "modules"+ File.separator + "generator" + File.separator + className.toLowerCase() + ".html";
-		}
-		
-		if(template.contains("list.js.vm")){
-			return "main" + File.separator + "webapp" + File.separator + "statics" + File.separator + "js" + File.separator + "modules" + File.separator + "generator" + File.separator + className.toLowerCase() + ".js";
-		}
-
-		if(template.contains("menu.sql.vm")){
-			return className.toLowerCase() + ".sql";
-		}
+//		if(template.contains("list.html.vm")){
+//			return "main" + File.separator + "webapp" + File.separator + "WEB-INF" + File.separator + "views"
+//					+ File.separator + "modules"+ File.separator + "generator" + File.separator + className.toLowerCase() + ".html";
+//		}
+//
+//		if(template.contains("list.js.vm")){
+//			return "main" + File.separator + "webapp" + File.separator + "statics" + File.separator + "js" + File.separator + "modules" + File.separator + "generator" + File.separator + className.toLowerCase() + ".js";
+//		}
+//
+//		if(template.contains("menu.sql.vm")){
+//			return className.toLowerCase() + ".sql";
+//		}
 		
 		return null;
 	}
