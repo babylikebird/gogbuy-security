@@ -15,10 +15,6 @@
 		<artifactId>com.gogbuy.security</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<properties>
-		<mybatisplus-spring-boot-starter.version>1.0.5</mybatisplus-spring-boot-starter.version>
-		<mybatisplus.version>2.1.8</mybatisplus.version>
-	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

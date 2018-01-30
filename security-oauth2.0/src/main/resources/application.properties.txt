@@ -45,3 +45,6 @@ spring.datasource.druid.WebStatFilter.urlPattern=/*
 spring.datasource.druid.WebStatFilter.exclusions=*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*
 # Spring监控配置，说明请参考Druid Github Wiki，Spring监控AOP切入点，如x.y.z.service.*,配置多个英文逗号分隔
 spring.datasource.druid.aop-patterns=com.common.system.service.*
+
+###如果后面有用到mybatis-plus,在这下面添加，即可使用mybatis-plus相关功能
+mybatis-plus.mapper-locations=classpath:mapper/oss/*.xml,classpath:mapper/sys/*.xml

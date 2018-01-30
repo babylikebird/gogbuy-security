@@ -1,4 +1,4 @@
-package com.gogbuy.security.admin;
+package com.gogbuy.security.oauth2;
 
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
@@ -8,16 +8,23 @@ import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.rules.DbType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 /**
- * Created by Mr.Yangxiufeng on 2018/1/29.
- * Time:11:08
- * ProjectName:gogbuy-security
+ * Created with IntelliJ IDEA.
+ * Description:
+ * User: Mr.Yangxiufeng
+ * Date: 2018-01-30
+ * Time: 17:00
  */
-public class GogGenerator {
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class Generator {
     @Test
     public void generateCode(){
-        String packageName = "com.gogbuy.security.admin.modules.sys";
+        String packageName = "com.gogbuy.security.oauth2.modules.sys";
         generateByTables(packageName, "sys_user", "sys_role");
     }
     private void generateByTables(String packageName, String... tableNames){
@@ -25,10 +32,11 @@ public class GogGenerator {
         GlobalConfig config = new GlobalConfig();
         config.setActiveRecord(true)
                 .setAuthor("杨秀峰")
-                .setOutputDir("d:\\codeGen")
+                .setOutputDir("d:\\oauth")
                 .setFileOverride(true)
                 .setServiceName("%sService")
                 .setServiceImplName("%sServiceImpl")
+                .setMapperName("%sDao")
                 .setBaseColumnList(true)
                 .setBaseResultMap(true);
 
@@ -44,7 +52,7 @@ public class GogGenerator {
         strategyConfig
                 .setCapitalMode(true)
                 .setEntityLombokModel(false)
-                .setDbColumnUnderline(true)
+                .setDbColumnUnderline(false)
                 .setNaming(NamingStrategy.underline_to_camel);
 //                .setInclude(tableNames);//修改替换成你需要的表名，多个表名传数组
 

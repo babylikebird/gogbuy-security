@@ -35,6 +35,8 @@
 		<org.aspectj.version>1.8.13</org.aspectj.version>
 		<!--用于自动生成代码-->
 		<velocity.version>1.7</velocity.version>
+		<mybatisplus-spring-boot-starter.version>1.0.5</mybatisplus-spring-boot-starter.version>
+		<mybatisplus.version>2.1.8</mybatisplus.version>
 	</properties>
 	<modules>
 		<module>security-admin</module>
