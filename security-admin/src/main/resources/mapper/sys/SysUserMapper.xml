@@ -158,22 +158,25 @@
     SELECT <include refid="Base_Column_List"/>
     FROM sys_user
     <where>
-      <if test="username != null">
-        username = #{username,jdbcType=VARCHAR}
+      <if test="id != null and id != ''">
+        id = #{id}
       </if>
-      <if test="email != null">
+      <if test="username != null and username != ''">
+        AND username LIKE CONCAT('%',#{username,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="email != null and email != ''">
         AND email = #{email,jdbcType=VARCHAR}
       </if>
-      <if test="mobile != null">
+      <if test="mobile != null and mobile != ''">
         AND mobile = #{mobile,jdbcType=VARCHAR}
       </if>
       <if test="status != null">
         AND status = #{status,jdbcType=INTEGER}
       </if>
-      <if test="deptId != null">
+      <if test="deptId != null and deptId != '' ">
         AND dept_id = #{deptId,jdbcType=VARCHAR}
       </if>
-      <if test="avatar != null">
+      <if test="avatar != null and avatar != '' ">
         AND avatar = #{avatar,jdbcType=VARCHAR}
       </if>
       <if test="createTime != null">

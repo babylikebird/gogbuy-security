@@ -100,17 +100,17 @@
     SELECT <include refid="Base_Column_List"/>
     FROM sys_role
     <where>
-      <if test="roleName != null">
-        role_name = #{roleName,jdbcType=VARCHAR},
+      <if test="roleName != null and roleName != ''">
+        role_name LIKE CONCAT('%',#{roleName,jdbcType=VARCHAR},'%')
       </if>
-      <if test="remark != null">
-        remark = #{remark,jdbcType=VARCHAR},
+      <if test="remark != null and remark != ''">
+        AND remark = #{remark,jdbcType=VARCHAR}
       </if>
       <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
+        AND create_time = #{createTime,jdbcType=TIMESTAMP}
       </if>
-      <if test="roleValue != null">
-        role_value = #{roleValue,jdbcType=VARCHAR},
+      <if test="roleValue != null and roleValue != ''">
+        AND role_value = #{roleValue,jdbcType=VARCHAR}
       </if>
     </where>
   </select>

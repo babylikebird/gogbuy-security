@@ -205,25 +205,25 @@
     SELECT <include refid="Base_Column_List"/>
     FROM sys_menu
     <where>
-      <if test="id != null">
+      <if test="id != null and id != '' ">
         id = #{id}
       </if>
-      <if test="name != null">
+      <if test="name != null and name != '' ">
         AND name = #{name,jdbcType=VARCHAR}
       </if>
-      <if test="code != null">
+      <if test="code != null and code != ''">
         AND code = #{code,jdbcType=VARCHAR}
       </if>
-      <if test="uri != null">
+      <if test="uri != null and uri != ''">
         AND uri = #{uri,jdbcType=VARCHAR}
       </if>
-      <if test="method != null">
+      <if test="method != null and method != '' ">
         AND method = #{method,jdbcType=VARCHAR}
       </if>
-      <if test="icon != null">
+      <if test="icon != null and icon != ''">
         AND icon = #{icon,jdbcType=VARCHAR}
       </if>
-      <if test="parentId != null">
+      <if test="parentId != null and parentId != ''">
         AND parent_id = #{parentId,jdbcType=VARCHAR}
       </if>
       <if test="type != null">
@@ -232,19 +232,19 @@
       <if test="orderNum != null">
         AND order_num = #{orderNum,jdbcType=INTEGER}
       </if>
-      <if test="description != null">
+      <if test="description != null and description != ''">
         AND description = #{description,jdbcType=VARCHAR}
       </if>
       <if test="level != null">
         AND level = #{level,jdbcType=INTEGER}
       </if>
-      <if test="createBy != null">
+      <if test="createBy != null and createBy != ''">
         AND create_by = #{createBy,jdbcType=VARCHAR}
       </if>
       <if test="createTime != null">
         AND create_time = #{createTime,jdbcType=TIMESTAMP}
       </if>
-      <if test="path != null">
+      <if test="path != null and path != ''">
         AND path = #{path,jdbcType=VARCHAR}
       </if>
     </where>
