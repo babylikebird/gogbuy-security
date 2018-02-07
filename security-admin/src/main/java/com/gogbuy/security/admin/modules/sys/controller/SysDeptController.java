@@ -8,8 +8,10 @@ import com.gogbuy.security.admin.common.toolkit.IdWorker;
 import com.gogbuy.security.admin.common.utils.StatusCode;
 import com.gogbuy.security.admin.modules.sys.entity.SysDept;
 import com.gogbuy.security.admin.modules.sys.entity.SysDeptRole;
+import com.gogbuy.security.admin.modules.sys.entity.SysRole;
 import com.gogbuy.security.admin.modules.sys.service.SysDeptRoleService;
 import com.gogbuy.security.admin.modules.sys.service.SysDeptService;
+import com.gogbuy.security.admin.modules.sys.service.SysRoleService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -32,6 +34,8 @@ public class SysDeptController {
     private SysDeptService deptService;
     @Autowired
     private SysDeptRoleService deptRoleService;
+    @Autowired
+    private SysRoleService roleService;
 
     @ApiOperation("部门树形列表")
     @AclResc(code = "dept:tree",name = "部门列表",uri = "/dept/tree",descript = "部门树形列表")
@@ -134,5 +138,12 @@ public class SysDeptController {
         }
         deptRoleService.save(deptRole);
         return R.ok();
+    }
+    @ApiOperation(value = "获取部门角色")
+    @AclResc(code = "dept:getDeptRole",name = "获取部门角色",uri = "/dept/getDeptRole/*",descript = "获取部门角色")
+    @RequestMapping(value = "getDeptRole/{deptId}",method = RequestMethod.POST)
+    public R getUserRole(@PathVariable("deptId") String deptId){
+        List<SysRole> roleList = roleService.findRoleByDeptId(deptId);
+        return R.ok().setData(roleList);
     }
 }

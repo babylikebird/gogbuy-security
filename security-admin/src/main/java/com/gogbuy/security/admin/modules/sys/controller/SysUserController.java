@@ -6,10 +6,7 @@ import com.gogbuy.security.admin.common.model.R;
 import com.gogbuy.security.admin.common.toolkit.IdWorker;
 import com.gogbuy.security.admin.common.toolkit.PasswordEncodeUtil;
 import com.gogbuy.security.admin.common.utils.StatusCode;
-import com.gogbuy.security.admin.modules.sys.entity.SysMenu;
-import com.gogbuy.security.admin.modules.sys.entity.SysUser;
-import com.gogbuy.security.admin.modules.sys.entity.SysUserDept;
-import com.gogbuy.security.admin.modules.sys.entity.SysUserRole;
+import com.gogbuy.security.admin.modules.sys.entity.*;
 import com.gogbuy.security.admin.modules.sys.service.*;
 import io.swagger.annotations.ApiOperation;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -43,6 +40,8 @@ public class SysUserController {
     private SysDeptService deptService;
     @Autowired
     private SysUserDeptService userDeptService;
+    @Autowired
+    private SysRoleService roleService;
 
     @ApiOperation("获取用户列表")
     @RequestMapping(value = "list",method = RequestMethod.POST)
@@ -207,5 +206,12 @@ public class SysUserController {
         }
         List<SysMenu> menuList = userService.getUserMenu(id);
         return R.ok().setData(menuList);
+    }
+    @ApiOperation(value = "获取用户角色")
+    @AclResc(code = "user:getUserRole",name = "获取用户角色",uri = "/user/getUserRole/*",descript = "获取用户角色")
+    @RequestMapping(value = "getUserRole/{userId}",method = RequestMethod.POST)
+    public R getUserRole(@PathVariable("userId") String userId){
+        List<SysRole> roleList = roleService.findRoleByUserId(userId);
+        return R.ok().setData(roleList);
     }
 }
