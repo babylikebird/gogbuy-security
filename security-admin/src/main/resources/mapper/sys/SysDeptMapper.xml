@@ -128,7 +128,7 @@
   <select id="getDeptByUserId" parameterType="string" resultMap="BaseResultMap">
     SELECT d.* FROM sys_dept d,sys_user_dept ud WHERE d.id=ud.dept_id AND ud.user_id=#{userId} ORDER BY order_num ASC
   </select>
-  <select id="findByEntity" parameterType="hashmap" resultMap="BaseResultMap">
+  <select id="findByEntity" parameterType="com.gogbuy.security.admin.modules.sys.entity.SysDept" resultMap="BaseResultMap">
     SELECT <include refid="Base_Column_List"/>
     FROM sys_dept
     <where>
