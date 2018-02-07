@@ -8,6 +8,7 @@ import com.gogbuy.security.admin.modules.security.jwt.JwtAuthenticationFailureHa
 import com.gogbuy.security.admin.modules.security.jwt.JwtAuthenticationProvider;
 import com.gogbuy.security.admin.modules.security.jwt.JwtAuthenticationRequestMatcher;
 import com.gogbuy.security.admin.modules.security.jwt.JwtTokenAuthenticationProcessingFilter;
+import com.gogbuy.security.admin.modules.security.jwt.config.JwtSettings;
 import com.gogbuy.security.admin.modules.security.jwt.extractor.TokenExtractor;
 import com.gogbuy.security.admin.modules.security.jwt.token.JwtTokenFactory;
 import com.gogbuy.security.admin.modules.security.userdetails.UserDetailsServiceImpl;
@@ -144,7 +145,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
-        return new GogUrlAuthenticationSuccessHandler(jwtTokenFactory);
+        return new GogUrlAuthenticationSuccessHandler(jwtTokenFactory,jwtSettings);
     }
 
     @Bean
@@ -157,6 +158,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtAuthenticationFailureHandler failureHandler;
     @Autowired
     private JwtAuthenticationRequestMatcher matcher;
+    @Autowired
+    private JwtSettings jwtSettings;
 
     protected JwtTokenAuthenticationProcessingFilter jwtTokenAuthenticationProcessingFilter() throws Exception {
         JwtTokenAuthenticationProcessingFilter filter

@@ -3,6 +3,7 @@ package com.gogbuy.security.admin.modules.security.authentication;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gogbuy.security.admin.common.model.R;
 import com.gogbuy.security.admin.common.utils.StatusCode;
+import com.gogbuy.security.admin.modules.security.jwt.config.JwtSettings;
 import com.gogbuy.security.admin.modules.security.jwt.token.JwtToken;
 import com.gogbuy.security.admin.modules.security.jwt.token.JwtTokenFactory;
 import com.gogbuy.security.admin.modules.security.model.UserContext;
@@ -28,8 +29,10 @@ import java.util.Set;
 public class GogUrlAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private ObjectMapper objectMapper = new ObjectMapper();
     private JwtTokenFactory jwtTokenFactory;
-    public GogUrlAuthenticationSuccessHandler(JwtTokenFactory jwtTokenFactory) {
+    private JwtSettings jwtSettings;
+    public GogUrlAuthenticationSuccessHandler(JwtTokenFactory jwtTokenFactory,JwtSettings jwtSettings) {
         this.jwtTokenFactory = jwtTokenFactory;
+        this.jwtSettings = jwtSettings;
         objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
     }
 
@@ -60,6 +63,7 @@ public class GogUrlAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         JwtToken refreshToken = jwtTokenFactory.createRefreshToken(userContext);
         userContext.setAccess_token(accessToken.getToken());
         userContext.setRefresh_token(refreshToken.getToken());
+        userContext.setExpires_in(jwtSettings.getTokenExpirationTime()*60);
         r.setData(userContext);
         PrintWriter writer = null;
         try {
