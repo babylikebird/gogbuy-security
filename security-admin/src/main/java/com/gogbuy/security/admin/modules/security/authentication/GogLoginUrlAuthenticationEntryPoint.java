@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
+ * <p>注意：使用jwt之后，都拦截了请求，没有进入这个EntryPoint，先保留着</p>
  * Created by Mr.Yangxiufeng on 2018/1/18.
  * Time:10:05
  * ProjectName:gogbuy-security

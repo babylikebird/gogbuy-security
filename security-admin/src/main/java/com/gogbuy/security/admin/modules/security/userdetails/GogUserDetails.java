@@ -1,5 +1,6 @@
 package com.gogbuy.security.admin.modules.security.userdetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.gogbuy.security.admin.modules.sys.entity.SysUser;
 import org.springframework.security.core.CredentialsContainer;
@@ -27,6 +28,7 @@ public class GogUserDetails implements UserDetails,CredentialsContainer {
     // ================================================================================================
     private String password;
     private final String username;
+    @JsonIgnore
     private final Set<GrantedAuthority> authorities;
     private final boolean accountNonExpired;
     private final boolean accountNonLocked;
@@ -35,6 +37,90 @@ public class GogUserDetails implements UserDetails,CredentialsContainer {
     // ~ Constructors
     // ===================================================================================================
 
+    //自定义字段
+
+    private String id;
+
+    private String email;
+
+    private String mobile;
+
+    private Integer status;
+
+    private String deptId;
+
+    private String avatar;
+
+    private Date createTime;
+
+    private Date updateTime;
+
+    private String access_token;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getAccess_token() {
+        return access_token;
+    }
+
+    public void setAccess_token(String access_token) {
+        this.access_token = access_token;
+    }
+    @JsonIgnore
     private SysUser user;
 
     public SysUser getUser() {
@@ -45,11 +131,11 @@ public class GogUserDetails implements UserDetails,CredentialsContainer {
         this.user = user;
     }
 
-    public GogUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities) {
-        this(username, password, true, true, true, true, authorities);
+    public GogUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities,SysUser user) {
+        this(username, password, true, true, true, true, authorities,user);
     }
 
-    public GogUserDetails(String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+    public GogUserDetails(String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities,SysUser user) {
         if (((username == null) || "".equals(username)) || (password == null)) {
             throw new IllegalArgumentException(
                     "Cannot pass null or empty values to constructor");
@@ -62,11 +148,19 @@ public class GogUserDetails implements UserDetails,CredentialsContainer {
         this.credentialsNonExpired = credentialsNonExpired;
         this.accountNonLocked = accountNonLocked;
         this.authorities = Collections.unmodifiableSet(sortAuthorities(authorities));
+        this.id = user.getId();
+        this.avatar = user.getAvatar();
+        this.createTime = user.getCreateTime();
+        this.mobile = user.getMobile();
+        this.email = user.getEmail();
+        this.deptId = user.getDeptId();
+        this.status = user.getStatus();
+        this.user = user;
     }
     public Collection<GrantedAuthority> getAuthorities() {
         return authorities;
     }
-
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -74,19 +168,19 @@ public class GogUserDetails implements UserDetails,CredentialsContainer {
     public String getUsername() {
         return username;
     }
-
+    @JsonIgnore
     public boolean isEnabled() {
         return enabled;
     }
-
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return accountNonExpired;
     }
-
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return accountNonLocked;
     }
-
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return credentialsNonExpired;
     }
@@ -186,184 +280,5 @@ public class GogUserDetails implements UserDetails,CredentialsContainer {
         }
 
         return sb.toString();
-    }
-
-    public static UserBuilder withUsername(String username) {
-        return new UserBuilder().username(username);
-    }
-
-    /**
-     * Builds the user to be added. At minimum the username, password, and authorities
-     * should provided. The remaining attributes have reasonable defaults.
-     */
-    public static class UserBuilder {
-        private String username;
-        private String password;
-        private List<GrantedAuthority> authorities;
-        private boolean accountExpired;
-        private boolean accountLocked;
-        private boolean credentialsExpired;
-        private boolean disabled;
-
-        /**
-         * Creates a new instance
-         */
-        private UserBuilder() {
-        }
-
-        /**
-         * Populates the username. This attribute is required.
-         *
-         * @param username the username. Cannot be null.
-         * @return the {@link UserBuilder} for method chaining (i.e. to populate
-         * additional attributes for this user)
-         */
-        private UserBuilder username(String username) {
-            Assert.notNull(username, "username cannot be null");
-            this.username = username;
-            return this;
-        }
-
-        /**
-         * Populates the password. This attribute is required.
-         *
-         * @param password the password. Cannot be null.
-         * @return the {@link UserBuilder} for method chaining (i.e. to populate
-         * additional attributes for this user)
-         */
-        public UserBuilder password(String password) {
-            Assert.notNull(password, "password cannot be null");
-            this.password = password;
-            return this;
-        }
-
-        /**
-         * Populates the roles. This method is a shortcut for calling
-         * {@link #authorities(String...)}, but automatically prefixes each entry with
-         * "ROLE_". This means the following:
-         *
-         * <code>
-         *     builder.roles("USER","ADMIN");
-         * </code>
-         *
-         * is equivalent to
-         *
-         * <code>
-         *     builder.authorities("ROLE_USER","ROLE_ADMIN");
-         * </code>
-         *
-         * <p>
-         * This attribute is required, but can also be populated with
-         * {@link #authorities(String...)}.
-         * </p>
-         *
-         * @param roles the roles for this user (i.e. USER, ADMIN, etc). Cannot be null,
-         * contain null values or start with "ROLE_"
-         * @return the {@link UserBuilder} for method chaining (i.e. to populate
-         * additional attributes for this user)
-         */
-        public UserBuilder roles(String... roles) {
-            List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>(
-                    roles.length);
-            for (String role : roles) {
-                Assert.isTrue(!role.startsWith("ROLE_"), role
-                        + " cannot start with ROLE_ (it is automatically added)");
-                authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
-            }
-            return authorities(authorities);
-        }
-
-        /**
-         * Populates the authorities. This attribute is required.
-         *
-         * @param authorities the authorities for this user. Cannot be null, or contain
-         * null values
-         * @return the {@link UserBuilder} for method chaining (i.e. to populate
-         * additional attributes for this user)
-         * @see #roles(String...)
-         */
-        public UserBuilder authorities(GrantedAuthority... authorities) {
-            return authorities(Arrays.asList(authorities));
-        }
-
-        /**
-         * Populates the authorities. This attribute is required.
-         *
-         * @param authorities the authorities for this user. Cannot be null, or contain
-         * null values
-         * @return the {@link UserBuilder} for method chaining (i.e. to populate
-         * additional attributes for this user)
-         * @see #roles(String...)
-         */
-        public UserBuilder authorities(List<? extends GrantedAuthority> authorities) {
-            this.authorities = new ArrayList<GrantedAuthority>(authorities);
-            return this;
-        }
-
-        /**
-         * Populates the authorities. This attribute is required.
-         *
-         * @param authorities the authorities for this user (i.e. ROLE_USER, ROLE_ADMIN,
-         * etc). Cannot be null, or contain null values
-         * @return the {@link UserBuilder} for method chaining (i.e. to populate
-         * additional attributes for this user)
-         * @see #roles(String...)
-         */
-        public UserBuilder authorities(String... authorities) {
-            return authorities(AuthorityUtils.createAuthorityList(authorities));
-        }
-
-        /**
-         * Defines if the account is expired or not. Default is false.
-         *
-         * @param accountExpired true if the account is expired, false otherwise
-         * @return the {@link UserBuilder} for method chaining (i.e. to populate
-         * additional attributes for this user)
-         */
-        public UserBuilder accountExpired(boolean accountExpired) {
-            this.accountExpired = accountExpired;
-            return this;
-        }
-
-        /**
-         * Defines if the account is locked or not. Default is false.
-         *
-         * @param accountLocked true if the account is locked, false otherwise
-         * @return the {@link UserBuilder} for method chaining (i.e. to populate
-         * additional attributes for this user)
-         */
-        public UserBuilder accountLocked(boolean accountLocked) {
-            this.accountLocked = accountLocked;
-            return this;
-        }
-
-        /**
-         * Defines if the credentials are expired or not. Default is false.
-         *
-         * @param credentialsExpired true if the credentials are expired, false otherwise
-         * @return the {@link UserBuilder} for method chaining (i.e. to populate
-         * additional attributes for this user)
-         */
-        public UserBuilder credentialsExpired(boolean credentialsExpired) {
-            this.credentialsExpired = credentialsExpired;
-            return this;
-        }
-
-        /**
-         * Defines if the account is disabled or not. Default is false.
-         *
-         * @param disabled true if the account is disabled, false otherwise
-         * @return the {@link UserBuilder} for method chaining (i.e. to populate
-         * additional attributes for this user)
-         */
-        public UserBuilder disabled(boolean disabled) {
-            this.disabled = disabled;
-            return this;
-        }
-
-        public UserDetails build() {
-            return new GogUserDetails(username, password, !disabled, !accountExpired,
-                    !credentialsExpired, !accountLocked, authorities);
-        }
     }
 }

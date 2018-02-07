@@ -4,13 +4,17 @@ import com.gogbuy.security.admin.modules.security.authentication.*;
 import com.gogbuy.security.admin.modules.security.filter.GogUsernamePasswordAuthenticationFilter;
 import com.gogbuy.security.admin.modules.security.intercept.GogFilterInvocationSecurityMetadataSource;
 import com.gogbuy.security.admin.modules.security.intercept.GogSecurityInterceptor;
+import com.gogbuy.security.admin.modules.security.jwt.JwtAuthenticationFailureHandler;
+import com.gogbuy.security.admin.modules.security.jwt.JwtAuthenticationProvider;
+import com.gogbuy.security.admin.modules.security.jwt.JwtAuthenticationRequestMatcher;
+import com.gogbuy.security.admin.modules.security.jwt.JwtTokenAuthenticationProcessingFilter;
+import com.gogbuy.security.admin.modules.security.jwt.extractor.TokenExtractor;
+import com.gogbuy.security.admin.modules.security.jwt.token.JwtTokenFactory;
 import com.gogbuy.security.admin.modules.security.userdetails.UserDetailsServiceImpl;
 import com.gogbuy.security.admin.modules.security.voter.UrlMatchVoter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.vote.AffirmativeBased;
@@ -18,14 +22,12 @@ import org.springframework.security.access.vote.AuthenticatedVoter;
 import org.springframework.security.access.vote.RoleVoter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
-import org.springframework.security.web.access.expression.WebExpressionVoter;
-import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.*;
 
@@ -42,6 +44,13 @@ import java.util.List;
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 //@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    public static final String AUTHENTICATION_HEADER_NAME = "Authorization";
+
+    @Autowired
+    private JwtTokenFactory jwtTokenFactory;
+    @Autowired
+    private JwtAuthenticationProvider jwtAuthenticationProvider;
 
     @Bean
     public UserDetailsServiceImpl userDetailsServiceImpl() {
@@ -60,10 +69,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().anyRequest().permitAll()
                 // 其他地址的访问均需验证权限（需要登录）
-                .anyRequest().authenticated()
+//                .anyRequest().authenticated()
                 .and()
                 // 添加验证码验证
-                .addFilterAt(gogUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(gogUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtTokenAuthenticationProcessingFilter(),UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(filterSecurityInterceptor(),FilterSecurityInterceptor.class)
                 .exceptionHandling()
                 .authenticationEntryPoint(new GogLoginUrlAuthenticationEntryPoint())//自定义没等来返回
@@ -76,7 +86,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout().logoutSuccessHandler(new GogLogoutSuccessHandler())
                 .and()
                 // 关闭csrf
-                .csrf().disable();
+                .csrf().disable()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     @Override
@@ -94,6 +106,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsServiceImpl()).passwordEncoder(new StandardPasswordEncoder());
+        auth.authenticationProvider(jwtAuthenticationProvider);
     }
     @Bean
     public FilterSecurityInterceptor filterSecurityInterceptor() throws Exception{
@@ -131,11 +144,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
-        return new GogUrlAuthenticationSuccessHandler();
+        return new GogUrlAuthenticationSuccessHandler(jwtTokenFactory);
     }
 
     @Bean
     public AuthenticationFailureHandler authenticationFailureHandler() {
         return new GogUrlAuthenticationFailureHandler();
+    }
+    @Autowired
+    private TokenExtractor tokenExtractor;
+    @Autowired
+    private JwtAuthenticationFailureHandler failureHandler;
+    @Autowired
+    private JwtAuthenticationRequestMatcher matcher;
+
+    protected JwtTokenAuthenticationProcessingFilter jwtTokenAuthenticationProcessingFilter() throws Exception {
+        JwtTokenAuthenticationProcessingFilter filter
+                = new JwtTokenAuthenticationProcessingFilter(failureHandler, tokenExtractor, matcher);
+        filter.setAuthenticationManager(authenticationManagerBean());
+        return filter;
     }
 }

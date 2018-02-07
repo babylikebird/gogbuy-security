@@ -3,7 +3,12 @@ package com.gogbuy.security.admin.modules.security.authentication;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gogbuy.security.admin.common.model.R;
 import com.gogbuy.security.admin.common.utils.StatusCode;
+import com.gogbuy.security.admin.modules.security.jwt.token.JwtToken;
+import com.gogbuy.security.admin.modules.security.jwt.token.JwtTokenFactory;
+import com.gogbuy.security.admin.modules.security.model.UserContext;
 import com.gogbuy.security.admin.modules.security.userdetails.GogUserDetails;
+import com.gogbuy.security.admin.modules.sys.entity.SysUser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
@@ -13,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.Set;
 
 /**
  * Created by Mr.Yangxiufeng on 2018/1/18.
@@ -21,7 +27,9 @@ import java.text.SimpleDateFormat;
  */
 public class GogUrlAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private ObjectMapper objectMapper = new ObjectMapper();
-    public GogUrlAuthenticationSuccessHandler() {
+    private JwtTokenFactory jwtTokenFactory;
+    public GogUrlAuthenticationSuccessHandler(JwtTokenFactory jwtTokenFactory) {
+        this.jwtTokenFactory = jwtTokenFactory;
         objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
     }
 
@@ -39,7 +47,20 @@ public class GogUrlAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         //允许跨域
         response.addHeader("Access-Control-Allow-Origin", "*");
         GogUserDetails user = (GogUserDetails) authentication.getPrincipal();
-        r.setData(user.getUser());
+        SysUser sysUser = user.getUser();
+
+        UserContext userContext = UserContext.create(sysUser.getId(),sysUser.getUsername(),user.getAuthorities());
+        userContext.setId(sysUser.getId());
+        userContext.setUsername(sysUser.getUsername());
+        userContext.setAvatar(sysUser.getAvatar());
+        userContext.setEmail(sysUser.getEmail());
+        userContext.setMobile(sysUser.getMobile());
+        userContext.setStatus(sysUser.getStatus());
+        JwtToken accessToken = jwtTokenFactory.createAccessJwtToken(userContext);
+        JwtToken refreshToken = jwtTokenFactory.createRefreshToken(userContext);
+        userContext.setAccess_token(accessToken.getToken());
+        userContext.setRefresh_token(refreshToken.getToken());
+        r.setData(userContext);
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
@@ -53,10 +74,5 @@ public class GogUrlAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 writer.close();
             }
         }
-    }
-
-    @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        super.onAuthenticationSuccess(request, response, authentication);
     }
 }

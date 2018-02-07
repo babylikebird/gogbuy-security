@@ -95,8 +95,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 }
             }
         }
-        GogUserDetails user = new GogUserDetails(username,sysUser.getPassword(),grantedAuthoritySet);
-        user.setUser(sysUser);
+        GogUserDetails user = new GogUserDetails(username,sysUser.getPassword(),grantedAuthoritySet,sysUser);
         return user;
     }
 }

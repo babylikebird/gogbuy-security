@@ -26,6 +26,9 @@ public class StatusCode {
     public static final int FORBIDDEN = 403;
     public static final int LOGIN_FAILURE = 40101;//用户名密码错误
     public static final int LOGIN_FAILURE_CODE_ERROR = 40102;//验证码错误
+    public static final int ACCESS_TOKEN_FAILURE_CODE_ERROR = 40103;//token认证失败
+    public static final int ACCESS_TOKEN_EXPIRE_CODE_ERROR = 40104;//token已过期
+    public static final int ACCESS_TOKEN_HEADER_CODE_ERROR = 40105;//没有携带认证头部
     public static final int LOGIN_FAILURE_USER_NOT_EXIST=40401;//登录失败，用户不存在
     /**
      * 发生错误等，以500开头设置
