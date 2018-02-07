@@ -94,7 +94,7 @@
     SELECT sr.* FROM sys_role sr,sys_user_role ur WHERE sr.id=ur.role_id AND ur.user_id=#{userId}
   </select>
   <select id="findRoleByDeptId" parameterType="string" resultMap="BaseResultMap">
-    SELECT r.* FROM sys_role r,sys_dept_role d WHERE r.role_id=d.role_id AND d.dept_id=#{deptId}
+    SELECT r.* FROM sys_role r,sys_dept_role d WHERE r.id=d.role_id AND d.dept_id=#{deptId}
   </select>
   <select id="list" parameterType="com.gogbuy.security.admin.modules.sys.entity.SysRole" resultMap="BaseResultMap">
     SELECT <include refid="Base_Column_List"/>
