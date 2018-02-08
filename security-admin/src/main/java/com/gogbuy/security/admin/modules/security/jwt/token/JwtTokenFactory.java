@@ -49,7 +49,11 @@ public class JwtTokenFactory {
         Iterator<GrantedAuthority> iterator = urlGrantedAuthorityList.iterator();
         while (iterator.hasNext()){
             UrlGrantedAuthority authority = (UrlGrantedAuthority)iterator.next();
-            scopes.add(authority.getAuthority()+":"+authority.getHttpMethod());
+            if (StringUtils.isBlank(authority.getHttpMethod())){
+                scopes.add(authority.getAuthority());//是空，支持所有请求方式
+            }else {
+                scopes.add(authority.getAuthority()+":"+authority.getHttpMethod());
+            }
         }
         claims.put("scopes",scopes);
 

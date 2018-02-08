@@ -1,12 +1,16 @@
 package com.gogbuy.security.admin.modules.sys.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import java.io.Serializable;
 import java.util.Date;
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class SysMenu implements Serializable{
 
-public class SysMenu {
+    private static final long serialVersionUID = 1593150581906740955L;
     private String id;
     @NotEmpty(message = "菜单名不能为空")
     private String name;

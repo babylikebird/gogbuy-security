@@ -39,9 +39,9 @@ public class RefreshTokenEndpoint {
     private JwtTokenFactory tokenFactory;
     @Autowired
     private UserDetailsService userDetailsService;
-    @RequestMapping(value = "refreshToken",method = RequestMethod.GET)
+    @RequestMapping(value = "refreshToken",method = RequestMethod.POST)
     public R refreshToken(HttpServletRequest request){
-        String tokenPayload = tokenExtractor.extract(request.getHeader(WebSecurityConfig.AUTHENTICATION_HEADER_NAME));
+        String tokenPayload = tokenExtractor.extract(request.getParameter(WebSecurityConfig.REFRESH_TOKEN));
         RawAccessJwtToken rawToken = new RawAccessJwtToken(tokenPayload);
         RefreshToken refreshToken = RefreshToken.create(rawToken,jwtSettings.getTokenSigningKey());
         String jti = refreshToken.getJti();

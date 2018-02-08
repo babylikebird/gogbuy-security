@@ -47,8 +47,13 @@ public class JwtAuthenticationProvider implements AuthenticationProvider{
         List<UrlGrantedAuthority> urlGrantedAuthorities = new ArrayList<>();
         for (String scope:scopes){
             String[] sp = scope.split(":");
-            UrlGrantedAuthority urlGrantedAuthority = new UrlGrantedAuthority(sp[1],sp[0]);
-            urlGrantedAuthorities.add(urlGrantedAuthority);
+            if (sp.length == 1){//* 支持所有方法
+                UrlGrantedAuthority urlGrantedAuthority = new UrlGrantedAuthority(null,sp[0]);
+                urlGrantedAuthorities.add(urlGrantedAuthority);
+            }else {
+                UrlGrantedAuthority urlGrantedAuthority = new UrlGrantedAuthority(sp[1],sp[0]);
+                urlGrantedAuthorities.add(urlGrantedAuthority);
+            }
         }
         String userId = jwsClaims.getBody().get("userId",String.class);
         if (StringUtils.isEmpty(userId)){
