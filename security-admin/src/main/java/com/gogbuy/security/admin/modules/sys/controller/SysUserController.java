@@ -11,6 +11,7 @@ import com.gogbuy.security.admin.modules.sys.service.*;
 import io.swagger.annotations.ApiOperation;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -113,8 +114,8 @@ public class SysUserController {
         if (sysUser == null){
             return R.failure(StatusCode.FAILURE,"用户不存在");
         }
-        String originPassEncode = PasswordEncodeUtil.standEncode(originPass);
-        if (!sysUser.getPassword().equals(originPassEncode)){
+        StandardPasswordEncoder passwordEncoder = new StandardPasswordEncoder();
+        if (!passwordEncoder.matches(originPass,sysUser.getPassword())){
             return R.failure(StatusCode.FAILURE,"密码不正确");
         }
         String newPassEncode = PasswordEncodeUtil.standEncode(newPass);
