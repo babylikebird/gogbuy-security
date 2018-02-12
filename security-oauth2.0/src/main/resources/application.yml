@@ -1,6 +1,6 @@
 server:
   port: 8030
-  context-path: /oauth
+#  context-path: /oauth2.0
 spring:
   application:
     name: gog-oauth
@@ -42,3 +42,6 @@ spring:
       aop-patterns: com.gogbuy.security.oauth2.modules.*.service.*
 mybatis-plus:
   mapper-locations: classpath:mapper/sys/*.xml
+logging:
+  config: classpath:logback.xml
+  level: debug
