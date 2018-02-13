@@ -13,9 +13,10 @@
     <result column="create_by" jdbcType="VARCHAR" property="createBy" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="path" jdbcType="VARCHAR" property="path"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, code, type, name, uri, method, menu_id, description, create_by, create_time,path
+    id, code, type, name, uri, method, menu_id, description, create_by, create_time,path,update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -113,16 +114,16 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.gogbuy.security.admin.modules.sys.entity.SysElement">
     update sys_element
     <set>
-      <if test="code != null">
+      <if test="code != null and code != ''">
         code = #{code,jdbcType=VARCHAR},
       </if>
       <if test="type != null">
         type = #{type,jdbcType=INTEGER},
       </if>
-      <if test="name != null">
+      <if test="name != null and name != ''">
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="uri != null">
+      <if test="uri != null and uri != ''">
         uri = #{uri,jdbcType=VARCHAR},
       </if>
       <if test="method != null">
@@ -143,6 +144,9 @@
       <if test="path != null">
         path = #{path,jdbcType=VARCHAR},
       </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -157,7 +161,8 @@
       description = #{description,jdbcType=VARCHAR},
       create_by = #{createBy,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      path = #{path,jdbcType=VARCHAR}
+      path = #{path,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <delete id="deleteByMenuId" parameterType="string">

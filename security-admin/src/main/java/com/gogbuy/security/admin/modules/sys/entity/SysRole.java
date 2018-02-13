@@ -19,6 +19,8 @@ public class SysRole implements Serializable{
     @Size(min = 5,max = 15,message = "角色编码字符长度在5-15之间")
     private String roleValue;
 
+    private Date updateTime;
+
     public String getId() {
         return id;
     }
@@ -57,5 +59,13 @@ public class SysRole implements Serializable{
 
     public void setRoleValue(String roleValue) {
         this.roleValue = roleValue == null ? null : roleValue.trim();
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

@@ -32,6 +32,8 @@ public class SysElement implements Serializable{
 
     private String path;
 
+    private Date updateTime;
+
     public String getId() {
         return id;
     }
@@ -118,5 +120,13 @@ public class SysElement implements Serializable{
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

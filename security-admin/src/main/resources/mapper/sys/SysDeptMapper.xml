@@ -10,9 +10,10 @@
     <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
     <result column="org_code" jdbcType="VARCHAR" property="orgCode" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, parent_id, dept_name, order_num, description, del_flag, org_code, create_time
+    id, parent_id, dept_name, order_num, description, del_flag, org_code, create_time,update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -90,26 +91,29 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.gogbuy.security.admin.modules.sys.entity.SysDept">
     update sys_dept
     <set>
-      <if test="parentId != null">
+      <if test="parentId != null and parentId != ''">
         parent_id = #{parentId,jdbcType=VARCHAR},
       </if>
-      <if test="deptName != null">
+      <if test="deptName != null and deptName != ''">
         dept_name = #{deptName,jdbcType=VARCHAR},
       </if>
       <if test="orderNum != null">
         order_num = #{orderNum,jdbcType=INTEGER},
       </if>
-      <if test="description != null">
+      <if test="description != null and description != ''">
         description = #{description,jdbcType=VARCHAR},
       </if>
       <if test="delFlag != null">
         del_flag = #{delFlag,jdbcType=INTEGER},
       </if>
-      <if test="orgCode != null">
+      <if test="orgCode != null and orgCode != ''">
         org_code = #{orgCode,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP}
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
@@ -122,7 +126,8 @@
       description = #{description,jdbcType=VARCHAR},
       del_flag = #{delFlag,jdbcType=INTEGER},
       org_code = #{orgCode,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <select id="getDeptByUserId" parameterType="string" resultMap="BaseResultMap">

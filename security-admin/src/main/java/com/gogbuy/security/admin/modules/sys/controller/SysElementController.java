@@ -77,7 +77,7 @@ public class SysElementController {
         if (sysElement != null && !sysElement.getId().equals(element.getId())){
             return R.failure(StatusCode.FAILURE,"页面元素编码已经存在");
         }
-        elementService.updateById(element);
+        elementService.updateByIdSelective(element);
         return R.ok();
     }
 }

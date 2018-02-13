@@ -11,6 +11,7 @@ import com.gogbuy.security.admin.modules.sys.service.SysUserDeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -56,6 +57,7 @@ public class SysDeptServiceImpl implements SysDeptService {
 
     @Override
     public int updateByIdSelective(SysDept record) {
+        record.setUpdateTime(new Date());
         return deptMapper.updateByPrimaryKeySelective(record);
     }
 

@@ -121,6 +121,7 @@ public class SysUserController {
         String newPassEncode = PasswordEncodeUtil.standEncode(newPass);
         sysUser.setPassword(newPassEncode);
         sysUser.setUpdateTime(new Date());
+        sysUser.setLastUpdatePasswordTime(new Date());
         userService.updateByIdSelective(sysUser);
         return R.ok();
     }
@@ -141,6 +142,8 @@ public class SysUserController {
         }
         String originPassEncode = PasswordEncodeUtil.standEncode(PasswordEncodeUtil.ORIGIN_PASSWORD);
         sysUser.setPassword(originPassEncode);
+        sysUser.setLastUpdatePasswordTime(new Date());
+        sysUser.setUpdateTime(new Date());
         userService.updateByIdSelective(sysUser);
         return R.ok();
     }

@@ -6,10 +6,11 @@
     <result column="role_name" jdbcType="VARCHAR" property="roleName" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="role_value" jdbcType="VARCHAR" property="roleValue" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, role_name, remark, create_time, role_value
+    id, role_name, remark, create_time, role_value,update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -67,7 +68,7 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.gogbuy.security.admin.modules.sys.entity.SysRole">
     update sys_role
     <set>
-      <if test="roleName != null">
+      <if test="roleName != null and roleName !=''">
         role_name = #{roleName,jdbcType=VARCHAR},
       </if>
       <if test="remark != null">
@@ -76,8 +77,11 @@
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="roleValue != null">
+      <if test="roleValue != null and roleValue != ''">
         role_value = #{roleValue,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP}
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
@@ -87,7 +91,8 @@
     set role_name = #{roleName,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      role_value = #{roleValue,jdbcType=VARCHAR}
+      role_value = #{roleValue,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <select id="findRoleByUserId" parameterType="string" resultMap="BaseResultMap">

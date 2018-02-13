@@ -12,6 +12,7 @@ import com.gogbuy.security.admin.modules.sys.service.SysPrivilegeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -59,11 +60,13 @@ public class SysMenuServiceImpl implements SysMenuService{
 
     @Override
     public int updateByIdSelective(SysMenu record) {
+        record.setUpdateTime(new Date());
         return menuMapper.updateByPrimaryKeySelective(record);
     }
 
     @Override
     public int updateById(SysMenu record) {
+        record.setUpdateTime(new Date());
         return menuMapper.updateByPrimaryKey(record);
     }
 

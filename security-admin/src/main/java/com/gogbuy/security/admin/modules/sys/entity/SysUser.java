@@ -28,6 +28,8 @@ public class SysUser implements Serializable{
 
     private Date updateTime;
 
+    private Date lastUpdatePasswordTime;
+
     public String getId() {
         return id;
     }
@@ -106,5 +108,13 @@ public class SysUser implements Serializable{
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Date getLastUpdatePasswordTime() {
+        return lastUpdatePasswordTime;
+    }
+
+    public void setLastUpdatePasswordTime(Date lastUpdatePasswordTime) {
+        this.lastUpdatePasswordTime = lastUpdatePasswordTime;
     }
 }

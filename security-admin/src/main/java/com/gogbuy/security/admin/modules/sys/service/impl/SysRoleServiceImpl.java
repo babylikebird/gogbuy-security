@@ -13,6 +13,7 @@ import com.gogbuy.security.admin.modules.sys.service.SysUserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -59,11 +60,13 @@ public class SysRoleServiceImpl implements SysRoleService {
 
     @Override
     public int updateByIdSelective(SysRole record) {
+        record.setUpdateTime(new Date());
         return roleMapper.updateByPrimaryKeySelective(record);
     }
 
     @Override
     public int updateById(SysRole record) {
+        record.setUpdateTime(new Date());
         return roleMapper.updateByPrimaryKey(record);
     }
 

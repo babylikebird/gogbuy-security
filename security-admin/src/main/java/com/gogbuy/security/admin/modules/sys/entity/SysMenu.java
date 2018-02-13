@@ -16,7 +16,7 @@ public class SysMenu implements Serializable{
     private String name;
     @NotEmpty(message = "菜单编码不能为空")
     private String code;
-
+    @NotEmpty(message = "uri不能为空")
     private String uri;
 
     private String method;
@@ -39,6 +39,8 @@ public class SysMenu implements Serializable{
     private Date createTime;
 
     private String path;
+
+    private Date updateTime;
 
     public String getId() {
         return id;
@@ -150,5 +152,13 @@ public class SysMenu implements Serializable{
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

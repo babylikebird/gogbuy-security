@@ -8,6 +8,7 @@ import com.gogbuy.security.admin.modules.sys.service.SysPrivilegeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -67,11 +68,13 @@ public class SysElementServiceImpl implements SysElementService {
 
     @Override
     public int updateByIdSelective(SysElement record) {
+        record.setUpdateTime(new Date());
         return elementMapper.updateByPrimaryKeySelective(record);
     }
 
     @Override
     public int updateById(SysElement record) {
+        record.setUpdateTime(new Date());
         return elementMapper.updateByPrimaryKey(record);
     }
 

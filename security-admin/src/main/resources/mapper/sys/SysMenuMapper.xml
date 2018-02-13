@@ -15,11 +15,12 @@
     <result column="level" jdbcType="INTEGER" property="level" />
     <result column="create_by" jdbcType="VARCHAR" property="createBy" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="path" jdbcType="VARCHAR" property="path"/>
   </resultMap>
   <sql id="Base_Column_List">
     id, name, code, uri, method, icon, parent_id, type, order_num, description, level, 
-    create_by, create_time,path
+    create_by, create_time,path,update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -176,6 +177,9 @@
       <if test="path != null">
         path = #{path,jdbcType=VARCHAR},
       </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -193,7 +197,8 @@
       level = #{level,jdbcType=INTEGER},
       create_by = #{createBy,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      path = #{path,jdbcType=VARCHAR}
+      path = #{path,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <select id="findByParentId" parameterType="string" resultMap="BaseResultMap">

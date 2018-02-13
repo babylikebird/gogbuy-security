@@ -12,9 +12,10 @@
     <result column="avatar" jdbcType="VARCHAR" property="avatar" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="last_update_password_time" jdbcType="TIMESTAMP" property="lastUpdatePasswordTime"/>
   </resultMap>
   <sql id="Base_Column_List">
-    id, username, password, email, mobile, status, dept_id, avatar, create_time, update_time
+    id, username, password, email, mobile, status, dept_id, avatar, create_time, update_time,last_update_password_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -133,6 +134,9 @@
       <if test="updateTime != null">
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="lastUpdatePasswordTime != null">
+        last_update_password_time = #{lastUpdatePasswordTime,jdbcType=TIMESTAMP}
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -146,7 +150,8 @@
       dept_id = #{deptId,jdbcType=VARCHAR},
       avatar = #{avatar,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      last_update_password_time = #{lastUpdatePasswordTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <select id="findByUsername" parameterType="string" resultMap="BaseResultMap">
