@@ -10,8 +10,11 @@ import com.gogbuy.security.admin.modules.sys.entity.SysElement;
 import com.gogbuy.security.admin.modules.sys.entity.SysMenu;
 import com.gogbuy.security.admin.modules.sys.service.SysElementService;
 import com.gogbuy.security.admin.modules.sys.service.SysMenuService;
+import com.gogbuy.security.admin.modules.sys.utils.MethodValidateUtils;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -62,6 +65,9 @@ public class SysMenuController {
             R r = R.failure(StatusCode.FAILURE,error);
             return r;
         }
+        if (!StringUtils.isEmpty(menu.getMethod()) && !MethodValidateUtils.isMethodValidate(menu.getMethod())){
+            return R.failure(StatusCode.FAILURE,"HttpMethod请求方式不正确");
+        }
         if (menuService.findByCode(menu.getCode()) != null){
             return R.failure(StatusCode.FAILURE,"菜单编码已存在");
         }
@@ -85,6 +91,9 @@ public class SysMenuController {
         }
         if (StringUtils.isEmpty(menu.getName())){
             return R.failure(StatusCode.FAILURE,"菜单名不能为空");
+        }
+        if (!StringUtils.isEmpty(menu.getMethod()) && !MethodValidateUtils.isMethodValidate(menu.getMethod())){
+            return R.failure(StatusCode.FAILURE,"HttpMethod请求方式不正确");
         }
         SysMenu sysMenu = menuService.findByCode(menu.getCode());
         if (sysMenu!=null && !sysMenu.getId().equals(menu.getId())){

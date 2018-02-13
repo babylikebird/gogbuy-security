@@ -8,6 +8,7 @@ import com.gogbuy.security.admin.common.toolkit.IdWorker;
 import com.gogbuy.security.admin.common.utils.StatusCode;
 import com.gogbuy.security.admin.modules.sys.entity.SysElement;
 import com.gogbuy.security.admin.modules.sys.service.SysElementService;
+import com.gogbuy.security.admin.modules.sys.utils.MethodValidateUtils;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -39,6 +40,9 @@ public class SysElementController {
             String error = FieldErrorBuilder.build(bindingResult.getFieldErrors());
             R r = R.failure(StatusCode.FAILURE,error);
             return r;
+        }
+        if (!StringUtils.isEmpty(element.getMethod()) && !MethodValidateUtils.isMethodValidate(element.getMethod())){
+            return R.failure(StatusCode.FAILURE,"HttpMethod请求方式不正确");
         }
         if (elementService.findByCode(element.getCode())!= null){
             return R.failure(StatusCode.FAILURE,"页面元素编码已经存在");
@@ -72,6 +76,9 @@ public class SysElementController {
         }
         if (StringUtils.isEmpty(element.getCode())){
             return R.failure(StatusCode.FAILURE,"页面元素编码不能为空");
+        }
+        if (!StringUtils.isEmpty(element.getMethod()) && !MethodValidateUtils.isMethodValidate(element.getMethod())){
+            return R.failure(StatusCode.FAILURE,"HttpMethod请求方式不正确");
         }
         SysElement sysElement = elementService.findByCode(element.getCode());
         if (sysElement != null && !sysElement.getId().equals(element.getId())){

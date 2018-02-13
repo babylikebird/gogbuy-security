@@ -17,7 +17,7 @@ public class SysElement implements Serializable{
     private Integer type;
     @NotEmpty(message = "页面元素名称不能为空")
     private String name;
-
+    @NotEmpty(message = "uri不能为空")
     private String uri;
 
     private String method;
