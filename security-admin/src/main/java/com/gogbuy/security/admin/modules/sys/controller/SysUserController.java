@@ -5,8 +5,10 @@ import com.gogbuy.security.admin.common.annotation.AclResc;
 import com.gogbuy.security.admin.common.model.R;
 import com.gogbuy.security.admin.common.toolkit.IdWorker;
 import com.gogbuy.security.admin.common.toolkit.PasswordEncodeUtil;
+import com.gogbuy.security.admin.common.utils.Constant;
 import com.gogbuy.security.admin.common.utils.StatusCode;
 import com.gogbuy.security.admin.modules.sys.entity.*;
+import com.gogbuy.security.admin.modules.sys.model.ElementVo;
 import com.gogbuy.security.admin.modules.sys.service.*;
 import io.swagger.annotations.ApiOperation;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -43,6 +46,10 @@ public class SysUserController {
     private SysUserDeptService userDeptService;
     @Autowired
     private SysRoleService roleService;
+    @Autowired
+    private SysPrivilegeService privilegeService;
+    @Autowired
+    private SysElementService elementService;
 
     @ApiOperation("获取用户列表")
     @RequestMapping(value = "list",method = RequestMethod.POST)
@@ -217,5 +224,48 @@ public class SysUserController {
     public R getUserRole(@PathVariable("userId") String userId){
         List<SysRole> roleList = roleService.findRoleByUserId(userId);
         return R.ok().setData(roleList);
+    }
+    @ApiOperation(value = "获取用户数据操作权限")
+    @AclResc(code = "user:getUserAction",name = "获取用户数据操作权限",uri = "/user/getUserAction/*",descript = "获取用户数据操作权限")
+    @RequestMapping(value = "getUserAction/{userId}",method = RequestMethod.POST)
+    public R getUserAction(@PathVariable("userId")String userId){
+        List<SysRole> roleList = roleService.findRoleByUserId(userId);
+        List<SysDept> deptList = deptService.getDeptByUserId(userId);
+        if (deptList != null && !deptList.isEmpty()){
+            for (SysDept dept:deptList
+                    ) {
+                List<SysRole> dRoleList = roleService.findRoleByDeptId(dept.getId());
+                if (roleList != null && dRoleList != null){
+                    roleList.addAll(dRoleList);
+                }
+            }
+        }
+        /**
+         * <p>设置用户拥有的权限</p>
+         */
+        List<ElementVo> elementVoList = new ArrayList<>();
+        if (roleList != null && roleList.size() > 0){
+            for (SysRole role : roleList){
+                /**
+                 * <p>设置权限</p>
+                 */
+                List<SysPrivilege> privilegeList = privilegeService.findByRoleId(role.getId());
+                if (privilegeList != null && privilegeList.size() > 0){
+                    for (SysPrivilege privilege : privilegeList){
+                        String resourceId = privilege.getResourceId();
+                        String resourceType = privilege.getResourceType();
+                        if (Constant.RESOURCE_TYPE_BTN.equals(resourceType) || Constant.RESOURCE_TYPE_URI.equals(resourceType)){
+                            SysElement element = elementService.selectById(resourceId);
+                            ElementVo elementVo = new ElementVo();
+                            elementVo.setCode(element.getCode());
+                            elementVo.setName(element.getName());
+                            elementVo.setDescription(element.getDescription());
+                            elementVoList.add(elementVo);
+                        }
+                    }
+                }
+            }
+        }
+        return R.ok().setData(elementVoList);
     }
 }

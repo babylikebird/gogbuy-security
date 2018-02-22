@@ -98,7 +98,7 @@ public class SysRoleController {
         return R.ok().setData(role);
     }
     @ApiOperation("获取角色权限")
-    @AclResc(code = "role:getRolePermission",name = "获取角色",uri = "/role/getRolePermission/*",descript = "获取角色权限")
+    @AclResc(code = "role:getRolePermission",name = "获取角色权限",uri = "/role/getRolePermission/*",descript = "获取角色权限")
     @RequestMapping(value = "getRolePermission/{roleId}",method = RequestMethod.GET)
     public @ResponseBody
     R getRolePermission(@PathVariable("roleId") String roleId){
