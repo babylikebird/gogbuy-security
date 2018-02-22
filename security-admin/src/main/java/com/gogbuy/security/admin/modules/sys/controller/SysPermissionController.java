@@ -82,5 +82,15 @@ public class SysPermissionController {
         }
         return R.ok();
     }
-
+    @ApiOperation(value = "设置角色权限")
+    @AclResc(code = "permission:setRolePrivilege",name = "设置角色权限(含菜单权限、操作权限)",uri = "/permission/setRolePrivilege",descript = "设置角色权限")
+    @RequestMapping(value = "setRolePrivilege",method = RequestMethod.POST)
+    public R setRolePrivilege(String roleId,@RequestParam(value = "menuIds") String[] menuIds,@RequestParam(value = "elementIds") String[] elementIds){
+        if (roleService.findById(roleId) == null){
+            return R.failure(StatusCode.FAILURE,"ID="+roleId+",角色不存在");
+        }
+        R r = setRoleMenu(roleId,menuIds);
+        r = setRoleElement(roleId,elementIds);
+        return r;
+    }
 }

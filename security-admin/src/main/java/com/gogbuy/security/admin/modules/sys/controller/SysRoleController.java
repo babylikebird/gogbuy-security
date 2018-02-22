@@ -6,16 +6,15 @@ import com.gogbuy.security.admin.common.model.R;
 import com.gogbuy.security.admin.common.toolkit.FieldErrorBuilder;
 import com.gogbuy.security.admin.common.toolkit.IdWorker;
 import com.gogbuy.security.admin.common.utils.StatusCode;
+import com.gogbuy.security.admin.modules.sys.biz.PermissionTreeBiz;
 import com.gogbuy.security.admin.modules.sys.entity.SysRole;
+import com.gogbuy.security.admin.modules.sys.model.MenuVo;
 import com.gogbuy.security.admin.modules.sys.service.SysRoleService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Date;
@@ -31,6 +30,8 @@ import java.util.List;
 public class SysRoleController {
     @Autowired
     private SysRoleService roleService;
+    @Autowired
+    private PermissionTreeBiz permissionTreeBiz;
 
     @ApiOperation("获取角色列表")
     @RequestMapping(value = "list",method = RequestMethod.POST)
@@ -95,5 +96,13 @@ public class SysRoleController {
     public R get(@PathVariable("id") String id){
         SysRole role = roleService.findById(id);
         return R.ok().setData(role);
+    }
+    @ApiOperation("获取角色权限")
+    @AclResc(code = "role:getRolePermission",name = "获取角色",uri = "/role/getRolePermission/*",descript = "获取角色权限")
+    @RequestMapping(value = "getRolePermission/{roleId}",method = RequestMethod.GET)
+    public @ResponseBody
+    R getRolePermission(@PathVariable("roleId") String roleId){
+        List<MenuVo> menuVoList = permissionTreeBiz.getRolePermissionTree(roleId);
+        return R.ok().setData(menuVoList);
     }
 }
