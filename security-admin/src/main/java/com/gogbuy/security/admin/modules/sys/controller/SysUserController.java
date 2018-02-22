@@ -54,7 +54,7 @@ public class SysUserController {
         return r;
     }
     @ApiOperation("新增用户")
-    @AclResc(code = "user:save",name = "保存用户",uri = "/user/save")
+    @AclResc(code = "user:save",name = "保存用户",uri = "/user/save",descript = "保存用户")
     @RequestMapping(value = "save",method = RequestMethod.POST)
     public R save(SysUser user){
         if (StringUtils.isEmpty(user.getUsername())){
@@ -107,7 +107,7 @@ public class SysUserController {
         return R.ok();
     }
     @ApiOperation("修改密码")
-    @AclResc(code = "user:modifyPassword",name = "修改密码",uri = "/user/modifyPassword")
+    @AclResc(code = "user:modifyPassword",name = "修改密码",uri = "/user/modifyPassword",descript = "修改密码")
     @RequestMapping(value = "modifyPassword",method = RequestMethod.POST)
     public R modifyPassword(@NotNull(message = "id不能为空") String id,@NotEmpty(message = "密码不能为空")String newPass,String originPass){
         SysUser sysUser = userService.findById(id);
@@ -133,7 +133,7 @@ public class SysUserController {
      * @return
      */
     @ApiOperation("重置密码")
-    @AclResc(code = "user:resetPassword",name = "重置密码",uri = "/user/resetPassword")
+    @AclResc(code = "user:resetPassword",name = "重置密码",uri = "/user/resetPassword",descript = "重置密码")
     @RequestMapping(value = "resetPassword",method = RequestMethod.POST)
     public R resetPassword(@NotNull(message = "id不能为空") String id){
         SysUser sysUser = userService.findById(id);
@@ -148,7 +148,7 @@ public class SysUserController {
         return R.ok();
     }
     @ApiOperation("通过ID获取用户")
-    @AclResc(code = "user:get",name = "获取用户信息",uri = "/user/*")
+    @AclResc(code = "user:get",name = "获取用户信息",uri = "/user/*",descript = "获取用户信息")
     @RequestMapping(value = "{id}",method = RequestMethod.GET)
     public R getUserById(@PathVariable("id") String id){
         R r = R.ok();

@@ -46,17 +46,17 @@ public class RoleTests {
     }
     @Test
     public void setPermission(){
-//       List<SysMenu> menuList = menuService.findByEntity(new SysMenu());
-//        for (SysMenu m: menuList
-//             ) {
-//            SysPrivilege p = new SysPrivilege();
-//            p.setRoleId("954227154406969344");
-//            p.setResourceId(m.getId());
-//            p.setResourceType("menu");
-//            p.setCreateTime(new Date());
-//            p.setId(IdWorker.getIdStr());
-//            privilegeService.insert(p);
-//        }
+       List<SysMenu> menuList = menuService.findByEntity(new SysMenu());
+        for (SysMenu m: menuList
+             ) {
+            SysPrivilege p = new SysPrivilege();
+            p.setRoleId("954227154406969344");
+            p.setResourceId(m.getId());
+            p.setResourceType("menu");
+            p.setCreateTime(new Date());
+            p.setId(IdWorker.getIdStr());
+            privilegeService.insert(p);
+        }
         List<SysElement> elementList = elementService.findByEntity(new SysElement());
         for (SysElement e:elementList
              ) {
