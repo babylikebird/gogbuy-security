@@ -11,12 +11,12 @@ import org.springframework.stereotype.Component;
  * Date: 2018-02-08
  * Time: 12:18
  */
-@Component
 public class JwtTokenExtractor implements TokenExtractor {
     @Override
     public String extract(String payload) {
         if (StringUtils.isBlank(payload)){
-            throw new AuthenticationServiceException("Authorization token cannot be blank!");
+            return null;
+//            throw new AuthenticationServiceException("Authorization token cannot be blank!");
         }
         return payload;
     }

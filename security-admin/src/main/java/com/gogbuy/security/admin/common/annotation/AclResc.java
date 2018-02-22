@@ -35,6 +35,10 @@ public @interface AclResc {
      */
     int type() default 2;
 
+    String parentId() default  "";
+
+    String parentCode() default "";
+
     String menuId() default "";
 
     String descript() default "";

@@ -3,6 +3,7 @@ package com.gogbuy.security.admin.modules.security.jwt.endpoint;
 import com.gogbuy.security.admin.common.config.WebSecurityConfig;
 import com.gogbuy.security.admin.common.model.R;
 import com.gogbuy.security.admin.modules.security.jwt.config.JwtSettings;
+import com.gogbuy.security.admin.modules.security.jwt.extractor.JwtTokenExtractor;
 import com.gogbuy.security.admin.modules.security.jwt.extractor.TokenExtractor;
 import com.gogbuy.security.admin.modules.security.jwt.token.JwtToken;
 import com.gogbuy.security.admin.modules.security.jwt.token.JwtTokenFactory;
@@ -12,8 +13,10 @@ import com.gogbuy.security.admin.modules.security.model.UserContext;
 import com.gogbuy.security.admin.modules.security.userdetails.GogUserDetails;
 import com.gogbuy.security.admin.modules.sys.entity.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,8 +35,6 @@ import java.util.Map;
 @RestController
 public class RefreshTokenEndpoint {
     @Autowired
-    private TokenExtractor tokenExtractor;
-    @Autowired
     private JwtSettings jwtSettings;
     @Autowired
     private JwtTokenFactory tokenFactory;
@@ -41,7 +42,11 @@ public class RefreshTokenEndpoint {
     private UserDetailsService userDetailsService;
     @RequestMapping(value = "refreshToken",method = RequestMethod.POST)
     public R refreshToken(HttpServletRequest request){
+        TokenExtractor tokenExtractor = new JwtTokenExtractor();
         String tokenPayload = tokenExtractor.extract(request.getParameter(WebSecurityConfig.REFRESH_TOKEN));
+        if (StringUtils.isEmpty(tokenPayload)){
+            throw new AuthenticationServiceException("Authorization token cannot be blank!");
+        }
         RawAccessJwtToken rawToken = new RawAccessJwtToken(tokenPayload);
         RefreshToken refreshToken = RefreshToken.create(rawToken,jwtSettings.getTokenSigningKey());
         String jti = refreshToken.getJti();

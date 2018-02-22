@@ -116,14 +116,14 @@ public class ApplicationRunner implements CommandLineRunner {
         if (menuList != null && menuList.size() > 0){
             for (SysMenu menu:menuList
                  ) {
-                UrlGrantedAuthority u = new UrlGrantedAuthority(menu.getMethod(),menu.getUri());
+                UrlGrantedAuthority u = new UrlGrantedAuthority(menu.getMethod(),menu.getUri(),menu.getCode());
                 au.add(u);
             }
         }
         if (elementList != null && elementList.size() > 0){
             for (SysElement el:elementList
                  ) {
-                UrlGrantedAuthority e = new UrlGrantedAuthority(el.getMethod(),el.getUri());
+                UrlGrantedAuthority e = new UrlGrantedAuthority(el.getMethod(),el.getUri(),el.getCode());
                 au.add(e);
             }
         }

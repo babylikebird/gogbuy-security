@@ -3,7 +3,9 @@ package com.gogbuy.security.admin.modules.security.jwt;
 import com.gogbuy.security.admin.common.config.WebSecurityConfig;
 import com.gogbuy.security.admin.modules.security.jwt.extractor.TokenExtractor;
 import com.gogbuy.security.admin.modules.security.jwt.token.RawAccessJwtToken;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
@@ -17,6 +19,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,24 +30,31 @@ import java.io.IOException;
  * Time: 10:53
  */
 public class JwtTokenAuthenticationProcessingFilter extends AbstractAuthenticationProcessingFilter {
-    public static final String AUTHENTICATION_HEADER_NAME = "Authorization";
     private final AuthenticationFailureHandler failureHandler;
-    private final TokenExtractor tokenExtractor;
+    private TokenExtractor jwtTokenExtractor;
+    private TokenExtractor jwtHeaderTokenExtractor;
 
-    @Autowired
     public JwtTokenAuthenticationProcessingFilter(AuthenticationFailureHandler failureHandler,
-                                                  TokenExtractor tokenExtractor, RequestMatcher matcher) {
+                                                  TokenExtractor jwtTokenExtractor,TokenExtractor jwtHeaderTokenExtractor, RequestMatcher matcher) {
         super(matcher);
         this.failureHandler = failureHandler;
-        this.tokenExtractor = tokenExtractor;
+        this.jwtTokenExtractor = jwtTokenExtractor;
+        this.jwtHeaderTokenExtractor = jwtHeaderTokenExtractor;
     }
-
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException, IOException, ServletException {
-        String tokenPayload = request.getParameter(WebSecurityConfig.ACCESS_TOKEN);
-        RawAccessJwtToken token = new RawAccessJwtToken(tokenExtractor.extract(tokenPayload));
-        return getAuthenticationManager().authenticate(new JwtAuthenticationToken(token));
+        String tokenPayload = request.getHeader(WebSecurityConfig.AUTHENTICATION_HEADER_NAME);
+        String  token = jwtHeaderTokenExtractor.extract(tokenPayload);
+        if (StringUtils.isBlank(token)){
+            tokenPayload = request.getParameter(WebSecurityConfig.ACCESS_TOKEN);
+            token = jwtTokenExtractor.extract(tokenPayload);
+        }
+        if (StringUtils.isBlank(token)){
+            throw new AuthenticationServiceException("Authorization header cannot be blank!");
+        }
+        RawAccessJwtToken jwtToken = new RawAccessJwtToken(token);
+        return getAuthenticationManager().authenticate(new JwtAuthenticationToken(jwtToken));
     }
 
     @Override

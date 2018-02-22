@@ -81,13 +81,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                         if (Constant.RESOURCE_TYPE_DIRECT.equals(resourceType) || Constant.RESOURCE_TYPE_MENU.equals(resourceType)){
                             SysMenu menu = menuService.selectId(resourceId);
                             if (menu != null && menu.getCode() != null){
-                                UrlGrantedAuthority u = new UrlGrantedAuthority(menu.getMethod(),menu.getUri());
+                                UrlGrantedAuthority u = new UrlGrantedAuthority(menu.getMethod(),menu.getUri(),menu.getCode());
                                 grantedAuthoritySet.add(u);
                             }
                         }else {
                             SysElement element = elementService.selectById(resourceId);
                             if (element != null && element.getCode() != null){
-                                UrlGrantedAuthority u2 = new UrlGrantedAuthority(element.getMethod(),element.getUri());
+                                UrlGrantedAuthority u2 = new UrlGrantedAuthority(element.getMethod(),element.getUri(),element.getCode());
                                 grantedAuthoritySet.add(u2);
                             }
                         }

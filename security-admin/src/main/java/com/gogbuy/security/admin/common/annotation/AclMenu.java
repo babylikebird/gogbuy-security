@@ -37,5 +37,7 @@ public @interface AclMenu {
 
     String parentId() default "";
 
+    String parentCode() default "";
+
     String descript() default "";
 }

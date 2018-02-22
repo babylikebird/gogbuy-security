@@ -10,11 +10,14 @@ import org.springframework.security.core.GrantedAuthority;
 public class UrlGrantedAuthority implements GrantedAuthority {
     private final String httpMethod;
 
+    private final String code;
+
     private final String url;
 
-    public UrlGrantedAuthority(String httpMethod, String url) {
+    public UrlGrantedAuthority(String httpMethod, String url,String code) {
         this.httpMethod = httpMethod;
         this.url = url;
+        this.code = code;
     }
 
     public String getHttpMethod() {
@@ -27,7 +30,7 @@ public class UrlGrantedAuthority implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return url;
+        return code;
     }
 
     @Override
