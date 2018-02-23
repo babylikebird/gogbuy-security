@@ -125,4 +125,39 @@ public class ElementVo implements Serializable{
     public void setChecked(Boolean checked) {
         this.checked = checked;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ElementVo elementVo = (ElementVo) o;
+
+        if (id != null ? !id.equals(elementVo.id) : elementVo.id != null) return false;
+        if (code != null ? !code.equals(elementVo.code) : elementVo.code != null) return false;
+        if (type != null ? !type.equals(elementVo.type) : elementVo.type != null) return false;
+        if (name != null ? !name.equals(elementVo.name) : elementVo.name != null) return false;
+        if (uri != null ? !uri.equals(elementVo.uri) : elementVo.uri != null) return false;
+        if (method != null ? !method.equals(elementVo.method) : elementVo.method != null) return false;
+        if (menuId != null ? !menuId.equals(elementVo.menuId) : elementVo.menuId != null) return false;
+        if (description != null ? !description.equals(elementVo.description) : elementVo.description != null)
+            return false;
+        if (path != null ? !path.equals(elementVo.path) : elementVo.path != null) return false;
+        return checked != null ? checked.equals(elementVo.checked) : elementVo.checked == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (code != null ? code.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (uri != null ? uri.hashCode() : 0);
+        result = 31 * result + (method != null ? method.hashCode() : 0);
+        result = 31 * result + (menuId != null ? menuId.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (path != null ? path.hashCode() : 0);
+        result = 31 * result + (checked != null ? checked.hashCode() : 0);
+        return result;
+    }
 }

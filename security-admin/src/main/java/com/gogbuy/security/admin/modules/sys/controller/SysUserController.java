@@ -23,6 +23,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -243,7 +244,7 @@ public class SysUserController {
         /**
          * <p>设置用户拥有的权限</p>
          */
-        List<ElementVo> elementVoList = new ArrayList<>();
+        HashSet<ElementVo> elementVoList = new HashSet<>();
         if (roleList != null && roleList.size() > 0){
             for (SysRole role : roleList){
                 /**
@@ -259,6 +260,7 @@ public class SysUserController {
                             ElementVo elementVo = new ElementVo();
                             elementVo.setCode(element.getCode());
                             elementVo.setName(element.getName());
+                            elementVo.setChecked(null);
                             elementVo.setDescription(element.getDescription());
                             elementVoList.add(elementVo);
                         }
