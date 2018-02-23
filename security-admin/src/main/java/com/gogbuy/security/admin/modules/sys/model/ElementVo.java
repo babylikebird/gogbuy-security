@@ -31,6 +31,8 @@ public class ElementVo implements Serializable{
 
     private Boolean checked = false;
 
+    private String tag="element";
+
     public ElementVo() {
     }
 
@@ -126,6 +128,14 @@ public class ElementVo implements Serializable{
         this.checked = checked;
     }
 
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -143,7 +153,8 @@ public class ElementVo implements Serializable{
         if (description != null ? !description.equals(elementVo.description) : elementVo.description != null)
             return false;
         if (path != null ? !path.equals(elementVo.path) : elementVo.path != null) return false;
-        return checked != null ? checked.equals(elementVo.checked) : elementVo.checked == null;
+        if (checked != null ? !checked.equals(elementVo.checked) : elementVo.checked != null) return false;
+        return tag != null ? tag.equals(elementVo.tag) : elementVo.tag == null;
     }
 
     @Override
@@ -158,6 +169,7 @@ public class ElementVo implements Serializable{
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (path != null ? path.hashCode() : 0);
         result = 31 * result + (checked != null ? checked.hashCode() : 0);
+        result = 31 * result + (tag != null ? tag.hashCode() : 0);
         return result;
     }
 }

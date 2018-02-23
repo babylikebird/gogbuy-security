@@ -43,6 +43,8 @@ public class MenuVo implements Serializable{
 
     private Boolean checked=false;
 
+    private String tag="menu";
+
     private List<MenuVo> childMenu;
 
     private List<ElementVo> elementVos;
@@ -183,5 +185,13 @@ public class MenuVo implements Serializable{
 
     public void setElementVos(List<ElementVo> elementVos) {
         this.elementVos = elementVos;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 }
