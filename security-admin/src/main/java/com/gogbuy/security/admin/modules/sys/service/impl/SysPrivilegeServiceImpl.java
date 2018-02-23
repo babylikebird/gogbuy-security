@@ -30,6 +30,22 @@ public class SysPrivilegeServiceImpl implements SysPrivilegeService {
     }
 
     @Override
+    public int deleteMenuByRoleId(String roleId) {
+        SysPrivilege p = new SysPrivilege();
+        p.setRoleId(roleId);
+        p.setResourceType("menu");
+        return privilegeMapper.deleteByEntity(p);
+    }
+
+    @Override
+    public int deleteElementByRoleId(String roleId) {
+        SysPrivilege p = new SysPrivilege();
+        p.setRoleId(roleId);
+        p.setResourceType("button");
+        return privilegeMapper.deleteByEntity(p);
+    }
+
+    @Override
     public int deleteByResourceId(String resourceId) {
         return privilegeMapper.deleteByResourceId(resourceId);
     }

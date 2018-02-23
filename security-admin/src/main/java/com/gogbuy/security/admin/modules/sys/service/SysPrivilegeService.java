@@ -14,6 +14,10 @@ public interface SysPrivilegeService {
 
     int deleteByRoleId(String roleId);
 
+    int deleteMenuByRoleId(String roleId);
+
+    int deleteElementByRoleId(String roleId);
+
     int deleteByResourceId(String resourceId);
 
     int insert(SysPrivilege record);
@@ -26,7 +30,7 @@ public interface SysPrivilegeService {
 
     List<SysPrivilege> findByRoleId(String roleId);
 
-    List<SysPrivilege> list(Integer pageNum,Integer pageSize,SysPrivilege privilege);
+    List<SysPrivilege> list(Integer pageNum, Integer pageSize, SysPrivilege privilege);
 
     List<SysPrivilege> findByEntity(SysPrivilege privilege);
 }

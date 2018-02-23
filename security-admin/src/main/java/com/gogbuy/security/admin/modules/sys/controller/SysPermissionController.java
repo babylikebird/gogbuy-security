@@ -46,7 +46,7 @@ public class SysPermissionController {
             return R.failure(StatusCode.FAILURE,"ID="+roleId+",角色不存在");
         }
         //1.先删除
-        privilegeService.deleteByRoleId(roleId);
+        privilegeService.deleteMenuByRoleId(roleId);
         //2.再插入
         if (menuIds != null && menuIds.length > 0){
             for (String menuId:menuIds){
@@ -68,7 +68,7 @@ public class SysPermissionController {
             return R.failure(StatusCode.FAILURE,"ID="+roleId+",角色不存在");
         }
         //1.先删除
-        privilegeService.deleteByRoleId(roleId);
+        privilegeService.deleteElementByRoleId(roleId);
         //2.再插入
         if (elementIds != null && elementIds.length > 0){
             for (String menuId : elementIds){

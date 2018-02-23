@@ -26,4 +26,6 @@ public interface SysPrivilegeMapper {
     List<SysPrivilege> findByRoleId(String roleId);
 
     List<SysPrivilege> findByEntity(SysPrivilege privilege);
+
+    int deleteByEntity(SysPrivilege privilege);
 }

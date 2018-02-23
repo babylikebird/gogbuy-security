@@ -106,6 +106,29 @@
   <delete id="deleteByRoleId" parameterType="string">
     DELETE FROM sys_privilege WHERE role_id = #{roleId}
   </delete>
+  <delete id="deleteByEntity" parameterType="com.gogbuy.security.admin.modules.sys.entity.SysPrivilege">
+    DELETE FROM sys_privilege
+    <where>
+      <if test="id != null and id !=''">
+        id = #{id}
+      </if>
+      <if test="roleId != null and id !=''">
+        AND role_id = #{roleId,jdbcType=VARCHAR}
+      </if>
+      <if test="resourceId != null and resourceId !=''">
+        AND resource_id = #{resourceId,jdbcType=VARCHAR}
+      </if>
+      <if test="resourceType != null">
+        AND resource_type = #{resourceType,jdbcType=VARCHAR}
+      </if>
+      <if test="createBy != null">
+        AND create_by = #{createBy,jdbcType=VARCHAR}
+      </if>
+      <if test="createTime != null">
+        AND create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </delete>
   <delete id="deleteByResourceId" parameterType="string">
     DELETE FROM sys_privilege WHERE resource_id = #{resourceId}
   </delete>
