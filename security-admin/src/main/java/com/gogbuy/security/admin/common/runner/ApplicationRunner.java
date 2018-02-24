@@ -68,6 +68,13 @@ public class ApplicationRunner implements CommandLineRunner {
                 if (elementService.findByCode(code) !=null){
                     continue;
                 }
+                String menuCode = resc.parentCode();
+                if (!StringUtils.isEmpty(menuCode)){
+                    SysMenu menu = menuService.findByCode(menuCode);
+                    if (menu != null){
+                        menuId = menu.getId();
+                    }
+                }
                 SysElement element = new SysElement();
                 element.setId(IdWorker.getIdStr());
                 element.setCode(code);

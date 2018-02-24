@@ -203,12 +203,36 @@ public class SysUserController {
         }
         userDeptService.deleteByUserId(userId);
         SysUserDept userDept = new SysUserDept();
+        userDept.setId(IdWorker.getIdStr());
         userDept.setDeptId(deptId);
         userDept.setUserId(userId);
         userDeptService.save(userDept);
         return R.ok();
     }
-
+    @ApiOperation("批量设置用户所在的部门")
+    @AclResc(code = "user:setUserDeptBatch",name = "批量设置用户所在的部门",uri = "/user/setUserDeptBatch",descript = "批量设置用户所在的部门",parentCode = "sys_user_manager")
+    @RequestMapping(value = "setUserDeptBatch",method = RequestMethod.POST)
+    public R setUserDeptBatch(String[] userIds,String deptId){
+        if (StringUtils.isEmpty(userIds)|| userIds.length == 0){
+            return R.failure(StatusCode.FAILURE,"userIds不能为空");
+        }
+        for (String userId:userIds){
+            //一个用户属于一个部门
+            if (userService.findById(userId) == null){
+               continue;
+            }
+            if (deptService.findById(deptId) == null){
+                continue;
+            }
+            userDeptService.deleteByUserId(userId);
+            SysUserDept userDept = new SysUserDept();
+            userDept.setId(IdWorker.getIdStr());
+            userDept.setDeptId(deptId);
+            userDept.setUserId(userId);
+            userDeptService.save(userDept);
+        }
+        return R.ok();
+    }
     @ApiOperation(value = "获取用户菜单")
     @AclResc(code = "user:menu",name = "用户菜单",uri = "/user/menu/*",descript = "获取用户菜单")
     @RequestMapping(value = "menu/{id}",method = RequestMethod.POST)
