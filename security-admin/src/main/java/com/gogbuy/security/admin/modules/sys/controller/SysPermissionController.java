@@ -52,6 +52,7 @@ public class SysPermissionController {
             for (String menuId:menuIds){
                 SysPrivilege privilege = new SysPrivilege();
                 privilege.setId(IdWorker.getIdStr());
+                privilege.setRoleId(roleId);
                 privilege.setResourceId(menuId);
                 privilege.setResourceType(Constant.RESOURCE_TYPE_MENU);
                 privilege.setCreateTime(new Date());
@@ -74,6 +75,7 @@ public class SysPermissionController {
             for (String menuId : elementIds){
                 SysPrivilege privilege = new SysPrivilege();
                 privilege.setId(IdWorker.getIdStr());
+                privilege.setRoleId(roleId);
                 privilege.setResourceId(menuId);
                 privilege.setResourceType(Constant.RESOURCE_TYPE_BTN);
                 privilege.setCreateTime(new Date());
