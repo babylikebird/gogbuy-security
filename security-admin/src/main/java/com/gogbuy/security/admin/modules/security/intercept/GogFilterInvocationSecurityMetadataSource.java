@@ -68,7 +68,7 @@ public class GogFilterInvocationSecurityMetadataSource implements FilterInvocati
             String httpMethod = org.apache.commons.lang.StringUtils.isNotBlank(authority.getHttpMethod()) ? authority.getHttpMethod()
                     : request.getMethod();
             //用Spring已经实现的AntPathRequestMatcher进行匹配，这样我们数据库中的url也就支持ant风格的配置了（例如：/xxx/user/**）
-            String pattern = authority.getAuthority();
+            String pattern = authority.getUrl();
             AntPathRequestMatcher antPathRequestMatcher = new AntPathRequestMatcher(pattern, httpMethod);
             if (antPathRequestMatcher.matches(request)){
                 ConfigAttribute configAttribute = new UrlConfigAttribute(request);

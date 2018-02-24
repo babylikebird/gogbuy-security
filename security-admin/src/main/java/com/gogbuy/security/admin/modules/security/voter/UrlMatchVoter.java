@@ -51,7 +51,7 @@ public class UrlMatchVoter implements AccessDecisionVoter<Object> {
                 String httpMethod = StringUtils.isNotBlank(urlGrantedAuthority.getHttpMethod()) ? urlGrantedAuthority.getHttpMethod()
                         : request.getMethod();
                 //用Spring已经实现的AntPathRequestMatcher进行匹配，这样我们数据库中的url也就支持ant风格的配置了（例如：/xxx/user/**）
-                AntPathRequestMatcher antPathRequestMatcher = new AntPathRequestMatcher(urlGrantedAuthority.getAuthority(), httpMethod);
+                AntPathRequestMatcher antPathRequestMatcher = new AntPathRequestMatcher(urlGrantedAuthority.getUrl(), httpMethod);
                 if (antPathRequestMatcher.matches(request))
                     return ACCESS_GRANTED;
             }

@@ -39,23 +39,24 @@ public class JwtTokenFactory {
         if (StringUtils.isBlank(userContext.getUsername()))
             throw new IllegalArgumentException("Cannot create JWT Token without username");
 
-        if (userContext.getAuthorities() == null || userContext.getAuthorities().isEmpty())
-            throw new IllegalArgumentException("User doesn't have any privileges");
-
         Claims claims = Jwts.claims().setSubject(userContext.getUsername());
         claims.put("userId",userContext.getId());
-        Set<GrantedAuthority> urlGrantedAuthorityList = userContext.getAuthorities();
-        List<String> scopes = new ArrayList<>();
-        Iterator<GrantedAuthority> iterator = urlGrantedAuthorityList.iterator();
-        while (iterator.hasNext()){
-            UrlGrantedAuthority authority = (UrlGrantedAuthority)iterator.next();
-            if (StringUtils.isBlank(authority.getHttpMethod())){
-                scopes.add(authority.getUrl()+":"+authority.getAuthority());//是空，支持所有请求方式
-            }else {
-                scopes.add(authority.getUrl()+":"+authority.getHttpMethod()+":"+authority.getAuthority());
+        if (userContext.getAuthorities() != null && !userContext.getAuthorities().isEmpty()){
+            // 之前是没有权限的时候直接抛异常，现在修改，有权限的时候才设置scopes，
+            // throw new IllegalArgumentException("User doesn't have any privileges");
+            Set<GrantedAuthority> urlGrantedAuthorityList = userContext.getAuthorities();
+            List<String> scopes = new ArrayList<>();
+            Iterator<GrantedAuthority> iterator = urlGrantedAuthorityList.iterator();
+            while (iterator.hasNext()){
+                UrlGrantedAuthority authority = (UrlGrantedAuthority)iterator.next();
+                if (StringUtils.isBlank(authority.getHttpMethod())){
+                    scopes.add(authority.getUrl()+":"+authority.getAuthority());//是空，支持所有请求方式
+                }else {
+                    scopes.add(authority.getUrl()+":"+authority.getHttpMethod()+":"+authority.getAuthority());
+                }
             }
+            claims.put("scopes",scopes);
         }
-        claims.put("scopes",scopes);
 
         LocalDateTime currentTime = LocalDateTime.now();
 

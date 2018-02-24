@@ -38,16 +38,17 @@ public class UrlGrantedAuthority implements GrantedAuthority {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UrlGrantedAuthority that = (UrlGrantedAuthority) o;
+        UrlGrantedAuthority authority = (UrlGrantedAuthority) o;
 
-        if (httpMethod != null ? !httpMethod.equals(that.httpMethod) : that.httpMethod != null) return false;
-        return !(url != null ? !url.equals(that.url) : that.url != null);
-
+        if (httpMethod != null ? !httpMethod.equals(authority.httpMethod) : authority.httpMethod != null) return false;
+        if (code != null ? !code.equals(authority.code) : authority.code != null) return false;
+        return url != null ? url.equals(authority.url) : authority.url == null;
     }
 
     @Override
     public int hashCode() {
         int result = httpMethod != null ? httpMethod.hashCode() : 0;
+        result = 31 * result + (code != null ? code.hashCode() : 0);
         result = 31 * result + (url != null ? url.hashCode() : 0);
         return result;
     }

@@ -56,13 +56,13 @@ public class UserContext implements Serializable {
             Collection<? extends GrantedAuthority> authorities) {
         Assert.notNull(authorities, "Cannot pass a null GrantedAuthority collection");
         Set<GrantedAuthority> sortedAuthorities = new HashSet<>();
-
-        for (GrantedAuthority grantedAuthority : authorities) {
-            Assert.notNull(grantedAuthority,
-                    "GrantedAuthority list cannot contain any null elements");
-            sortedAuthorities.add(grantedAuthority);
+        if (authorities.size() > 0){
+            for (GrantedAuthority grantedAuthority : authorities) {
+                Assert.notNull(grantedAuthority,
+                        "GrantedAuthority list cannot contain any null elements");
+                sortedAuthorities.add(grantedAuthority);
+            }
         }
-
         return sortedAuthorities;
     }
     public String getId() {
