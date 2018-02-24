@@ -113,7 +113,7 @@ public class SysUserServiceImpl implements SysUserService {
                 if (privilegeList != null && privilegeList.size() > 0) {
                     for (SysPrivilege p : privilegeList
                             ) {
-                        if (!menuIds.contains(p.getId())) {
+                        if (!menuIds.contains(p.getResourceId())) {//避免重复
                             menuIds.add(p.getResourceId());
                         }
                     }
