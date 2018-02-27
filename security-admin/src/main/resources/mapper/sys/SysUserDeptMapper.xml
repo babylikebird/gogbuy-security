@@ -74,4 +74,7 @@
   <delete id="deleteByDeptId" parameterType="string">
     DELETE FROM sys_user_dept WHERE dept_id = #{deptId,jdbcType=VARCHAR}
   </delete>
+  <select id="findUserDeptByUserId" parameterType="string" resultMap="com.gogbuy.security.admin.modules.sys.repository.SysDeptMapper.BaseResultMap">
+    SELECT d.* FROM sys_user_dept ud,sys_dept d WHERE ud.dept_id = d.id AND ud.user_id = #{userId}
+  </select>
 </mapper>
