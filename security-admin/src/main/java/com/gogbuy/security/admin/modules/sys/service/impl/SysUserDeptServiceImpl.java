@@ -1,5 +1,6 @@
 package com.gogbuy.security.admin.modules.sys.service.impl;
 
+import com.gogbuy.security.admin.modules.sys.entity.SysDept;
 import com.gogbuy.security.admin.modules.sys.entity.SysUserDept;
 import com.gogbuy.security.admin.modules.sys.repository.SysUserDeptMapper;
 import com.gogbuy.security.admin.modules.sys.service.SysUserDeptService;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 public class SysUserDeptServiceImpl implements SysUserDeptService {
     @Autowired
     private SysUserDeptMapper userDeptMapper;
-
     @Override
     public int deleteById(String id) {
         return userDeptMapper.deleteByPrimaryKey(id);
@@ -49,5 +49,10 @@ public class SysUserDeptServiceImpl implements SysUserDeptService {
     @Override
     public int updateById(SysUserDept record) {
         return userDeptMapper.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public SysDept findByUserId(String userId) {
+        return userDeptMapper.findUserDeptByUserId(userId);
     }
 }

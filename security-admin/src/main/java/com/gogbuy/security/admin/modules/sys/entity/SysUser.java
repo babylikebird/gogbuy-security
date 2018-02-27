@@ -30,6 +30,8 @@ public class SysUser implements Serializable{
 
     private Date lastUpdatePasswordTime;
 
+    private String deptName;
+
     public String getId() {
         return id;
     }
@@ -116,5 +118,13 @@ public class SysUser implements Serializable{
 
     public void setLastUpdatePasswordTime(Date lastUpdatePasswordTime) {
         this.lastUpdatePasswordTime = lastUpdatePasswordTime;
+    }
+
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
     }
 }

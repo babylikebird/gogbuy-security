@@ -81,7 +81,18 @@ public class SysUserServiceImpl implements SysUserService {
         if (pageNum != null && pageSize != null){
             PageHelper.startPage(pageNum,pageSize);
         }
-        return userMapper.list(user);
+        List<SysUser> userList = userMapper.list(user);
+        if (userList != null && userList.size() > 0){
+            for (SysUser u:userList
+                 ) {
+                SysDept dept = userDeptService.findByUserId(u.getId());
+                if (dept != null){
+                    u.setDeptId(dept.getId());
+                    u.setDeptName(dept.getDeptName());
+                }
+            }
+        }
+        return userList;
     }
 
     @Override

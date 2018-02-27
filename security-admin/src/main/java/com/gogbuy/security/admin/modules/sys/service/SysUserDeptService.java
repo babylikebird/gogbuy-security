@@ -1,5 +1,6 @@
 package com.gogbuy.security.admin.modules.sys.service;
 
+import com.gogbuy.security.admin.modules.sys.entity.SysDept;
 import com.gogbuy.security.admin.modules.sys.entity.SysUserDept;
 
 /**
@@ -22,4 +23,5 @@ public interface SysUserDeptService {
 
     int updateById(SysUserDept record);
 
+    SysDept findByUserId(String userId);
 }

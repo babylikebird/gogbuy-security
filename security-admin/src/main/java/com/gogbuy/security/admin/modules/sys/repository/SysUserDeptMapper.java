@@ -1,7 +1,9 @@
 package com.gogbuy.security.admin.modules.sys.repository;
 
+import com.gogbuy.security.admin.modules.sys.entity.SysDept;
 import com.gogbuy.security.admin.modules.sys.entity.SysUserDept;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface SysUserDeptMapper {
@@ -20,4 +22,6 @@ public interface SysUserDeptMapper {
     int deleteByUserId(String userId);
 
     int deleteByDeptId(String deptId);
+
+    SysDept findUserDeptByUserId(@Param("userId") String userId);
 }
