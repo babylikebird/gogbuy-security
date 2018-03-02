@@ -153,7 +153,7 @@
       <if test="icon != null and icon !=''">
         icon = #{icon,jdbcType=VARCHAR},
       </if>
-      <if test="parentId != null and parent != ''">
+      <if test="parentId != null and parentId != ''">
         parent_id = #{parentId,jdbcType=VARCHAR},
       </if>
       <if test="type != null">
