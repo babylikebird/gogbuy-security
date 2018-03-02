@@ -2,7 +2,7 @@ package com.gogbuy.security.admin.modules.security.jwt.endpoint;
 
 import com.gogbuy.security.admin.common.config.WebSecurityConfig;
 import com.gogbuy.security.admin.common.model.R;
-import com.gogbuy.security.admin.modules.security.jwt.config.JwtSettings;
+import com.gogbuy.security.admin.modules.security.config.TokenSettings;
 import com.gogbuy.security.admin.modules.security.jwt.extractor.JwtTokenExtractor;
 import com.gogbuy.security.admin.modules.security.jwt.extractor.TokenExtractor;
 import com.gogbuy.security.admin.modules.security.jwt.token.JwtToken;
@@ -11,7 +11,6 @@ import com.gogbuy.security.admin.modules.security.jwt.token.RawAccessJwtToken;
 import com.gogbuy.security.admin.modules.security.jwt.token.RefreshToken;
 import com.gogbuy.security.admin.modules.security.model.UserContext;
 import com.gogbuy.security.admin.modules.security.userdetails.GogUserDetails;
-import com.gogbuy.security.admin.modules.sys.entity.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,7 +34,7 @@ import java.util.Map;
 @RestController
 public class RefreshTokenEndpoint {
     @Autowired
-    private JwtSettings jwtSettings;
+    private TokenSettings jwtSettings;
     @Autowired
     private JwtTokenFactory tokenFactory;
     @Autowired

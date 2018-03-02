@@ -1,10 +1,9 @@
 package com.gogbuy.security.admin.modules.security.jwt;
 
 import com.gogbuy.security.admin.modules.security.core.UrlGrantedAuthority;
-import com.gogbuy.security.admin.modules.security.jwt.config.JwtSettings;
+import com.gogbuy.security.admin.modules.security.config.TokenSettings;
 import com.gogbuy.security.admin.modules.security.jwt.token.RawAccessJwtToken;
 import com.gogbuy.security.admin.modules.security.model.UserContext;
-import com.gogbuy.security.admin.modules.security.userdetails.GogUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +11,11 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created with IntelliJ IDEA.
@@ -31,10 +27,10 @@ import java.util.stream.Collectors;
 @Component
 public class JwtAuthenticationProvider implements AuthenticationProvider{
 
-    private final JwtSettings jwtSettings;
+    private final TokenSettings jwtSettings;
 
     @Autowired
-    public JwtAuthenticationProvider(JwtSettings jwtSettings) {
+    public JwtAuthenticationProvider(TokenSettings jwtSettings) {
         this.jwtSettings = jwtSettings;
     }
 

@@ -1,7 +1,7 @@
 package com.gogbuy.security.admin.modules.security.jwt.token;
 
 import com.gogbuy.security.admin.modules.security.core.UrlGrantedAuthority;
-import com.gogbuy.security.admin.modules.security.jwt.config.JwtSettings;
+import com.gogbuy.security.admin.modules.security.config.TokenSettings;
 import com.gogbuy.security.admin.modules.security.model.UserContext;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,10 +24,10 @@ import java.util.stream.Collectors;
  */
 @Component
 public class JwtTokenFactory {
-    private final JwtSettings settings;
+    private final TokenSettings settings;
 
     @Autowired
-    public JwtTokenFactory(JwtSettings settings) {
+    public JwtTokenFactory(TokenSettings settings) {
         this.settings = settings;
     }
     /**

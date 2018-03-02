@@ -19,7 +19,7 @@ import java.util.*;
  * Date: 2018-02-06
  * Time: 10:39
  */
-@Component
+//@Component
 public class JwtAuthenticationRequestMatcher implements RequestMatcher{
 
     private static final Logger LOG = LoggerFactory.getLogger(JwtAuthenticationRequestMatcher.class);
@@ -30,24 +30,24 @@ public class JwtAuthenticationRequestMatcher implements RequestMatcher{
      */
     private Set<UrlGrantedAuthority> authoritySet;
 
-    public void setAuthoritySet(Set<UrlGrantedAuthority> authoritySet) {
-        this.authoritySet = authoritySet;
-        Iterator<UrlGrantedAuthority> i = authoritySet.iterator();
-        List<RequestMatcher> list = new ArrayList<>();
-        while (i.hasNext()){
-            UrlGrantedAuthority authority = i.next();
-            if (!StringUtils.isBlank(authority.getUrl())){
-                if (!StringUtils.isBlank(authority.getHttpMethod())){
-                    RequestMatcher requestMatcher = new AntPathRequestMatcher(authority.getUrl(),authority.getHttpMethod());
-                    list.add(requestMatcher);
-                }else {
-                    RequestMatcher requestMatcher = new AntPathRequestMatcher(authority.getUrl(),null);
-                    list.add(requestMatcher);
-                }
-            }
-        }
-        matchers = new OrRequestMatcher(list);
-    }
+//    public void setAuthoritySet(Set<UrlGrantedAuthority> authoritySet) {
+//        this.authoritySet = authoritySet;
+//        Iterator<UrlGrantedAuthority> i = authoritySet.iterator();
+//        List<RequestMatcher> list = new ArrayList<>();
+//        while (i.hasNext()){
+//            UrlGrantedAuthority authority = i.next();
+//            if (!StringUtils.isBlank(authority.getUrl())){
+//                if (!StringUtils.isBlank(authority.getHttpMethod())){
+//                    RequestMatcher requestMatcher = new AntPathRequestMatcher(authority.getUrl(),authority.getHttpMethod());
+//                    list.add(requestMatcher);
+//                }else {
+//                    RequestMatcher requestMatcher = new AntPathRequestMatcher(authority.getUrl(),null);
+//                    list.add(requestMatcher);
+//                }
+//            }
+//        }
+//        matchers = new OrRequestMatcher(list);
+//    }
 
     @Override
     public boolean matches(HttpServletRequest request) {

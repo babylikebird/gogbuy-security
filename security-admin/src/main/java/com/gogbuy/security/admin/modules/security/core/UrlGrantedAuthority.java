@@ -8,11 +8,12 @@ import org.springframework.security.core.GrantedAuthority;
  * ProjectName:gogbuy-security
  */
 public class UrlGrantedAuthority implements GrantedAuthority {
-    private final String httpMethod;
+    private static final long serialVersionUID = 2972616235188896707L;
+    private  String httpMethod;
 
-    private final String code;
+    private  String code;
 
-    private final String url;
+    private  String url;
 
     public UrlGrantedAuthority(String httpMethod, String url,String code) {
         this.httpMethod = httpMethod;
@@ -26,6 +27,22 @@ public class UrlGrantedAuthority implements GrantedAuthority {
 
     public String getUrl() {
         return url;
+    }
+
+    public void setHttpMethod(String httpMethod) {
+        this.httpMethod = httpMethod;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @Override

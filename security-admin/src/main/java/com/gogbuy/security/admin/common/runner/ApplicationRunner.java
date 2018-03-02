@@ -6,6 +6,7 @@ import com.gogbuy.security.admin.common.toolkit.IdWorker;
 import com.gogbuy.security.admin.modules.security.core.UrlGrantedAuthority;
 import com.gogbuy.security.admin.modules.security.intercept.GogFilterInvocationSecurityMetadataSource;
 import com.gogbuy.security.admin.modules.security.jwt.JwtAuthenticationRequestMatcher;
+import com.gogbuy.security.admin.modules.security.authentication.matcher.AuthenticationRequestMatcher;
 import com.gogbuy.security.admin.modules.sys.entity.SysElement;
 import com.gogbuy.security.admin.modules.sys.entity.SysMenu;
 import com.gogbuy.security.admin.modules.sys.service.SysElementService;
@@ -45,8 +46,7 @@ public class ApplicationRunner implements CommandLineRunner {
     @Resource
     private RequestMappingHandlerMapping requestMappingHandlerMapping;
     @Autowired
-    JwtAuthenticationRequestMatcher requestMatcher;
-
+    AuthenticationRequestMatcher authenticationRequestMatcher;
     @Override
     public void run(String... args) throws Exception {
         Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
@@ -135,6 +135,6 @@ public class ApplicationRunner implements CommandLineRunner {
             }
         }
         securityMetadataSource.setAuthoritySet(au);
-        requestMatcher.setAuthoritySet(au);
+        authenticationRequestMatcher.setAuthority(au);
     }
 }

@@ -1,11 +1,11 @@
-package com.gogbuy.security.admin.modules.security.jwt.config;
+package com.gogbuy.security.admin.modules.security.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "gog.security.jwt")
-public class JwtSettings {
+@ConfigurationProperties(prefix = "gog.security.token")
+public class TokenSettings {
     /**
      * {@link JwtToken} will expire after this time.
      */
