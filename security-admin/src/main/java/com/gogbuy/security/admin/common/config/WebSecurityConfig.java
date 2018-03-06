@@ -4,13 +4,10 @@ import com.gogbuy.security.admin.modules.security.authentication.*;
 import com.gogbuy.security.admin.modules.security.filter.GogUsernamePasswordAuthenticationFilter;
 import com.gogbuy.security.admin.modules.security.intercept.GogFilterInvocationSecurityMetadataSource;
 import com.gogbuy.security.admin.modules.security.intercept.GogSecurityInterceptor;
-import com.gogbuy.security.admin.modules.security.jwt.*;
 import com.gogbuy.security.admin.modules.security.config.TokenSettings;
-import com.gogbuy.security.admin.modules.security.jwt.extractor.JwtHeaderTokenExtractor;
-import com.gogbuy.security.admin.modules.security.jwt.extractor.JwtTokenExtractor;
-import com.gogbuy.security.admin.modules.security.jwt.token.JwtTokenFactory;
 import com.gogbuy.security.admin.modules.security.oauth.AuthTokenAuthenticationProcessingFilter;
 import com.gogbuy.security.admin.modules.security.authentication.matcher.AuthenticationRequestMatcher;
+import com.gogbuy.security.admin.modules.security.oauth.DefaultAuthenticationProcessingFilter;
 import com.gogbuy.security.admin.modules.security.oauth.GogAuthenticationFailureHandler;
 import com.gogbuy.security.admin.modules.security.oauth.OauthAuthenticationSuccessHandler;
 import com.gogbuy.security.admin.modules.security.oauth.redis.RedisTokenStore;
@@ -23,8 +20,6 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.vote.AffirmativeBased;
-import org.springframework.security.access.vote.AuthenticatedVoter;
-import org.springframework.security.access.vote.RoleVoter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -36,6 +31,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.*;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,13 +51,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public static final String REFRESH_TOKEN = "refresh_token";
 
     @Autowired
-    private JwtTokenFactory jwtTokenFactory;
-    @Autowired
     private TokenSettings tokenSettings;
     @Autowired
     AuthenticationRequestMatcher requestMatcher;
-    @Autowired
-    private JwtAuthenticationProvider jwtAuthenticationProvider;
     @Autowired
     private RedisConnectionFactory redisConnectionFactory;
     @Bean
@@ -84,12 +76,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().anyRequest().permitAll()
+        http.authorizeRequests()
                 // 其他地址的访问均需验证权限（需要登录）
                 .anyRequest().authenticated()
                 .and()
                 // 添加验证码验证
                 .addFilterBefore(gogUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(defaultAuthenticationProcessingFilter(),UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(authTokenAuthenticationProcessingFilter(),UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(filterSecurityInterceptor(),FilterSecurityInterceptor.class)
                 .exceptionHandling()
@@ -123,7 +116,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsServiceImpl()).passwordEncoder(new StandardPasswordEncoder());
-        auth.authenticationProvider(jwtAuthenticationProvider);
     }
     @Bean
     public FilterSecurityInterceptor filterSecurityInterceptor() throws Exception{
@@ -134,17 +126,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     //决策器
     @Bean
     public AccessDecisionManager accessDecisionManager(){
-        RoleVoter roleVoter = new RoleVoter();//角色决策器
-        AuthenticatedVoter authenticatedVoter = new AuthenticatedVoter();//认证决策器
-        UrlMatchVoter urlMatchVoter = new UrlMatchVoter();
-        List<AccessDecisionVoter<? extends Object>> list = new ArrayList<>();
-        list.add(roleVoter);
-        list.add(authenticatedVoter);
-        list.add(urlMatchVoter);
-        AccessDecisionManager accessDecisionManager = new AffirmativeBased(list);
-        return accessDecisionManager;
+        List<AccessDecisionVoter<? extends Object>> decisionVoters = new ArrayList<>();
+        decisionVoters.add(new UrlMatchVoter());
+        return new AffirmativeBased(decisionVoters);
     }
 
+    /**
+     * <p>注意：必须要有默认的过滤器，通过access_token获取</p>
+     * @return
+     */
+    public DefaultAuthenticationProcessingFilter defaultAuthenticationProcessingFilter(){
+        AuthenticationFailureHandler failureHandler = new GogAuthenticationFailureHandler();
+        return new DefaultAuthenticationProcessingFilter(new AntPathRequestMatcher("/**"),failureHandler,redisTokenStore());
+    }
 
     @Bean
     public GogUsernamePasswordAuthenticationFilter gogUsernamePasswordAuthenticationFilter() throws Exception {
@@ -157,26 +151,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
         return new OauthAuthenticationSuccessHandler(tokenSettings,redisTokenStore());
-//        return new JwtAuthenticationSuccessHandler(jwtTokenFactory,tokenSettings);
     }
 
     @Bean
     public AuthenticationFailureHandler authenticationFailureHandler() {
         return new GogUrlAuthenticationFailureHandler();
     }
-    //JWT start
-//    @Bean
-//    protected JwtTokenAuthenticationProcessingFilter jwtTokenAuthenticationProcessingFilter() throws Exception {
-//        JwtTokenExtractor jwtTokenExtractor = new JwtTokenExtractor();
-//        JwtHeaderTokenExtractor headerTokenExtractor = new JwtHeaderTokenExtractor();
-//        AuthenticationFailureHandler failureHandler = new JwtAuthenticationFailureHandler();
-//        JwtTokenAuthenticationProcessingFilter filter
-//                = new JwtTokenAuthenticationProcessingFilter(failureHandler, jwtTokenExtractor,headerTokenExtractor, requestMatcher);
-//        filter.setAuthenticationManager(authenticationManagerBean());
-//        return filter;
-//    }
-    //JWT end
-
     @Bean
     protected AuthTokenAuthenticationProcessingFilter authTokenAuthenticationProcessingFilter() throws Exception{
         AuthenticationFailureHandler failureHandler = new GogAuthenticationFailureHandler();

@@ -2,40 +2,38 @@ package com.gogbuy.security.admin.modules.security.oauth;
 
 import com.gogbuy.security.admin.modules.security.oauth.redis.RedisTokenStore;
 import com.gogbuy.security.admin.modules.security.oauth.token.OauthToken;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.StringUtils;
 
-import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
  * Description:
  * User: Mr.Yangxiufeng
- * Date: 2018-03-01
- * Time: 18:06
+ * Date: 2018-03-06
+ * Time: 13:43
  */
-public class AuthTokenAuthenticationProcessingFilter extends AbstractAuthenticationProcessingFilter {
+public class DefaultAuthenticationProcessingFilter extends AuthTokenAuthenticationProcessingFilter {
     private static final String HEADER_PREFIX = "Bearer ";
-    protected   AuthenticationFailureHandler failureHandler;
 
-    protected RedisTokenStore redisTokenStore;
-
-    public AuthTokenAuthenticationProcessingFilter(RequestMatcher requiresAuthenticationRequestMatcher,AuthenticationFailureHandler failureHandler,RedisTokenStore redisTokenStore) {
-        super(requiresAuthenticationRequestMatcher);
-        this.redisTokenStore = redisTokenStore;
-        this.failureHandler = failureHandler;
+    public DefaultAuthenticationProcessingFilter(RequestMatcher requiresAuthenticationRequestMatcher, AuthenticationFailureHandler failureHandler, RedisTokenStore redisTokenStore) {
+        super(requiresAuthenticationRequestMatcher, failureHandler, redisTokenStore);
     }
 
     @Override
@@ -46,32 +44,20 @@ public class AuthTokenAuthenticationProcessingFilter extends AbstractAuthenticat
         }
         OauthToken oauthToken = redisTokenStore.getOauthToken(accessToken);
         if (oauthToken == null){
-            throw new BadCredentialsException("Invalid access_token.");
+            Set<GrantedAuthority> g  = new HashSet<>();
+            g.add(new SimpleGrantedAuthority("ANONYMOUS"));
+            return new AnonymousAuthenticationToken("ROLE_ANONYMOUS","ROLE_ANONYMOUS",g);
         }
         Authentication authentication = redisTokenStore.readAuthenticationByAccessToken(oauthToken.getAccessToken().getAccessToken());
         return authentication;
     }
-    @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
-                                            Authentication authResult) throws IOException, ServletException {
-        SecurityContext context = SecurityContextHolder.createEmptyContext();
-        context.setAuthentication(authResult);
-        SecurityContextHolder.setContext(context);
-        chain.doFilter(request, response);
-    }
 
-    @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-                                              AuthenticationException failed) throws IOException, ServletException {
-        SecurityContextHolder.clearContext();
-        failureHandler.onAuthenticationFailure(request, response, failed);
-    }
     public String extract(String header) {
         if (org.apache.commons.lang3.StringUtils.isBlank(header)) {
-            throw new AuthenticationServiceException("Authorization header cannot be blank!");
+            return null;
         }
         if (header.length() < HEADER_PREFIX.length()) {
-            throw new AuthenticationServiceException("Invalid authorization header size.");
+            return null;
         }
         return header.substring(HEADER_PREFIX.length(), header.length());
     }
