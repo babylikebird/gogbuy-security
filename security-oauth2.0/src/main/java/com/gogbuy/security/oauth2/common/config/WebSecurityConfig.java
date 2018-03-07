@@ -1,13 +1,17 @@
 package com.gogbuy.security.oauth2.common.config;
 
 import com.gogbuy.security.oauth2.modules.security.access.GogAccessDeniedHandler;
+import com.gogbuy.security.oauth2.modules.security.access.GogAuthenticationFailedHandler;
+import com.gogbuy.security.oauth2.modules.security.access.GogAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
@@ -20,6 +24,8 @@ import org.springframework.security.crypto.password.StandardPasswordEncoder;
  * Time: 9:32
  */
 @Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true,proxyTargetClass = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
@@ -49,13 +55,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .requestMatchers().antMatchers("/login","/oauth/authorize")
+                .requestMatchers().antMatchers("/login","/oauth/authorize","/**")
                 .and()
-                .authorizeRequests().anyRequest().authenticated()
+                .authorizeRequests().antMatchers("/getMsg").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().accessDeniedHandler(new GogAccessDeniedHandler())
                 .and()
                 .formLogin()
+                .successHandler(new GogAuthenticationSuccessHandler())
+                .failureHandler(new GogAuthenticationFailedHandler())
                 .and()
                 .csrf().disable()
                 .httpBasic();

@@ -45,3 +45,7 @@ mybatis-plus:
 logging:
   config: classpath:logback.xml
   level: debug
+security:
+  oauth2:
+    resource:
+      filter-order: 3

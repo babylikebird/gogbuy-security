@@ -42,6 +42,7 @@
 		<module>security-admin</module>
 		<module>security-oauth2.0</module>
 		<module>security-generator</module>
+		<module>resource</module>
 	</modules>
 	<build>
 		<plugins>
