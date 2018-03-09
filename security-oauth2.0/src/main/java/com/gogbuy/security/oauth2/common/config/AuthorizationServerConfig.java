@@ -1,5 +1,6 @@
 package com.gogbuy.security.oauth2.common.config;
 
+import com.gogbuy.security.oauth2.modules.security.component.GogWebResponseExceptionTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -76,12 +77,14 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.withClientDetails(clientDetails());
     }
-
+    @Autowired
+    GogWebResponseExceptionTranslator gogWebResponseExceptionTranslator;
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.tokenStore(redisTokenStore())
                 .userDetailsService(userDetailsService)
                 .authenticationManager(authenticationManager)
-                .tokenServices(defaultTokenServices());
+                .tokenServices(defaultTokenServices())
+                .exceptionTranslator(gogWebResponseExceptionTranslator);
     }
 }
