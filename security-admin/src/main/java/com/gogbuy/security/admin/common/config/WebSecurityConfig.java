@@ -77,8 +77,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                // 其他地址的访问均需验证权限（需要登录）
-                .anyRequest().authenticated()
+                .anyRequest().authenticated()// 其他地址的访问均需验证权限（需要登录）
                 .and()
                 // 添加验证码验证
                 .addFilterBefore(gogUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
@@ -98,7 +97,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 关闭csrf
                 .csrf().disable()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().httpBasic();
     }
 
     @Override
