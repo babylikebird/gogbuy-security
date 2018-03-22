@@ -1,8 +1,5 @@
 package com.gogbuy.security.oauth2.common.config;
 
-import com.gogbuy.security.oauth2.modules.security.access.GogAccessDeniedHandler;
-import com.gogbuy.security.oauth2.modules.security.access.GogAuthenticationFailedHandler;
-import com.gogbuy.security.oauth2.modules.security.access.GogAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -57,14 +54,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .requestMatchers().antMatchers("/oauth/authorize")
                 .and()
-                .authorizeRequests().antMatchers("/getMsg").permitAll()
+                .authorizeRequests()
                 .anyRequest().authenticated()
                 .and()
-                .exceptionHandling().accessDeniedHandler(new GogAccessDeniedHandler())
-                .and()
                 .formLogin()
-                .successHandler(new GogAuthenticationSuccessHandler())
-                .failureHandler(new GogAuthenticationFailedHandler())
                 .and()
                 .csrf().disable()
                 .httpBasic();
