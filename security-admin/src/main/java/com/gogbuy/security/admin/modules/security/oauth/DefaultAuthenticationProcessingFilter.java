@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -42,11 +43,14 @@ public class DefaultAuthenticationProcessingFilter extends AuthTokenAuthenticati
         if (StringUtils.isEmpty(accessToken)){
             accessToken = extract(request.getHeader("Authorization"));
         }
-        OauthToken oauthToken = redisTokenStore.getOauthToken(accessToken);
-        if (oauthToken == null){
+        if (accessToken == null){
             Set<GrantedAuthority> g  = new HashSet<>();
             g.add(new SimpleGrantedAuthority("ANONYMOUS"));
             return new AnonymousAuthenticationToken("ROLE_ANONYMOUS","ROLE_ANONYMOUS",g);
+        }
+        OauthToken oauthToken = redisTokenStore.getOauthToken(accessToken);
+        if (oauthToken == null){
+            throw new BadCredentialsException("Invalid access_token.");
         }
         Authentication authentication = redisTokenStore.readAuthenticationByAccessToken(oauthToken.getAccessToken().getAccessToken());
         return authentication;

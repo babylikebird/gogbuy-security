@@ -10,6 +10,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.*;
 
@@ -66,7 +67,11 @@ public class GogLoginUrlAuthenticationEntryPoint implements AuthenticationEntryP
         }else if (exception instanceof AuthenticationServiceException){
             r.setCode(StatusCode.ACCESS_TOKEN_HEADER_CODE_ERROR);
             r.setMsg("没有携带认证标志");
-        }else {
+        }else if (exception instanceof InsufficientAuthenticationException){
+            r.setCode(StatusCode.FORBIDDEN);
+            r.setMsg("权限不足，请联系管理员!");
+        }
+        else {
             r.setCode(StatusCode.UNAUTHORIZED);
             r.setMsg("您还没有登录，请先登录");
         }
